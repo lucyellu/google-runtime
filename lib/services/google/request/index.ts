@@ -45,6 +45,10 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));
 
+    if (input) {
+      runtime.variables.set(V.LAST_UTTERANCE, input);
+    }
+
     await runtime.update();
 
     await response.build(runtime, agent, conv);

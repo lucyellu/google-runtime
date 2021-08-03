@@ -83,7 +83,10 @@ describe('handlerManager unit tests', async () => {
       expect(agent.conv.callCount).to.eql(1);
       expect(services.runtimeBuild.build.args[0]).to.eql([convObj.body.versionID, convObj.user.storage.userId]);
       expect(services.initialize.build.args[0]).to.eql([stateObj, convObj]);
-      expect(stateObj.variables.set.args).to.eql([[V.TIMESTAMP, Math.floor(clock.now / 1000)]]);
+      expect(stateObj.variables.set.args).to.eql([
+        [V.TIMESTAMP, Math.floor(clock.now / 1000)],
+        [V.LAST_UTTERANCE, 'input raw'],
+      ]);
       expect(stateObj.update.callCount).to.eql(1);
       expect(services.response.build.args[0]).to.eql([stateObj, agent, convObj]);
     });

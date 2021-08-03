@@ -28,6 +28,7 @@ export enum Frame {
 export enum Variables {
   TIMESTAMP = 'timestamp',
   DF_ES_CHANNEL = 'channel',
+  LAST_UTTERANCE = 'last_utterance',
 }
 
 export default {
