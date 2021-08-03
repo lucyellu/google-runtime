@@ -1,5 +1,4 @@
 import { State } from '@voiceflow/general-runtime/build/runtime';
-import { FrameState } from '@voiceflow/general-runtime/build/runtime/lib/Runtime/Stack';
 import { SimpleResponse } from 'actions-on-google';
 import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
@@ -8,20 +7,34 @@ import { GoogleRequest } from '../services/types';
 export interface InteractBody {
   eventId: Event;
   request: {
-    requestType?: string;
-    sessionId?: string;
-    versionId?: string;
+    turn_id?: string;
+    type?: string;
+    format?: string;
     payload?: SimpleResponse | GoogleRequest;
+    timestamp?: string;
+  };
+}
+export interface TurnBody {
+  eventId: Event;
+  request: {
+    version_id?: string;
+    session_id?: string;
+    state?: State;
+    timestamp?: string;
     metadata?: {
-      stack?: FrameState[];
-      storage?: State;
-      variables?: State;
+      locale?: string;
+      end?: boolean;
     };
   };
 }
 
+export interface TurnResponse {
+  turn_id: string;
+}
+
 export enum Event {
   INTERACT = 'interact',
+  TURN = 'turn',
 }
 
 export enum RequestType {
@@ -47,7 +60,7 @@ export class IngestApi {
     this.axios = Axios.create(config);
   }
 
-  public doIngest = async (body: InteractBody) => this.axios.post('/v1/ingest', body);
+  public doIngest = async (body: InteractBody) => this.axios.post<TurnResponse>('/v1/ingest', body);
 }
 
 const IngestClient = (endpoint: string, authorization: string | undefined) => new IngestApi(endpoint, authorization);

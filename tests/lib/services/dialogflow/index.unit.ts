@@ -28,6 +28,9 @@ describe('DialogflowManager unit tests', async () => {
         variables: {
           set: sinon.stub(),
         },
+        turn: {
+          set: sinon.stub(),
+        },
         update: sinon.stub(),
         services: {
           analyticsClient: {
@@ -74,6 +77,9 @@ describe('DialogflowManager unit tests', async () => {
         },
         type: 'INTENT',
       };
+
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
+
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
       expect(services.initializeES.build.args).to.eql([[stateObj, req]]);
@@ -87,11 +93,12 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.LAUNCH,
             payload,
             sessionid: req.session,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);
@@ -104,6 +111,9 @@ describe('DialogflowManager unit tests', async () => {
           isEmpty: sinon.stub().returns(false),
         },
         variables: {
+          set: sinon.stub(),
+        },
+        turn: {
           set: sinon.stub(),
         },
         update: sinon.stub(),
@@ -151,6 +161,8 @@ describe('DialogflowManager unit tests', async () => {
         type: 'INTENT',
       };
 
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
+
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
       expect(services.initializeES.build.args).to.eql([[stateObj, req]]);
@@ -164,11 +176,12 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.LAUNCH,
             payload,
             sessionid: req.session,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);
@@ -297,6 +310,8 @@ describe('DialogflowManager unit tests', async () => {
         type: 'INTENT',
       };
 
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
+
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
       expect(stateObj.turn.set.args[0]).to.eql([
@@ -320,11 +335,12 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.REQUEST,
             payload,
             sessionid: req.session,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);

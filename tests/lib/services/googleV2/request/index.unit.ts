@@ -91,6 +91,9 @@ describe('handlerManager unit tests', async () => {
         variables: {
           set: sinon.stub(),
         },
+        turn: {
+          set: sinon.stub(),
+        },
         update: sinon.stub(),
         services: {
           analyticsClient: {
@@ -142,6 +145,7 @@ describe('handlerManager unit tests', async () => {
         },
         type: 'INTENT',
       };
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
 
       expect(services.runtimeBuild.build.args[0]).to.eql([conv.request.versionID, conv.user.params.userId]);
       expect(services.initialize.build.args[0]).to.eql([stateObj, conv]);
@@ -152,11 +156,12 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);
@@ -169,6 +174,9 @@ describe('handlerManager unit tests', async () => {
           isEmpty: sinon.stub().returns(false),
         },
         variables: {
+          set: sinon.stub(),
+        },
+        turn: {
           set: sinon.stub(),
         },
         update: sinon.stub(),
@@ -222,6 +230,7 @@ describe('handlerManager unit tests', async () => {
         },
         type: 'INTENT',
       };
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
 
       expect(services.runtimeBuild.build.args[0]).to.eql([conv.request.versionID, conv.user.params.userId]);
       expect(services.initialize.build.args[0]).to.eql([stateObj, conv]);
@@ -232,11 +241,12 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);
@@ -249,6 +259,9 @@ describe('handlerManager unit tests', async () => {
           isEmpty: sinon.stub().returns(true),
         },
         variables: {
+          set: sinon.stub(),
+        },
+        turn: {
           set: sinon.stub(),
         },
         update: sinon.stub(),
@@ -302,6 +315,7 @@ describe('handlerManager unit tests', async () => {
       handlerManager._extractSlots = sinon.stub().returns({});
 
       await handlerManager.handle(conv as any);
+      const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
 
       expect(services.runtimeBuild.build.args[0]).to.eql([conv.request.versionID, conv.user.params.userId]);
       expect(services.initialize.build.args[0]).to.eql([stateObj, conv]);
@@ -312,11 +326,12 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.INTERACT,
+            event: Event.TURN,
             request: InteractRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
+            timestamp,
           },
         ],
       ]);
@@ -392,17 +407,19 @@ describe('handlerManager unit tests', async () => {
         handlerManager._extractSlots = sinon.stub().returns(slots);
 
         await handlerManager.handle(conv as any);
+        const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
 
         expect(services.runtimeBuild.build.args[0]).to.eql([conv.request.versionID, conv.user.params.userId]);
         expect(stateObj.services.analyticsClient.track.args).to.eql([
           [
             {
               id: versionID,
-              event: Event.INTERACT,
+              event: Event.TURN,
               request: InteractRequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
               metadata: versionID,
+              timestamp,
             },
           ],
         ]);
@@ -483,16 +500,18 @@ describe('handlerManager unit tests', async () => {
         handlerManager._extractSlots = sinon.stub().returns({});
 
         await handlerManager.handle(conv as any);
+        const { timestamp } = stateObj.services.analyticsClient.track.args[0][0];
 
         expect(stateObj.services.analyticsClient.track.args).to.eql([
           [
             {
               id: versionID,
-              event: Event.INTERACT,
+              event: Event.TURN,
               request: InteractRequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
               metadata: versionID,
+              timestamp,
             },
           ],
         ]);

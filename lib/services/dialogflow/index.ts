@@ -35,27 +35,31 @@ class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; ru
     if (intentName === mainIntent1 || intentName === mainIntent2 || runtime.stack.isEmpty()) {
       await initializeES.build(runtime, req);
       if (intentName === mainIntent1 || intentName === mainIntent2) {
-        runtime.services.analyticsClient.track({
+        const turnID = runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
-          event: Event.INTERACT,
+          event: Event.TURN,
           request: InteractRequestType.LAUNCH,
           payload: request,
           sessionid: req.session,
           metadata: runtime.getRawState(),
+          timestamp: new Date(),
         });
+        runtime.turn.set(T.TURNID, turnID);
       }
     }
 
     if (!['actions.intent.MAIN', 'Default Welcome Intent'].includes(intentName)) {
       runtime.turn.set(T.REQUEST, request);
-      runtime.services.analyticsClient.track({
+      const turnID = runtime.services.analyticsClient.track({
         id: runtime.getVersionID(),
-        event: Event.INTERACT,
+        event: Event.TURN,
         request: InteractRequestType.REQUEST,
         payload: request,
         sessionid: req.session,
         metadata: runtime.getRawState(),
+        timestamp: new Date(),
       });
+      runtime.turn.set(T.TURNID, turnID);
     }
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));

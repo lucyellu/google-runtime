@@ -83,8 +83,20 @@ describe('responseManager unit tests', async () => {
       expect(responseHandler2.args).to.eql([[runtime, conv]]);
       expect(services.state.saveToDb.args[0]).to.eql([userId, finalState]);
       expect(conv.user.params.forceUpdateToken).to.deep.eq(updateToken);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
       expect(runtime.services.analyticsClient.track.args).to.eql([
-        [{ id: userId, event: Event.INTERACT, request: RequestType.RESPONSE, payload: response, sessionid: conv.session.id, metadata: finalState }],
+        [
+          {
+            id: userId,
+            event: Event.INTERACT,
+            request: RequestType.RESPONSE,
+            payload: response,
+            sessionid: conv.session.id,
+            metadata: finalState,
+            timestamp,
+            turnIDP: null,
+          },
+        ],
       ]);
     });
 
@@ -163,8 +175,20 @@ describe('responseManager unit tests', async () => {
       expect(responseHandler2.args).to.eql([[runtime, conv]]);
       expect(services.state.saveToDb.args[0]).to.eql([userId, finalState]);
       expect(conv.user.params.forceUpdateToken).to.deep.eq(updateToken);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
       expect(runtime.services.analyticsClient.track.args).to.eql([
-        [{ id: userId, event: Event.INTERACT, request: RequestType.RESPONSE, payload: response, sessionid: conv.session.id, metadata: finalState }],
+        [
+          {
+            id: userId,
+            event: Event.INTERACT,
+            request: RequestType.RESPONSE,
+            payload: response,
+            sessionid: conv.session.id,
+            metadata: finalState,
+            timestamp,
+            turnIDP: true,
+          },
+        ],
       ]);
     });
   });

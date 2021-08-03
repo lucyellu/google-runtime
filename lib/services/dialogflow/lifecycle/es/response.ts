@@ -38,6 +38,7 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       await handler(runtime, res);
     }
     await state.saveToDb(storage.get<string>(S.USER)!, runtime.getFinalState());
+    const turnID = await turn.get<string>(T.TURNID);
     // Track response on analytics system
     runtime.services.analyticsClient.track({
       id: runtime.getVersionID(),
@@ -46,6 +47,8 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       payload: res,
       sessionid: runtime.getFinalState().storage.user,
       metadata: runtime.getFinalState(),
+      timestamp: new Date(),
+      turnIDP: turnID,
     });
 
     return res;

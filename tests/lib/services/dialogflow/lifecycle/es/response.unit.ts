@@ -65,6 +65,7 @@ describe('responseManager unit tests', async () => {
       };
 
       expect(await responseManager.build(runtime as any)).to.eql(res);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
 
       expect(runtime.stack.isEmpty.callCount).to.eql(1);
       expect(runtime.storage.get.args).to.eql([[S.OUTPUT], [S.USER]]);
@@ -80,6 +81,8 @@ describe('responseManager unit tests', async () => {
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
+            timestamp,
+            turnIDP: null,
           },
         ],
       ]);
@@ -136,6 +139,7 @@ describe('responseManager unit tests', async () => {
       };
 
       expect(await responseManager.build(runtime as any)).to.eql(res);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
 
       expect(runtime.stack.isEmpty.callCount).to.eql(1);
       expect(runtime.turn.set.args[0]).to.eql([T.END, true]);
@@ -152,6 +156,8 @@ describe('responseManager unit tests', async () => {
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
+            timestamp,
+            turnIDP: true,
           },
         ],
       ]);

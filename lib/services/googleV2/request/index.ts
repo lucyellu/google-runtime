@@ -55,27 +55,31 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
     if (intent.name === 'actions.intent.MAIN' || intent.name === 'Default Welcome Intent' || runtime.stack.isEmpty()) {
       await initialize.build(runtime, conv);
 
-      runtime.services.analyticsClient.track({
+      const turnID = runtime.services.analyticsClient.track({
         id: runtime.getVersionID(),
-        event: Event.INTERACT,
+        event: Event.TURN,
         request: InteractRequestType.LAUNCH,
         payload: request,
         sessionid: conv.session.id,
         metadata: runtime.getRawState(),
+        timestamp: new Date(),
       });
+      runtime.turn.set(T.TURNID, turnID);
     } else {
       request.type = intent.name?.startsWith('actions.intent.MEDIA_STATUS') ? RequestType.MEDIA_STATUS : RequestType.INTENT;
       request.payload.intent = intent.name;
 
       runtime.turn.set(T.REQUEST, request);
-      runtime.services.analyticsClient.track({
+      const turnID = runtime.services.analyticsClient.track({
         id: runtime.getVersionID(),
-        event: Event.INTERACT,
+        event: Event.TURN,
         request: InteractRequestType.REQUEST,
         payload: request,
         sessionid: conv.session.id,
         metadata: runtime.getRawState(),
+        timestamp: new Date(),
       });
+      runtime.turn.set(T.TURNID, turnID);
     }
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));

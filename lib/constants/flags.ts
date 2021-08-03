@@ -9,6 +9,7 @@ export enum Storage {
 }
 
 export enum Turn {
+  TURNID = 'turnid',
   END = 'end',
   PREVIOUS_OUTPUT = 'lastOutput',
   REQUEST = 'request',
