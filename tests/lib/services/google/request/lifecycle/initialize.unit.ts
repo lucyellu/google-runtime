@@ -1,4 +1,4 @@
-import { SessionType } from '@voiceflow/general-types';
+import { Version } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -29,7 +29,7 @@ describe('initializeManager unit tests', async () => {
         },
       };
 
-      const session: any = { type: SessionType.RESTART };
+      const session: any = { type: Version.SessionType.RESTART };
       const metaObj = {
         variables: ['a', 'b', 'c'],
         platformData: {
@@ -188,7 +188,7 @@ describe('initializeManager unit tests', async () => {
           const { services, runtime, conv, metaObj } = generateFakes();
 
           runtime.stack.isEmpty = sinon.stub().returns(false);
-          metaObj.platformData.settings.session = { type: SessionType.RESTART };
+          metaObj.platformData.settings.session = { type: Version.SessionType.RESTART };
           runtime.api.getVersion = sinon.stub().resolves(metaObj);
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
@@ -204,7 +204,7 @@ describe('initializeManager unit tests', async () => {
           const { services, runtime, conv, metaObj } = generateFakes();
 
           runtime.stack.isEmpty = sinon.stub().returns(false);
-          metaObj.platformData.settings.session = { type: SessionType.RESUME };
+          metaObj.platformData.settings.session = { type: Version.SessionType.RESUME };
           runtime.variables.get = sinon.stub().returns({ resume: false });
 
           runtime.api.getVersion = sinon.stub().resolves(metaObj);
@@ -225,7 +225,7 @@ describe('initializeManager unit tests', async () => {
 
           runtime.stack.isEmpty = sinon.stub().returns(false);
           runtime.stack.getFrames = sinon.stub().returns([]);
-          const session = { type: SessionType.RESUME, resume: { foo: 'bar' }, follow: 'test' };
+          const session = { type: Version.SessionType.RESUME, resume: { foo: 'bar' }, follow: 'test' };
           metaObj.platformData.settings.session = session;
           runtime.variables.get = sinon.stub().returns({ resume: true });
 
@@ -252,7 +252,7 @@ describe('initializeManager unit tests', async () => {
               { getProgramID: () => services.utils.resume.RESUME_DIAGRAM_ID },
               { getProgramID: () => false },
             ]);
-          const session = { type: SessionType.RESUME, resume: { foo: 'bar' }, follow: null };
+          const session = { type: Version.SessionType.RESUME, resume: { foo: 'bar' }, follow: null };
           metaObj.platformData.settings.session = session;
           runtime.variables.get = sinon.stub().returns({ resume: true });
 
@@ -273,7 +273,7 @@ describe('initializeManager unit tests', async () => {
         it('no last speak', async () => {
           const { services, runtime, conv, metaObj, topStorage } = generateFakes();
 
-          metaObj.platformData.settings.session = { type: SessionType.RESUME };
+          metaObj.platformData.settings.session = { type: Version.SessionType.RESUME };
           runtime.api.getVersion = sinon.stub().resolves(metaObj);
           topStorage.get = sinon.stub().returns(null);
 
@@ -289,7 +289,7 @@ describe('initializeManager unit tests', async () => {
         it('with last speak', async () => {
           const { services, runtime, conv, metaObj, topStorage } = generateFakes();
 
-          metaObj.platformData.settings.session = { type: SessionType.RESUME };
+          metaObj.platformData.settings.session = { type: Version.SessionType.RESUME };
           runtime.api.getVersion = sinon.stub().resolves(metaObj);
           const lastSpeak = 'random text';
           topStorage.get = sinon.stub().returns(lastSpeak);

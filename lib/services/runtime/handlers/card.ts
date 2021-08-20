@@ -1,7 +1,7 @@
 import { Card as GoogleCard, Image as GoogleImage } from '@assistant/conversation';
+import { Node } from '@voiceflow/base-types';
 import { replaceVariables } from '@voiceflow/common';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Card, CardType, Node } from '@voiceflow/google-types/build/nodes/card';
 import { BasicCard, Image } from 'actions-on-google';
 
 import { T } from '@/lib/constants';
@@ -10,15 +10,15 @@ import { ResponseBuilder, ResponseBuilderDialogflowES, ResponseBuilderV2 } from 
 import { addVariables } from '../utils';
 
 export const CardResponseBuilderGenerator = (CardBuilder: typeof BasicCard, ImageBuilder: typeof Image): ResponseBuilder => (runtime, conv) => {
-  const card = runtime.turn.get<Card>(T.CARD);
+  const card = runtime.turn.get<Node.Card.Card>(T.CARD);
 
   if (!card) {
     return;
   }
 
-  if (card.type === CardType.SIMPLE) {
+  if (card.type === Node.Card.CardType.SIMPLE) {
     conv.add(new CardBuilder({ text: card.text, title: card.title }));
-  } else if (card.type === CardType.STANDARD) {
+  } else if (card.type === Node.Card.CardType.STANDARD) {
     conv.add(
       new CardBuilder({
         text: card.text,
@@ -35,15 +35,15 @@ export const CardResponseBuilderGeneratorV2 = (CardBuilder: typeof GoogleCard, I
   runtime,
   conv
 ) => {
-  const card = runtime.turn.get<Card>(T.CARD);
+  const card = runtime.turn.get<Node.Card.Card>(T.CARD);
 
   if (!card) {
     return;
   }
 
-  if (card.type === CardType.SIMPLE) {
+  if (card.type === Node.Card.CardType.SIMPLE) {
     conv.add(new CardBuilder({ text: card.text, title: card.title }));
-  } else if (card.type === CardType.STANDARD) {
+  } else if (card.type === Node.Card.CardType.STANDARD) {
     conv.add(
       new CardBuilder({
         text: card.text,
@@ -57,15 +57,15 @@ export const CardResponseBuilderGeneratorV2 = (CardBuilder: typeof GoogleCard, I
 export const CardResponseBuilderV2 = CardResponseBuilderGeneratorV2(GoogleCard, GoogleImage);
 
 export const CardResponseBuilderDialogflowES: ResponseBuilderDialogflowES = (runtime, res) => {
-  const card = runtime.turn.get<Card>(T.CARD);
+  const card = runtime.turn.get<Node.Card.Card>(T.CARD);
 
   if (!card) {
     return;
   }
 
-  if (card.type === CardType.SIMPLE) {
+  if (card.type === Node.Card.CardType.SIMPLE) {
     res.fulfillmentMessages.push({ card: { title: card.title, subtitle: card.text } });
-  } else if (card.type === CardType.STANDARD) {
+  } else if (card.type === Node.Card.CardType.STANDARD) {
     res.fulfillmentMessages.push({ card: { title: card.title, text: card.text, imageUri: card.image?.largeImageUrl ?? '' } });
   }
 };
@@ -74,27 +74,27 @@ const utilsObj = {
   addVariables: addVariables(replaceVariables),
 };
 
-export const CardHandler: HandlerFactory<Node, typeof utilsObj> = (utils) => ({
+export const CardHandler: HandlerFactory<Node.Card.Node, typeof utilsObj> = (utils) => ({
   canHandle: (node) => !!node.card,
   handle: (node, runtime, variables) => {
     const { card } = node;
-    const type = card.type ?? CardType.SIMPLE;
+    const type = card.type ?? Node.Card.CardType.SIMPLE;
 
     // FIXME: remove after data refactoring
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     const { content } = card;
 
-    const text = (type === CardType.SIMPLE ? content : card.text) ?? card.text;
+    const text = (type === Node.Card.CardType.SIMPLE ? content : card.text) ?? card.text;
 
-    const newCard: Required<Card> = {
-      type: card.type ?? CardType.SIMPLE,
+    const newCard: Required<Node.Card.Card> = {
+      type: card.type ?? Node.Card.CardType.SIMPLE,
       text: utils.addVariables(text, variables),
       title: utils.addVariables(card.title, variables),
       image: { largeImageUrl: '' },
     };
 
-    if (card.type === CardType.STANDARD && card.image?.largeImageUrl) {
+    if (card.type === Node.Card.CardType.STANDARD && card.image?.largeImageUrl) {
       newCard.image.largeImageUrl = utils.addVariables(card.image.largeImageUrl, variables);
     }
 

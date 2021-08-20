@@ -1,6 +1,7 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { Frame, Program } from '@voiceflow/general-runtime/build/runtime';
-import { NodeType, Prompt } from '@voiceflow/general-types';
-import { Voice } from '@voiceflow/google-types';
+import { Constants } from '@voiceflow/google-types';
+import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
 export const RESUME_DIAGRAM_ID = '__RESUME_FLOW__';
 
@@ -26,7 +27,7 @@ export const promptToSSML = (content = '', voice: string | undefined) => {
   return content;
 };
 
-export const createResumeFrame = (resume: Prompt<Voice>, follow: Prompt<Voice> | null) => {
+export const createResumeFrame = (resume: VoiceTypes.Prompt<Constants.Voice>, follow: VoiceTypes.Prompt<Constants.Voice> | null) => {
   return new Frame({
     programID: RESUME_DIAGRAM_ID,
     variables: {
@@ -41,7 +42,7 @@ const ResumeDiagramRaw = {
   lines: {
     1: {
       id: '1',
-      type: NodeType.SPEAK,
+      type: BaseNode.NodeType.SPEAK,
       speak: `{${ResumeVariables.CONTENT}}`,
       nextId: '2',
     },
@@ -59,7 +60,7 @@ const ResumeDiagramRaw = {
     },
     3: {
       id: '3',
-      type: NodeType.SPEAK,
+      type: BaseNode.NodeType.SPEAK,
       speak: `{${ResumeVariables.FOLLOW_CONTENT}}`,
     },
     4: {

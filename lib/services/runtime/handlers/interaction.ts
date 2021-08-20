@@ -1,6 +1,6 @@
 import { SlotMapping } from '@voiceflow/api-sdk';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types/build/nodes/interaction';
+import { Node } from '@voiceflow/google-types';
 
 import { S, T } from '@/lib/constants';
 
@@ -20,7 +20,7 @@ const utilsObj = {
   v: '',
 };
 
-export const InteractionHandler: HandlerFactory<Node, typeof utilsObj> = (utils: typeof utilsObj) => ({
+export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof utilsObj> = (utils: typeof utilsObj) => ({
   canHandle: (node) => !!node.interactions,
   handle: (node, runtime, variables) => {
     const request = runtime.turn.get(T.REQUEST) as IntentRequest;

@@ -1,5 +1,5 @@
+import { Version as BaseVersion } from '@voiceflow/base-types';
 import { Frame, Store } from '@voiceflow/general-runtime/build/runtime';
-import { SessionType } from '@voiceflow/general-types';
 
 import { F, S, V } from '@/lib/constants';
 import { createResumeFrame, RESUME_DIAGRAM_ID } from '@/lib/services/runtime/programs/resume';
@@ -71,15 +71,17 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
       0
     );
 
-    const { session = { type: SessionType.RESTART } } = settings;
+    const { session = { type: BaseVersion.SessionType.RESTART } } = settings;
     // restart logic
     const shouldRestart =
-      stack.isEmpty() || session.type === SessionType.RESTART || variables.get<{ resume?: boolean }>(InitializeManager.VAR_VF)?.resume === false;
+      stack.isEmpty() ||
+      session.type === BaseVersion.SessionType.RESTART ||
+      variables.get<{ resume?: boolean }>(InitializeManager.VAR_VF)?.resume === false;
     if (shouldRestart) {
       // start the stack with just the root flow
       stack.flush();
       stack.push(new client.Frame({ programID: rootDiagramID }));
-    } else if (session.type === SessionType.RESUME && session.resume) {
+    } else if (session.type === BaseVersion.SessionType.RESUME && session.resume) {
       // resume prompt flow - use command flow logic
       stack.top().storage.set(F.CALLED_COMMAND, true);
 

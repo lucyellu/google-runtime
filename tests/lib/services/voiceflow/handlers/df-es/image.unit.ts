@@ -1,4 +1,4 @@
-import { NodeType } from '@voiceflow/general-types/build/nodes/types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ describe('df es image handler unit tests', async () => {
     });
 
     it('true', async () => {
-      expect(DefaultImageHandler().canHandle({ type: NodeType.VISUAL } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(DefaultImageHandler().canHandle({ type: BaseNode.NodeType.VISUAL } as any, null as any, null as any, null as any)).to.eql(true);
     });
   });
 

@@ -1,4 +1,4 @@
-import { RequestType } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/base-types';
 
 import { isConstructor } from '@/lib/utils';
 import { Config } from '@/types';
@@ -56,7 +56,7 @@ export interface Audio {
 }
 
 export interface GoogleRequest {
-  type: RequestType;
+  type: Request.RequestType;
   payload: {
     intent: string;
     input: string;

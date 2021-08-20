@@ -1,7 +1,7 @@
 import { Nullable, SlotMapping } from '@voiceflow/api-sdk';
+import { Button, Request } from '@voiceflow/base-types';
 import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
-import { AnyRequestButton, Chip } from '@voiceflow/general-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
@@ -71,7 +71,7 @@ export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, run
 export const replaceIDVariables = (input: string, variables: Record<string, string>) =>
   input.replace(SLOT_REGEXP, (_match, inner) => variables[inner] || inner);
 
-export const addChipsIfExists = <N extends { chips?: Chip[]; buttons?: Nullable<AnyRequestButton[]> }>(
+export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: Nullable<Request.AnyRequestButton[]> }>(
   node: N,
   runtime: Runtime,
   variables: Store
@@ -89,5 +89,5 @@ export const addChipsIfExists = <N extends { chips?: Chip[]; buttons?: Nullable<
   }
 };
 
-export const addVariables = (regex: typeof replaceVariables) => (value: string | undefined, variables: Store, defaultValue = '') =>
+export const addVariables = (regex: typeof replaceVariables) => (value: string | undefined | null, variables: Store, defaultValue = '') =>
   value ? regex(value, variables.getState()) : defaultValue;
