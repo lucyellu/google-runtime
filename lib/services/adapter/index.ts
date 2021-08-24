@@ -15,9 +15,9 @@ class AdapterManager extends AbstractManager {
         storage: storageAdapter(state),
         variables: variablesAdapter(state),
       };
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      log.error(`state adapter err: ${err.message}`);
+    } catch (error) {
+      log.error(`[app] [${AdapterManager.name}] state adapter failed ${log.vars({ error })}`);
+
       return {};
     }
   }

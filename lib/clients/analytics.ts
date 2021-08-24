@@ -31,7 +31,7 @@ export class AnalyticsSystem extends AbstractClient {
   }
 
   identify(id: string) {
-    log.trace(`analytics: Identify ${id}`);
+    log.trace(`[analytics] identify ${log.vars({ id })}`);
 
     // const payload: IdentifyRequest = {
     //   userId: id,
@@ -107,7 +107,7 @@ export class AnalyticsSystem extends AbstractClient {
   }
 
   async track({
-    id,
+    id: versionID,
     event,
     request,
     payload,
@@ -125,11 +125,11 @@ export class AnalyticsSystem extends AbstractClient {
     timestamp: Date;
     turnIDP?: string;
   }): Promise<string> {
-    log.trace('analytics: Track');
+    log.trace(`[analytics] track ${log.vars({ versionID })}`);
     switch (event) {
       case Event.TURN: {
         // TODO: Uncomment to re-enable runtime transcript ingest
-        // const turnIngestBody = this.createTurnBody({ versionID: id, eventID: event, sessionID: sessionid, metadata, timestamp });
+        // const turnIngestBody = this.createTurnBody({ versionID, eventID: event, sessionID: sessionid, metadata, timestamp });
 
         // // User/initial interact
         // // if (this.aggregateAnalytics && this.rudderstackClient) {

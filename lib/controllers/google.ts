@@ -12,9 +12,9 @@ class GoogleController extends AbstractController {
      * google (dialogflow) webhookclient builds the response so
      * handling errors here because unable to use responseBuilder.route
      */
-    await Promise.try(() => google.handleRequest(req, res)).catch((err) => {
-      log.error(`google handler err: ${err}`);
-      if (!res.headersSent) res.status(err.code || 500).send(err.message ?? 'error');
+    await Promise.try(() => google.handleRequest(req, res)).catch((error) => {
+      log.error(`[app] [http] [${GoogleController.name}] handler failed ${log.vars({ error })}`);
+      if (!res.headersSent) res.status(error.code || 500).send(error.message ?? 'error');
     });
   };
 
@@ -25,9 +25,9 @@ class GoogleController extends AbstractController {
      * googleV2 (conversational actions) webhookclient builds the response so
      * handling errors here because unable to use responseBuilder.route
      */
-    await Promise.try(() => googleV2.handleRequest(req, res)).catch((err) => {
-      log.error(`googleV2 handler err: ${err}`);
-      if (!res.headersSent) res.status(err.code || 500).send(err.message ?? 'error');
+    await Promise.try(() => googleV2.handleRequest(req, res)).catch((error) => {
+      log.error(`[app] [http] [${GoogleController.name}] handlerV2 failed ${log.vars({ error })}`);
+      if (!res.headersSent) res.status(error.code || 500).send(error.message ?? 'error');
     });
   };
 }
