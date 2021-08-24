@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { State } from '@voiceflow/general-runtime/build/runtime';
 import { SimpleResponse } from 'actions-on-google';
 
@@ -127,38 +128,42 @@ export class AnalyticsSystem extends AbstractClient {
     log.trace('analytics: Track');
     switch (event) {
       case Event.TURN: {
-        const turnIngestBody = this.createTurnBody({ versionID: id, eventID: event, sessionID: sessionid, metadata, timestamp });
+        // TODO: Uncomment to re-enable runtime transcript ingest
+        // const turnIngestBody = this.createTurnBody({ versionID: id, eventID: event, sessionID: sessionid, metadata, timestamp });
 
-        // User/initial interact
-        // if (this.aggregateAnalytics && this.rudderstackClient) {
-        //   this.callAnalyticsSystemTrack(id, event, turnIngestBody);
-        // }
-        const turnResponse = await this.ingestClient?.doIngest(turnIngestBody);
-        const turnID = turnResponse?.data.turn_id!;
+        // // User/initial interact
+        // // if (this.aggregateAnalytics && this.rudderstackClient) {
+        // //   this.callAnalyticsSystemTrack(id, event, turnIngestBody);
+        // // }
+        // const turnResponse = await this.ingestClient?.doIngest(turnIngestBody);
+        // const turnID = turnResponse?.data.turn_id!;
 
-        const interactIngestBody = this.createInteractBody({ eventID: Event.INTERACT, request, payload, turnID, timestamp });
+        // const interactIngestBody = this.createInteractBody({ eventID: Event.INTERACT, request, payload, turnID, timestamp });
 
-        // User/initial interact
-        // if (this.aggregateAnalytics && this.rudderstackClient) {
-        //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
-        // }
-        await this.ingestClient?.doIngest(interactIngestBody);
+        // // User/initial interact
+        // // if (this.aggregateAnalytics && this.rudderstackClient) {
+        // //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
+        // // }
+        // await this.ingestClient?.doIngest(interactIngestBody);
 
-        return turnID;
+        // return turnID;
+        return '';
       }
       case Event.INTERACT: {
-        if (turnIDP === undefined) {
-          throw new TypeError('turnIDP is undefined');
-        }
-
-        const interactIngestBody = this.createInteractBody({ eventID: event, request, payload, turnID: turnIDP, timestamp });
-
-        // User/initial interact
-        // if (this.aggregateAnalytics && this.rudderstackClient) {
-        //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
+        // TODO: Uncomment to re-enable runtime transcript ingest
+        // if (turnIDP === undefined) {
+        //   throw new TypeError('turnIDP is undefined');
         // }
-        await this.ingestClient?.doIngest(interactIngestBody);
-        return turnIDP;
+
+        // const interactIngestBody = this.createInteractBody({ eventID: event, request, payload, turnID: turnIDP, timestamp });
+
+        // // User/initial interact
+        // // if (this.aggregateAnalytics && this.rudderstackClient) {
+        // //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
+        // // }
+        // await this.ingestClient?.doIngest(interactIngestBody);
+        // return turnIDP;
+        return '';
       }
       default:
         throw new RangeError(`Unknown event type: ${event}`);
