@@ -2,6 +2,7 @@ import { Event, RequestType } from '@/lib/clients/ingest-client';
 import { S, T } from '@/lib/constants';
 import { responseHandlersDialogflowES } from '@/lib/services/runtime/handlers';
 import { GoogleRuntime } from '@/lib/services/runtime/types';
+import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../../types';
 import { WebhookResponse } from '../../types';
@@ -38,19 +39,23 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       await handler(runtime, res);
     }
     await state.saveToDb(storage.get<string>(S.USER)!, runtime.getFinalState());
-    const turnID = await turn.get<string>(T.TURNID);
-    // Track response on analytics system
-    runtime.services.analyticsClient.track({
-      id: runtime.getVersionID(),
-      event: Event.INTERACT,
-      request: RequestType.RESPONSE,
-      payload: res,
-      sessionid: runtime.getFinalState().storage.user,
-      metadata: runtime.getFinalState(),
-      timestamp: new Date(),
-      turnIDP: turnID,
-    });
 
+    try {
+      const turnID = await turn.get<string>(T.TURNID);
+      // Track response on analytics system
+      runtime.services.analyticsClient.track({
+        id: runtime.getVersionID(),
+        event: Event.INTERACT,
+        request: RequestType.RESPONSE,
+        payload: res,
+        sessionid: runtime.getFinalState().storage.user,
+        metadata: runtime.getFinalState(),
+        timestamp: new Date(),
+        turnIDP: turnID,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
     return res;
   }
 }

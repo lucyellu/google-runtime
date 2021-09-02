@@ -5,6 +5,7 @@ import { Frame, Store } from '@voiceflow/general-runtime/build/runtime';
 import { F, S, V } from '@/lib/constants';
 import { createResumeFrame, RESUME_DIAGRAM_ID } from '@/lib/services/runtime/programs/resume';
 import { GoogleRuntime } from '@/lib/services/runtime/types';
+import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../../types';
 
@@ -35,9 +36,12 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
 
     const { stack, storage, variables } = runtime;
 
-    // Identify on analytics system
-    runtime.services.analyticsClient.identify(runtime.getVersionID());
-
+    try {
+      // Identify on analytics system
+      runtime.services.analyticsClient.identify(runtime.getVersionID());
+    } catch (error) {
+      logger.error(error);
+    }
     // increment user sessions by 1 or initialize
     if (!storage.get(S.SESSIONS)) {
       storage.set(S.SESSIONS, 1);

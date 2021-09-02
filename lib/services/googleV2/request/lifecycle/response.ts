@@ -6,6 +6,7 @@ import { responseHandlersV2 } from '@/lib/services/runtime/handlers';
 import { DirectiveResponseBuilder } from '@/lib/services/runtime/handlers/directive';
 import { GoogleRuntime } from '@/lib/services/runtime/types';
 import { generateResponseText } from '@/lib/services/utils';
+import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../../types';
 
@@ -47,19 +48,23 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
     await state.saveToDb(storage.get<string>(S.USER)!, runtime.getFinalState());
 
     conv.user.params.forceUpdateToken = randomstring.generate();
-    const turnID = await turn.get<string>(T.TURNID);
 
-    // Track response on analytics system
-    runtime.services.analyticsClient.track({
-      id: runtime.getVersionID(),
-      event: Event.INTERACT,
-      request: RequestType.RESPONSE,
-      payload: response,
-      sessionid: conv.session.id,
-      metadata: runtime.getFinalState(),
-      timestamp: new Date(),
-      turnIDP: turnID,
-    });
+    try {
+      const turnID = await turn.get<string>(T.TURNID);
+      // Track response on analytics system
+      runtime.services.analyticsClient.track({
+        id: runtime.getVersionID(),
+        event: Event.INTERACT,
+        request: RequestType.RESPONSE,
+        payload: response,
+        sessionid: conv.session.id,
+        metadata: runtime.getFinalState(),
+        timestamp: new Date(),
+        turnIDP: turnID,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
   }
 }
 

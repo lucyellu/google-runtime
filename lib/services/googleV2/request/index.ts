@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Event, RequestType as InteractRequestType } from '@/lib/clients/ingest-client';
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
+import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../types';
 import GoogleManager from '../index';
@@ -55,31 +56,39 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
     if (intent.name === 'actions.intent.MAIN' || intent.name === 'Default Welcome Intent' || runtime.stack.isEmpty()) {
       await initialize.build(runtime, conv);
 
-      const turnID = runtime.services.analyticsClient.track({
-        id: runtime.getVersionID(),
-        event: Event.TURN,
-        request: InteractRequestType.LAUNCH,
-        payload: request,
-        sessionid: conv.session.id,
-        metadata: runtime.getRawState(),
-        timestamp: new Date(),
-      });
-      runtime.turn.set(T.TURNID, turnID);
+      try {
+        const turnID = runtime.services.analyticsClient.track({
+          id: runtime.getVersionID(),
+          event: Event.TURN,
+          request: InteractRequestType.LAUNCH,
+          payload: request,
+          sessionid: conv.session.id,
+          metadata: runtime.getRawState(),
+          timestamp: new Date(),
+        });
+        runtime.turn.set(T.TURNID, turnID);
+      } catch (error) {
+        logger.error(error);
+      }
     } else {
       request.type = intent.name?.startsWith('actions.intent.MEDIA_STATUS') ? RequestType.MEDIA_STATUS : RequestType.INTENT;
       request.payload.intent = intent.name;
 
       runtime.turn.set(T.REQUEST, request);
-      const turnID = runtime.services.analyticsClient.track({
-        id: runtime.getVersionID(),
-        event: Event.TURN,
-        request: InteractRequestType.REQUEST,
-        payload: request,
-        sessionid: conv.session.id,
-        metadata: runtime.getRawState(),
-        timestamp: new Date(),
-      });
-      runtime.turn.set(T.TURNID, turnID);
+      try {
+        const turnID = runtime.services.analyticsClient.track({
+          id: runtime.getVersionID(),
+          event: Event.TURN,
+          request: InteractRequestType.REQUEST,
+          payload: request,
+          sessionid: conv.session.id,
+          metadata: runtime.getRawState(),
+          timestamp: new Date(),
+        });
+        runtime.turn.set(T.TURNID, turnID);
+      } catch (error) {
+        logger.error(error);
+      }
     }
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));
