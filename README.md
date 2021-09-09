@@ -4,6 +4,12 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_google-runtime&metric=coverage)](https://sonarcloud.io/dashboard?id=voiceflow_google-runtime)
 [![sonar quality gate](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_google-runtime&metric=alert_status)](https://sonarcloud.io/dashboard?id=voiceflow_google-runtime)
 
+`google-runtime` is an http webhook service that handles Google Assistant/Dialogflow requests and generates a response. It manages the state of the user based on the project made on the Voiceflow Creator tool. It can be run independently from Voiceflow.
+
+This is the same service that hosts all Google Actions and Dialogflow projects created on Voiceflow. This includes serving production apps on and handling millions of requests.
+
+![image](https://user-images.githubusercontent.com/5643574/132608832-9a791adf-0046-4ccc-b16f-5f1f2ba9fbf0.png)
+
 ## local/debugging setup
 
 export your voiceflow project from the creator tool. Each time you update your project you will need to export again. You can find the export option here:
@@ -12,13 +18,7 @@ export your voiceflow project from the creator tool. Each time you update your p
 
 It should save a .vfr (voiceflow runtime) JSON file from your browser that would be named similar to this: `VF-Project-nPDdD6qZJ9.vfr`
 
-fork/clone `voiceflow/google-runtime` to your local machine. Ensure `nodejs`, `npm`, and `yarn` are set up on your local machine. Run
-
-```
-yarn
-```
-
-to install all dependencies.
+fork/clone `voiceflow/google-runtime` to your local machine. Ensure `nodejs`, `npm`, and `yarn` are set up on your local machine. Run `yarn` to install all dependencies.
 
 Add your VF-Project JSON file under `projects/`
 
@@ -39,7 +39,7 @@ Also add the following file to the local repository:
 > INTEGRATIONS_HANDLER_ENDPOINT="none"
 >
 > LOG_LEVEL="warn"
-> MIDDLEWARE_VERBOSITY="none"
+> MIDDLEWARE_VERBOSITY="debug"
 >
 > ADMIN_SERVER_DATA_API_TOKEN="none"
 > DATADOG_API_KEY="none"
@@ -56,7 +56,7 @@ Install a localhost tunnel tool such as [ngrok](https://ngrok.com/), [localtunne
 Run your local instance of `voiceflow/google-runtime` with
 
 ```
-yarn local
+yarn start:local
 ```
 
 This will now be running on port 4000 of localhost. Expose this with
