@@ -39,7 +39,7 @@ describe('Analytics client unit tests', () => {
       expect(
         client.track({
           id: 'id',
-          event: Event.INTERACT,
+          event: 'fake-event' as Event,
           request: RequestType.REQUEST,
           payload: payload as any,
           sessionid: 'session.id',

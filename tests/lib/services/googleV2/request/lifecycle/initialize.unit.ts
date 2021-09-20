@@ -1,4 +1,5 @@
 import { Version } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -137,7 +138,7 @@ describe('initializeManager unit tests', async () => {
           locale,
           user_id: userId,
           sessions: 1,
-          platform: 'google',
+          platform: Constants.PlatformType.GOOGLE,
           [InitializeManager.VAR_VF]: {
             events: [],
             capabilities: 'c',

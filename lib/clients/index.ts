@@ -1,5 +1,6 @@
 import { conversation as GoogleConversation } from '@assistant/conversation';
 import { DataAPI, LocalDataApi, ServerDataApi } from '@voiceflow/general-runtime/build/runtime';
+import { Constants } from '@voiceflow/general-types';
 import { Program, Version } from '@voiceflow/google-types';
 import AWS from 'aws-sdk';
 import { AxiosStatic } from 'axios';
@@ -38,7 +39,7 @@ const buildClients = (config: Config) => {
   clients.dataAPI = config.PROJECT_SOURCE
     ? new LocalDataApi({ projectSource: config.PROJECT_SOURCE }, { fs: Static.fs, path: Static.path })
     : new ServerDataApi(
-        { platform: 'google', adminToken: config.ADMIN_SERVER_DATA_API_TOKEN, dataEndpoint: config.VF_DATA_ENDPOINT },
+        { platform: Constants.PlatformType.GOOGLE, adminToken: config.ADMIN_SERVER_DATA_API_TOKEN, dataEndpoint: config.VF_DATA_ENDPOINT },
         { axios: Static.axios }
       );
   clients.mongo = MongoState.enabled(config) ? new MongoDB(config) : null;
