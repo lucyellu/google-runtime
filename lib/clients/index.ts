@@ -45,7 +45,7 @@ const buildClients = (config: Config) => {
 
   clients.docClient = Dynamo(config);
   clients.metrics = Metrics(config);
-  clients.analyticsClient = Analytics(config);
+  clients.analyticsClient = Analytics({ config, dataAPI: clients.dataAPI });
 
   return clients;
 };

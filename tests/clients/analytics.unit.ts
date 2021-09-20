@@ -23,7 +23,7 @@ describe('Analytics client unit tests', () => {
 
   describe('Track', () => {
     it('throws on unknown events', () => {
-      const client = AnalyticsClient({} as any);
+      const client = AnalyticsClient({ config: {} } as any);
       const metadata = {
         data: {
           reqHeaders: {},
