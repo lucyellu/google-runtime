@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { T } from '@/lib/constants';
-import DefaultPayloadHandler, { PayloadHandler, PayloadResponseBuilderDialogflowES } from '@/lib/services/runtime/handlers/df-es/payload';
+import DefaultPayloadHandler, { PayloadHandler, PayloadResponseBuilderDialogflowES } from '@/lib/services/runtime/handlers/dialogflow_es/payload';
 
 describe('df es payload handler unit tests', async () => {
   afterEach(() => sinon.restore());
