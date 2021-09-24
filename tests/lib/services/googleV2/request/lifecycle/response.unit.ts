@@ -166,7 +166,7 @@ describe('responseManager unit tests', async () => {
       expect(services.utils.Simple.args[0]).to.eql([
         {
           speech: `<speak>${output}</speak>`,
-          text: undefined,
+          text: output,
         },
       ]);
       expect(conv.scene.next.name).to.eql('actions.scene.END_CONVERSATION');

@@ -199,7 +199,7 @@ describe('responseManager unit tests', async () => {
       expect(services.utils.SimpleResponse.args[0]).to.eql([
         {
           speech: `<speak>${output}</speak>`,
-          text: undefined,
+          text: output,
         },
       ]);
       expect(conv.close.args[0]).to.eql([response]);

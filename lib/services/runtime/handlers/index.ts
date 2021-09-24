@@ -22,6 +22,7 @@ import CardHandler, { CardResponseBuilder, CardResponseBuilderDialogflowES, Card
 import ChoiceHandler, { ChipsResponseBuilder, ChipsResponseBuilderDialogflowES, ChipsResponseBuilderV2 } from './choice';
 import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow_es/image';
 import DFESPayloadHandler, { PayloadResponseBuilderDialogflowES } from './dialogflow_es/payload';
+import DFESTextHandler from './dialogflow_es/text';
 import DirectiveHandler, { DirectiveResponseBuilder } from './directive';
 import InteractionHandler from './interaction';
 import PreliminaryHandler from './preliminary';
@@ -48,6 +49,7 @@ export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLE
   CardHandler(),
   DFESImageHandler(),
   DFESPayloadHandler(),
+  DFESTextHandler(),
   ChoiceHandler(),
   CodeHandler({ endpoint: CODE_HANDLER_ENDPOINT }),
   EndHandler(),
