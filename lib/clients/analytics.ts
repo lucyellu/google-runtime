@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { DataAPI, State } from '@voiceflow/general-runtime/build/runtime';
 import { SimpleResponse } from 'actions-on-google';
@@ -71,7 +72,6 @@ export class AnalyticsSystem extends AbstractClient {
       eventId: eventID,
       request: {
         turn_id: turnID,
-        // eslint-disable-next-line dot-notation
         type: isGoogleRequest(payload) ? payload!.type.toLocaleLowerCase() : request,
         format: request,
         payload,

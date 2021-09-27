@@ -81,7 +81,7 @@ export const CardHandler: HandlerFactory<Node.Card.Node, typeof utilsObj> = (uti
     const type = card.type ?? Node.Card.CardType.SIMPLE;
 
     // FIXME: remove after data refactoring
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { content } = card;
 

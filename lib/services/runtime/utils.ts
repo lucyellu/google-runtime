@@ -29,7 +29,7 @@ export const transformDateTimeVariableToString = (date: GoogleDateTimeSlot) => {
   return `${date.day}/${date.month}/${date.year} ${date.hours}:${date.minutes ?? '00'}`;
 };
 
-export const mapSlots = (mappings: SlotMapping[], slots: { [key: string]: string }, overwrite = false): object => {
+export const mapSlots = (mappings: SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
   const variables: Record<string, any> = {};
 
   if (mappings && slots) {

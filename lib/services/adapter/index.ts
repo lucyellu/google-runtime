@@ -8,7 +8,7 @@ import { stackAdapter, storageAdapter, variablesAdapter } from './utils';
  * The intention is to remove this adapter once we switch all users over
  */
 class AdapterManager extends AbstractManager {
-  async state(state: OldStateRaw): Promise<NewStateRaw | {}> {
+  async state(state: OldStateRaw): Promise<NewStateRaw | Record<string, never>> {
     try {
       return {
         stack: stackAdapter(state),

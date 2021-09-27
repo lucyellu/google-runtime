@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { Request } from '@voiceflow/base-types';
 
 import { isConstructor } from '@/lib/utils';
@@ -5,8 +6,7 @@ import { Config } from '@/types';
 
 import { FullServiceMap } from '.';
 
-// eslint-disable-next-line import/prefer-default-export
-export abstract class AbstractManager<T = {}> {
+export abstract class AbstractManager<T = Record<string, never>> {
   public services: FullServiceMap & T;
 
   constructor(services: FullServiceMap, public config: Config) {
@@ -14,14 +14,16 @@ export abstract class AbstractManager<T = {}> {
   }
 }
 
-type InjectedServiceMap<S extends object> = { [K in keyof S]: { new (services: FullServiceMap, config: Config): S[K] } };
+type InjectedServiceMap<S extends Record<string, any>> = { [K in keyof S]: { new (services: FullServiceMap, config: Config): S[K] } };
 
 const constructService = (Service: any, services: any, config: any) => {
   // eslint-disable-next-line no-nested-ternary
   return isConstructor(Service) ? new Service(services, config) : typeof Service === 'function' ? Service(services, config) : Service;
 };
 
-export const injectServices = <S extends object>(injectedServiceMap: InjectedServiceMap<S> | S) => <T extends { new (...args: any[]): any }>(
+export const injectServices = <S extends Record<string, any>>(injectedServiceMap: InjectedServiceMap<S> | S) => <
+  T extends { new (...args: any[]): any }
+>(
   clazz: T
 ): any =>
   class extends clazz {

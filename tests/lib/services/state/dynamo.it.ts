@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-
 import '@/envSetup';
 
 import { getRequiredProcessEnv } from '@voiceflow/common';
