@@ -11,7 +11,7 @@ import IngestApiClient, { Event, IngestApi, InteractBody, RequestType, TurnBody 
 import { AbstractClient } from './utils';
 
 export class AnalyticsSystem extends AbstractClient {
-  // The Rudderstack client is commented due to a possible use in the future
+  // Rudderstack client is commented due to a possible use in a near future
   // private rudderstackClient?: Rudderstack;
 
   private ingestClient?: IngestApi;
@@ -38,6 +38,7 @@ export class AnalyticsSystem extends AbstractClient {
     // const payload: IdentifyRequest = {
     //   userId: id,
     // };
+
     // if (this.aggregateAnalytics && this.rudderstackClient) {
     //   this.rudderstackClient.identify(payload);
     // }
@@ -130,42 +131,38 @@ export class AnalyticsSystem extends AbstractClient {
     log.trace(`[analytics] track ${log.vars({ versionID })}`);
     switch (event) {
       case Event.TURN: {
-        // TODO: Uncomment to re-enable runtime transcript ingest
-        // const turnIngestBody = this.createTurnBody({ versionID, eventID: event, sessionID: sessionid, metadata, timestamp });
+        const turnIngestBody = this.createTurnBody({ versionID, eventID: event, sessionID: sessionid, metadata, timestamp });
 
-        // // User/initial interact
-        // // if (this.aggregateAnalytics && this.rudderstackClient) {
-        // //   this.callAnalyticsSystemTrack(id, event, turnIngestBody);
-        // // }
-        // const turnResponse = await this.ingestClient?.doIngest(turnIngestBody);
-        // const turnID = turnResponse?.data.turn_id!;
+        // User/initial interact
+        // if (this.aggregateAnalytics && this.rudderstackClient) {
+        //   this.callAnalyticsSystemTrack(id, event, turnIngestBody);
+        // }
+        const turnResponse = await this.ingestClient?.doIngest(turnIngestBody);
+        const turnID = turnResponse?.data.turn_id!;
 
-        // const interactIngestBody = this.createInteractBody({ eventID: Event.INTERACT, request, payload, turnID, timestamp });
+        const interactIngestBody = this.createInteractBody({ eventID: Event.INTERACT, request, payload, turnID, timestamp });
 
-        // // User/initial interact
-        // // if (this.aggregateAnalytics && this.rudderstackClient) {
-        // //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
-        // // }
-        // await this.ingestClient?.doIngest(interactIngestBody);
+        // User/initial interact
+        // if (this.aggregateAnalytics && this.rudderstackClient) {
+        //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
+        // }
+        await this.ingestClient?.doIngest(interactIngestBody);
 
-        // return turnID;
-        return '';
+        return turnID;
       }
       case Event.INTERACT: {
-        // TODO: Uncomment to re-enable runtime transcript ingest
-        // if (turnIDP === undefined) {
-        //   throw new TypeError('turnIDP is undefined');
+        if (turnIDP === undefined) {
+          throw new TypeError('turnIDP is undefined');
+        }
+
+        const interactIngestBody = this.createInteractBody({ eventID: event, request, payload, turnID: turnIDP, timestamp });
+
+        // User/initial interact
+        // if (this.aggregateAnalytics && this.rudderstackClient) {
+        //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
         // }
-
-        // const interactIngestBody = this.createInteractBody({ eventID: event, request, payload, turnID: turnIDP, timestamp });
-
-        // // User/initial interact
-        // // if (this.aggregateAnalytics && this.rudderstackClient) {
-        // //   this.callAnalyticsSystemTrack(id, event, interactIngestBody);
-        // // }
-        // await this.ingestClient?.doIngest(interactIngestBody);
-        // return turnIDP;
-        return '';
+        await this.ingestClient?.doIngest(interactIngestBody);
+        return turnIDP;
       }
       default:
         throw new RangeError(`Unknown event type: ${event}`);
