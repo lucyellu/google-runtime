@@ -1,8 +1,8 @@
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
 
-import { Event, RequestType } from '@/lib/clients/ingest-client';
 import { S, T } from '@/lib/constants';
 import ResponseManager from '@/lib/services/googleV2/request/lifecycle/response';
 
@@ -52,7 +52,6 @@ describe('responseManager unit tests', async () => {
         },
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(userId),
             track: sinon.stub().returns(userId),
           },
         },
@@ -88,8 +87,8 @@ describe('responseManager unit tests', async () => {
         [
           {
             id: userId,
-            event: Event.INTERACT,
-            request: RequestType.RESPONSE,
+            event: Ingest.Event.INTERACT,
+            request: Ingest.RequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,
@@ -138,7 +137,6 @@ describe('responseManager unit tests', async () => {
         },
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(userId),
             track: sinon.stub().returns(userId),
           },
         },
@@ -180,8 +178,8 @@ describe('responseManager unit tests', async () => {
         [
           {
             id: userId,
-            event: Event.INTERACT,
-            request: RequestType.RESPONSE,
+            event: Ingest.Event.INTERACT,
+            request: Ingest.RequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,

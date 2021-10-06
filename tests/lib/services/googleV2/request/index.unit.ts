@@ -1,7 +1,7 @@
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { Event, RequestType as InteractRequestType } from '@/lib/clients/ingest-client';
 import { T, V } from '@/lib/constants';
 import HandlerManager from '@/lib/services/googleV2/request';
 import { RequestType } from '@/lib/services/runtime/types';
@@ -97,7 +97,6 @@ describe('handlerManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -156,8 +155,8 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
@@ -182,7 +181,6 @@ describe('handlerManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -241,8 +239,8 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
@@ -267,7 +265,6 @@ describe('handlerManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -326,8 +323,8 @@ describe('handlerManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
             metadata: versionID,
@@ -353,7 +350,6 @@ describe('handlerManager unit tests', async () => {
           },
           services: {
             analyticsClient: {
-              identify: sinon.stub().returns(true),
               track: sinon.stub().returns(true),
             },
           },
@@ -414,8 +410,8 @@ describe('handlerManager unit tests', async () => {
           [
             {
               id: versionID,
-              event: Event.TURN,
-              request: InteractRequestType.REQUEST,
+              event: Ingest.Event.TURN,
+              request: Ingest.RequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
               metadata: versionID,
@@ -454,7 +450,6 @@ describe('handlerManager unit tests', async () => {
           },
           services: {
             analyticsClient: {
-              identify: sinon.stub().returns(true),
               track: sinon.stub().returns(true),
             },
           },
@@ -506,8 +501,8 @@ describe('handlerManager unit tests', async () => {
           [
             {
               id: versionID,
-              event: Event.TURN,
-              request: InteractRequestType.REQUEST,
+              event: Ingest.Event.TURN,
+              request: Ingest.RequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
               metadata: versionID,

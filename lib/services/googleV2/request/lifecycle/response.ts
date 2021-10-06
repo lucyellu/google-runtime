@@ -1,6 +1,6 @@
 import { ConversationV3, Simple } from '@assistant/conversation';
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 
-import { Event, RequestType } from '@/lib/clients/ingest-client';
 import { S, T } from '@/lib/constants';
 import { responseHandlersV2 } from '@/lib/services/runtime/handlers';
 import { DirectiveResponseBuilder } from '@/lib/services/runtime/handlers/directive';
@@ -54,8 +54,8 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       // Track response on analytics system
       runtime.services.analyticsClient.track({
         id: runtime.getVersionID(),
-        event: Event.INTERACT,
-        request: RequestType.RESPONSE,
+        event: Ingest.Event.INTERACT,
+        request: Ingest.RequestType.RESPONSE,
         payload: response,
         sessionid: conv.session.id,
         metadata: runtime.getFinalState(),

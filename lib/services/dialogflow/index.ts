@@ -1,4 +1,5 @@
-import { Event, RequestType as InteractRequestType } from '@/lib/clients/ingest-client';
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
 import logger from '@/logger';
@@ -39,8 +40,8 @@ class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; ru
         try {
           const turnID = runtime.services.analyticsClient.track({
             id: runtime.getVersionID(),
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload: request,
             sessionid: req.session,
             metadata: runtime.getRawState(),
@@ -59,8 +60,8 @@ class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; ru
       try {
         const turnID = runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
-          event: Event.TURN,
-          request: InteractRequestType.REQUEST,
+          event: Ingest.Event.TURN,
+          request: Ingest.RequestType.REQUEST,
           payload: request,
           sessionid: req.session,
           metadata: runtime.getRawState(),
@@ -83,7 +84,7 @@ class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; ru
     From the docs, the channel is found in the source field of the originalDetectIntentRequest object
     https://cloud.google.com/dialogflow/es/docs/reference/rpc/google.cloud.dialogflow.v2#originaldetectintentrequest
     For some channels like "webdemo" or "dfMessenger" the field is emtpy, but we can infer it from the session id
-    (i.e, this is what a session id looks like from dfMessenger: 
+    (i.e, this is what a session id looks like from dfMessenger:
       projects/english-project-69249/agent/sessions/dfMessenger-32453617/contexts/system_counters)
   */
   _getChannel(req: WebhookRequest) {

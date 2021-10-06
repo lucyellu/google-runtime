@@ -1,4 +1,5 @@
-import { Event, RequestType } from '@/lib/clients/ingest-client';
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+
 import { S, T } from '@/lib/constants';
 import { responseHandlersDialogflowES } from '@/lib/services/runtime/handlers';
 import { GoogleRuntime } from '@/lib/services/runtime/types';
@@ -45,8 +46,8 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       // Track response on analytics system
       runtime.services.analyticsClient.track({
         id: runtime.getVersionID(),
-        event: Event.INTERACT,
-        request: RequestType.RESPONSE,
+        event: Ingest.Event.INTERACT,
+        request: Ingest.RequestType.RESPONSE,
         payload: res,
         sessionid: runtime.getFinalState().storage.user,
         metadata: runtime.getFinalState(),

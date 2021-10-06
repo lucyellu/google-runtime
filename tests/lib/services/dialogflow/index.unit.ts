@@ -1,8 +1,8 @@
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
 
-import { Event, RequestType as InteractRequestType } from '@/lib/clients/ingest-client';
 import { T, V } from '@/lib/constants';
 import DialogflowManager from '@/lib/services/dialogflow';
 import { RequestType } from '@/lib/services/runtime/types';
@@ -34,7 +34,6 @@ describe('DialogflowManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -93,8 +92,8 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload,
             sessionid: req.session,
             metadata: versionID,
@@ -119,7 +118,6 @@ describe('DialogflowManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -176,8 +174,8 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.LAUNCH,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.LAUNCH,
             payload,
             sessionid: req.session,
             metadata: versionID,
@@ -202,7 +200,6 @@ describe('DialogflowManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -271,7 +268,6 @@ describe('DialogflowManager unit tests', async () => {
         update: sinon.stub(),
         services: {
           analyticsClient: {
-            identify: sinon.stub().returns(true),
             track: sinon.stub().returns(true),
           },
         },
@@ -335,8 +331,8 @@ describe('DialogflowManager unit tests', async () => {
         [
           {
             id: versionID,
-            event: Event.TURN,
-            request: InteractRequestType.REQUEST,
+            event: Ingest.Event.TURN,
+            request: Ingest.RequestType.REQUEST,
             payload,
             sessionid: req.session,
             metadata: versionID,

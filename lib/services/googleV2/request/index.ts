@@ -1,7 +1,7 @@
 import { ConversationV3 } from '@assistant/conversation';
+import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 import _ from 'lodash';
 
-import { Event, RequestType as InteractRequestType } from '@/lib/clients/ingest-client';
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
 import logger from '@/logger';
@@ -59,8 +59,8 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
       try {
         const turnID = runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
-          event: Event.TURN,
-          request: InteractRequestType.LAUNCH,
+          event: Ingest.Event.TURN,
+          request: Ingest.RequestType.LAUNCH,
           payload: request,
           sessionid: conv.session.id,
           metadata: runtime.getRawState(),
@@ -78,8 +78,8 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
       try {
         const turnID = runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
-          event: Event.TURN,
-          request: InteractRequestType.REQUEST,
+          event: Ingest.Event.TURN,
+          request: Ingest.RequestType.REQUEST,
           payload: request,
           sessionid: conv.session.id,
           metadata: runtime.getRawState(),
