@@ -5,7 +5,7 @@ import { Node } from '@voiceflow/google-types';
 import { S, T } from '@/lib/constants';
 
 import { IntentRequest, RequestType } from '../types';
-import { addChipsIfExists, addRepromptIfExists, mapSlots } from '../utils';
+import { addChipsIfExists, addRepromptIfExists, mapSlots, replaceIDVariables } from '../utils';
 import CommandHandler from './command';
 import NoInputHandler from './noInput';
 import NoMatchHandler from './noMatch';
@@ -17,6 +17,7 @@ const utilsObj = {
   commandHandler: CommandHandler(),
   noMatchHandler: NoMatchHandler(),
   noInputHandler: NoInputHandler(),
+  replaceIDVariables,
   v: '',
 };
 
@@ -43,15 +44,29 @@ export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof ut
     let nextId: string | null | undefined;
     let variableMap: SlotMapping[] | null = null;
 
-    const { intent, slots } = request.payload;
+    const { slots, input, intent } = request.payload;
 
-    // check if there is a choice in the node that fulfills intent
-    node.interactions.forEach((choice, i: number) => {
-      if (choice.intent && choice.intent === intent) {
-        variableMap = choice.mappings ?? null;
-        nextId = node.nextIds[choice.nextIdIndex || choice.nextIdIndex === 0 ? choice.nextIdIndex : i];
+    (node.buttons ?? []).forEach((button) => {
+      if (utils.replaceIDVariables(button.name, variables.getState()) === input) {
+        if (button.type === 'PATH' || button.type === 'INTENT_PATH') {
+          nextId = button.nextID;
+        }
+        if (button.type === 'INTENT') {
+          // INTENT button type is never a local choice intent
+          runtime.turn.set(T.REQUEST, { ...request, payload: { ...request.payload, intent: button.intentName } });
+        }
       }
     });
+
+    if (!nextId) {
+      // check if there is a choice in the node that fulfills intent
+      node.interactions.forEach((choice, i: number) => {
+        if (choice.intent && choice.intent === intent) {
+          variableMap = choice.mappings ?? null;
+          nextId = node.nextIds[choice.nextIdIndex || choice.nextIdIndex === 0 ? choice.nextIdIndex : i];
+        }
+      });
+    }
 
     if (variableMap && slots) {
       // map request mappings to variables

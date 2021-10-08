@@ -1,7 +1,8 @@
-import { Nullable, SlotMapping } from '@voiceflow/api-sdk';
-import { Button, Request } from '@voiceflow/base-types';
+import { SlotMapping } from '@voiceflow/api-sdk';
+import { Button } from '@voiceflow/base-types';
 import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
+import { ButtonNode } from '@voiceflow/google-types/build/node/buttons';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
@@ -71,11 +72,7 @@ export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, run
 export const replaceIDVariables = (input: string, variables: Record<string, string>) =>
   input.replace(SLOT_REGEXP, (_match, inner) => variables[inner] || inner);
 
-export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: Nullable<Request.AnyRequestButton[]> }>(
-  node: N,
-  runtime: Runtime,
-  variables: Store
-): void => {
+export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: ButtonNode[] }>(node: N, runtime: Runtime, variables: Store): void => {
   if (node.buttons) {
     runtime.turn.set(
       T.CHIPS,

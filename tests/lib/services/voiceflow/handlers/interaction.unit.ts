@@ -57,10 +57,114 @@ describe('interaction handler unit tests', async () => {
     });
 
     describe('request type is intent', () => {
+      describe('button match', () => {
+        it('PATH', async () => {
+          const buttonName = 'button_name';
+          const utils = {
+            replaceIDVariables: sinon.stub().returns(buttonName),
+          };
+
+          const interactionHandler = InteractionHandler(utils as any);
+
+          const block = {
+            id: 'block-id',
+            interactions: [],
+            buttons: [{ name: '' }, { type: 'PATH', name: '{button_name_var}', nextID: 'next-id' }, { name: '' }],
+          };
+          const request = { type: RequestType.INTENT, payload: { input: buttonName } };
+          const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() }, storage: { delete: sinon.stub() } };
+          const variablesState = { foo: 'bar' };
+          const variables = { getState: sinon.stub().returns(variablesState) };
+
+          expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.buttons[1].nextID);
+          expect(utils.replaceIDVariables.args).to.eql([
+            [block.buttons[0].name, variablesState],
+            [block.buttons[1].name, variablesState],
+            [block.buttons[2].name, variablesState],
+          ]);
+          expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);
+        });
+
+        it('INTENT_PATH', async () => {
+          const buttonName = 'button_name';
+          const utils = {
+            replaceIDVariables: sinon.stub().returns(buttonName),
+          };
+
+          const interactionHandler = InteractionHandler(utils as any);
+
+          const block = {
+            id: 'block-id',
+            interactions: [],
+            buttons: [{ name: '' }, { type: 'INTENT_PATH', name: '{button_name_var}', nextID: 'next-id' }, { name: '' }],
+          };
+          const request = { type: RequestType.INTENT, payload: { input: buttonName } };
+          const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() }, storage: { delete: sinon.stub() } };
+          const variablesState = { foo: 'bar' };
+          const variables = { getState: sinon.stub().returns(variablesState) };
+
+          expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.buttons[1].nextID);
+          expect(utils.replaceIDVariables.args).to.eql([
+            [block.buttons[0].name, variablesState],
+            [block.buttons[1].name, variablesState],
+            [block.buttons[2].name, variablesState],
+          ]);
+          expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);
+        });
+
+        it('INTENT', async () => {
+          const intentName = 'random-intent';
+
+          // const utils = {
+          //   commandHandler: {
+          //     canHandle: sinon.stub().returns(false),
+          //   },
+          //   noMatchHandler: {
+          //     canHandle: sinon.stub().returns(false),
+          //   },
+          // };
+
+          /// /////
+          const output = 'next-id';
+          const buttonName = 'button_name';
+          const utils = {
+            replaceIDVariables: sinon.stub().returns(buttonName),
+            commandHandler: {
+              canHandle: sinon.stub().returns(true),
+              handle: sinon.stub().returns(output),
+            },
+          };
+
+          const interactionHandler = InteractionHandler(utils as any);
+
+          const block = {
+            id: 'block-id',
+            interactions: [],
+            buttons: [{ name: '' }, { type: 'INTENT', name: '{button_name_var}', intentName }, { name: '' }],
+          };
+          const request = { type: RequestType.INTENT, payload: { input: buttonName } };
+          const runtime = {
+            turn: { get: sinon.stub().returns(request), set: sinon.stub() },
+            storage: { delete: sinon.stub() },
+          };
+          const variablesState = { foo: 'bar' };
+          const variables = { getState: sinon.stub().returns(variablesState) };
+
+          expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(output);
+          expect(utils.replaceIDVariables.args).to.eql([
+            [block.buttons[0].name, variablesState],
+            [block.buttons[1].name, variablesState],
+            [block.buttons[2].name, variablesState],
+          ]);
+          expect(runtime.turn.set.args).to.eql([[T.REQUEST, { ...request, payload: { ...request.payload, intent: block.buttons[1].intentName } }]]);
+        });
+      });
+
       it('command handler can handle', () => {
         const output = 'bar';
 
         const utils = {
+          replaceIDVariables: sinon.stub().returns(''),
           commandHandler: {
             canHandle: sinon.stub().returns(true),
             handle: sinon.stub().returns(output),
@@ -69,9 +173,9 @@ describe('interaction handler unit tests', async () => {
 
         const interactionHandler = InteractionHandler(utils as any);
 
-        const block = { id: 'block-id', interactions: [] };
+        const block = { id: 'block-id', interactions: [], buttons: [{ name: 'button-name' }] };
         const runtime = { turn: { get: sinon.stub().returns({ type: RequestType.INTENT, payload: {} }) } };
-        const variables = { foo: 'bar' };
+        const variables = { getState: sinon.stub().returns({ foo: 'bar' }) };
 
         expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(output);
         expect(utils.commandHandler.canHandle.args).to.eql([[runtime]]);
