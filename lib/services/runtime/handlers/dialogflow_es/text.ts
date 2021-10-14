@@ -5,7 +5,7 @@ import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import _isString from 'lodash/isString';
 import _sample from 'lodash/sample';
 
-import { F, S } from '@/lib/constants';
+import { F, S, T } from '@/lib/constants';
 import log from '@/logger';
 
 const handlerUtils = {
@@ -33,6 +33,7 @@ export const TextHandler: HandlerFactory<Node.Text.Node, typeof handlerUtils> = 
           });
 
           runtime.stack.top().storage.set(F.SPEAK, message);
+          runtime.turn.set(T.DF_ES_TEXT_ENABLED, true);
         }
       } catch (error) {
         log.error(`[app] [${TextHandler.name}] failed to add Slate trace ${log.vars({ error })}`);

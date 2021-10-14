@@ -22,7 +22,11 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       turn.set(T.END, true);
     }
 
-    const output = storage.get<string>(S.OUTPUT) ?? '';
+    let output = storage.get<string>(S.OUTPUT) ?? '';
+    if (!turn.get(T.DF_ES_TEXT_ENABLED) && !!output) {
+      // no text has been used, hence voice project
+      output = `<speak>${output}</speak>`;
+    }
 
     const res: WebhookResponse = {
       fulfillmentText: output,

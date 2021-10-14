@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { F, S } from '@/lib/constants';
+import { F, S, T } from '@/lib/constants';
 import { TextHandler } from '@/lib/services/runtime/handlers/dialogflow_es/text';
 
 describe('text handler unit tests', async () => {
@@ -76,6 +76,7 @@ describe('text handler unit tests', async () => {
         },
         trace: { addTrace: sinon.stub() },
         storage: { produce: sinon.stub() },
+        turn: { set: sinon.stub() },
       };
 
       const variables = { getState: sinon.stub().returns('vars') };
@@ -97,6 +98,7 @@ describe('text handler unit tests', async () => {
       expect(draft[S.OUTPUT]).to.eq('previous plainText');
 
       expect(topStorageSet.args).to.eql([[F.SPEAK, 'plainText']]);
+      expect(runtime.turn.set.args).to.eql([[T.DF_ES_TEXT_ENABLED, true]]);
     });
   });
 });
