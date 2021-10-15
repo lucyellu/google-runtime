@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { CommandMapping } from '@voiceflow/api-sdk';
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { extractFrameCommand, Frame, Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
@@ -7,6 +8,14 @@ import { F, S, T } from '@/lib/constants';
 
 import { IntentName, IntentRequest, RequestType } from '../types';
 import { mapSlots } from '../utils';
+
+const isPushCommand = (command: BaseNode.AnyCommonCommand): command is BaseNode.Command.Command & { diagram_id: string } => {
+  return !!(command as BaseNode.Command.Command).diagram_id;
+};
+
+const isIntentCommand = (command: BaseNode.AnyCommonCommand): command is BaseNode.Intent.Command => {
+  return !isPushCommand(command) && !!(command as BaseNode.Intent.Command).next;
+};
 
 export const getCommand = (runtime: Runtime, extractFrame: typeof extractFrameCommand) => {
   const request = runtime.turn.get<IntentRequest>(T.REQUEST);
@@ -22,7 +31,7 @@ export const getCommand = (runtime: Runtime, extractFrame: typeof extractFrameCo
 
   const matcher = (command: Node.AnyGoogleCommand | null) => command?.intent === intent;
 
-  const res = extractFrame<BaseNode.Command.Command>(runtime.stack, matcher);
+  const res = extractFrame<Node.AnyGoogleCommand>(runtime.stack, matcher);
 
   if (!res) {
     return null;
@@ -46,11 +55,10 @@ const utilsObj = {
  */
 export const CommandHandler = (utils: typeof utilsObj) => ({
   canHandle: (runtime: Runtime): boolean => !!utils.getCommand(runtime),
-  handle: (runtime: Runtime, variables: Store): string | null => {
+  handle: (runtime: Runtime, variables: Store): null => {
     const res = utils.getCommand(runtime);
     if (!res) return null;
 
-    let nextId: string | null = null;
     let variableMap: CommandMapping[] | undefined;
 
     if (res.command) {
@@ -58,23 +66,24 @@ export const CommandHandler = (utils: typeof utilsObj) => ({
 
       variableMap = command.mappings?.map(({ slot, variable }) => ({ slot: slot ?? '', variable: variable ?? '' }));
 
-      if (command.diagram_id) {
+      if (isPushCommand(command)) {
         runtime.stack.top().storage.set(F.CALLED_COMMAND, true);
 
         // Reset state to beginning of new diagram and store current line to the stack
         const newFrame = new utils.Frame({ programID: command.diagram_id });
         runtime.stack.push(newFrame);
-      } else if (command.next) {
-        if (index < runtime.stack.getSize() - 1) {
-          // otherwise destructive and pop off everything before the command
-          runtime.stack.popTo(index + 1);
-          runtime.stack.top().setNodeID(command.next);
-        } else if (index === runtime.stack.getSize() - 1) {
-          // jumping to an intent within the same flow
-          nextId = command.next;
+      } else if (isIntentCommand(command)) {
+        if (index === runtime.stack.getSize() - 1) {
           // clear previous output
           runtime.storage.set(S.OUTPUT, '');
         }
+        runtime.stack.popTo(index + 1);
+        if (command.diagramID && command.diagramID !== runtime.stack.top().getProgramID()) {
+          const newFrame = new utils.Frame({ programID: command.diagramID });
+          runtime.stack.push(newFrame);
+        }
+        runtime.stack.top().setNodeID(command.next || null);
+        runtime.trace.debug(`matched intent **${command.intent}** - jumping to node`);
       }
     }
 
@@ -85,7 +94,7 @@ export const CommandHandler = (utils: typeof utilsObj) => ({
       variables.merge(utils.mapSlots(variableMap, res.slots));
     }
 
-    return nextId;
+    return null;
   },
 });
 
