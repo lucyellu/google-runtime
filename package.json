@@ -21,7 +21,7 @@
     "@voiceflow/general-runtime": "1.62.3",
     "@voiceflow/general-types": "2.0.9",
     "@voiceflow/google-dfes-types": "1.5.8",
-    "@voiceflow/google-types": "1.37.6",
+    "@voiceflow/google-types": "2.1.0",
     "@voiceflow/logger": "1.6.0",
     "@voiceflow/verror": "1.1.0",
     "@voiceflow/voice-types": "1.4.28",

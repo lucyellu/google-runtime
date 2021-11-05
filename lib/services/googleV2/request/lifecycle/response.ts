@@ -9,6 +9,7 @@ import { generateResponseText } from '@/lib/services/utils';
 import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../../types';
+import GoogleManager from '../../index';
 
 const utilsObj = {
   DirectiveResponseBuilder,
@@ -32,6 +33,10 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       speech: `<speak>${output}</speak>`,
       text: generateResponseText(output),
     });
+
+    if (turn.get(T.GOTO)) {
+      conv.scene.next!.name = `${GoogleManager.SLOT_FILLING_PREFIX}${turn.get(T.GOTO)}`;
+    }
 
     if (turn.get(T.END)) {
       conv.scene.next!.name = 'actions.scene.END_CONVERSATION';

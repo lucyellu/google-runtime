@@ -304,6 +304,37 @@ describe('interaction handler unit tests', async () => {
           expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.nextIds[1]);
         });
 
+        it('goto choice', () => {
+          const intentName = 'random-intent';
+
+          const utils = {
+            commandHandler: {
+              canHandle: sinon.stub().returns(false),
+            },
+            noMatchHandler: {
+              canHandle: sinon.stub().returns(false),
+            },
+          };
+
+          const interactionHandler = InteractionHandler(utils as any);
+
+          const block = {
+            id: 'block-id',
+            elseId: 'else-id',
+            interactions: [{ intent: 'random-intent', goTo: { intentName: 'go-to-intent' } }],
+            nextIds: ['id-one', 'id-two'],
+          };
+          const request = { type: RequestType.INTENT, payload: { intent: intentName } };
+          const runtime = {
+            turn: { get: sinon.stub().returns(request), delete: sinon.stub(), set: sinon.stub().resolves() },
+            storage: { delete: sinon.stub() },
+          };
+          const variables = { foo: 'bar' };
+
+          expect(interactionHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.id);
+          expect(runtime.turn.set.args).to.eql([[T.GOTO, 'go-to-intent']]);
+        });
+
         it('choice with mappings', () => {
           const intentName = 'random-intent';
           const mappedSlots = { slot1: 'slot-1' };

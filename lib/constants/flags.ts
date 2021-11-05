@@ -20,6 +20,7 @@ export enum Turn {
   DF_ES_IMAGE = 'df-es-image',
   DF_ES_PAYLOAD = 'df-es-payload',
   DF_ES_TEXT_ENABLED = 'df-es-text-enabled',
+  GOTO = 'goto',
 }
 
 export enum Frame {

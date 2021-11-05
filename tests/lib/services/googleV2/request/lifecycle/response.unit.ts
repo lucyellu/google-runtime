@@ -133,7 +133,10 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon.stub().returns(true),
+          get: sinon
+            .stub()
+            .withArgs(T.END)
+            .returns(true),
         },
         services: {
           analyticsClient: {
@@ -185,6 +188,100 @@ describe('responseManager unit tests', async () => {
             metadata: finalState,
             timestamp,
             turnIDP: true,
+          },
+        ],
+      ]);
+    });
+
+    it('with goto', async () => {
+      const response = { foo: 'bar' };
+      const updateToken = 'update-token';
+      const responseHandler1 = sinon.stub();
+      const responseHandler2 = sinon.stub();
+
+      const services = {
+        state: { saveToDb: sinon.stub() },
+        randomstring: { generate: sinon.stub().returns(updateToken) },
+        utils: {
+          responseHandlersV2: [responseHandler1, responseHandler2],
+          Simple: sinon.stub().returns(response),
+        },
+      };
+
+      const responseManager = new ResponseManager(services as any, null as any);
+
+      const finalState = { random: 'runtime' };
+      const output = 'random output';
+      const userId = 'user-id';
+      const storageGet = sinon.stub();
+      storageGet.withArgs(S.OUTPUT).returns(output);
+      storageGet.withArgs(S.USER).returns(userId);
+
+      const turnGet = sinon.stub();
+      turnGet.withArgs(T.GOTO).returns('goto_intent');
+      turnGet.withArgs(T.END).returns(false);
+      const runtime = {
+        getFinalState: sinon.stub().returns(finalState),
+        stack: {
+          isEmpty: sinon.stub().returns(true),
+        },
+        storage: {
+          get: storageGet,
+        },
+        turn: {
+          set: sinon.stub(),
+          get: turnGet,
+        },
+        services: {
+          analyticsClient: {
+            track: sinon.stub().returns(userId),
+          },
+        },
+        getVersionID: sinon.stub().returns(userId),
+      };
+
+      const conv = {
+        user: {
+          params: { forceUpdateToken: '' },
+        },
+        add: sinon.stub(),
+        scene: {
+          next: { name: '' },
+        },
+        session: {
+          id: 'session.id',
+        },
+      };
+
+      await responseManager.build(runtime as any, conv as any);
+
+      expect(runtime.stack.isEmpty.callCount).to.eql(1);
+      expect(runtime.turn.set.args[0]).to.eql([T.END, true]);
+      expect(runtime.storage.get.args).to.eql([[S.OUTPUT], [S.USER]]);
+      expect(services.utils.Simple.args[0]).to.eql([
+        {
+          speech: `<speak>${output}</speak>`,
+          text: output,
+        },
+      ]);
+      expect(conv.scene.next.name).to.eql('slot_filling_goto_intent');
+      expect(conv.add.args[0]).to.eql([response]);
+      expect(responseHandler1.args).to.eql([[runtime, conv]]);
+      expect(responseHandler2.args).to.eql([[runtime, conv]]);
+      expect(services.state.saveToDb.args[0]).to.eql([userId, finalState]);
+      expect(conv.user.params.forceUpdateToken).to.deep.eq(updateToken);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
+      expect(runtime.services.analyticsClient.track.args).to.eql([
+        [
+          {
+            id: userId,
+            event: Ingest.Event.INTERACT,
+            request: Ingest.RequestType.RESPONSE,
+            payload: response,
+            sessionid: conv.session.id,
+            metadata: finalState,
+            timestamp,
+            turnIDP: undefined,
           },
         ],
       ]);
