@@ -108,6 +108,14 @@ describe('responseManager unit tests', async () => {
       const storageGet = sinon.stub();
       storageGet.withArgs(S.OUTPUT).returns(output);
       storageGet.withArgs(S.USER).returns(userId);
+      const turnGet = sinon.stub();
+      turnGet
+        .withArgs(T.GOTO)
+        .returns(false)
+        .withArgs(T.DF_ES_TEXT_ENABLED)
+        .returns(true)
+        .withArgs(T.END)
+        .returns(true);
 
       const runtime = {
         getFinalState: sinon.stub().returns(finalState),
@@ -119,7 +127,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon.stub().returns(true),
+          get: turnGet,
         },
         services: {
           analyticsClient: {
@@ -155,7 +163,91 @@ describe('responseManager unit tests', async () => {
             sessionid: userId,
             metadata: runtime.getFinalState(),
             timestamp,
-            turnIDP: true,
+            turnIDP: undefined,
+          },
+        ],
+      ]);
+    });
+
+    it('with goto', async () => {
+      const responseHandler1 = sinon.stub();
+      const responseHandler2 = sinon.stub();
+
+      const services = {
+        state: { saveToDb: sinon.stub() },
+        utils: {
+          responseHandlersDialogflowES: [responseHandler1, responseHandler2],
+        },
+      };
+
+      const responseManager = new ResponseManager(services as any, null as any);
+
+      const userId = 'user-id';
+      const finalState = { random: 'runtime', storage: { user: userId } };
+      const output = 'random output';
+
+      const versionID = 'version-id';
+      const storageGet = sinon.stub();
+      storageGet.withArgs(S.OUTPUT).returns(output);
+      storageGet.withArgs(S.USER).returns(userId);
+      const goToIntent = 'go-to-intent';
+      const turnGet = sinon.stub();
+      turnGet
+        .withArgs(T.GOTO)
+        .returns(goToIntent)
+        .withArgs(T.DF_ES_TEXT_ENABLED)
+        .returns(true)
+        .withArgs(T.END)
+        .returns(true);
+
+      const runtime = {
+        getFinalState: sinon.stub().returns(finalState),
+        stack: {
+          isEmpty: sinon.stub().returns(true),
+        },
+        storage: {
+          get: storageGet,
+        },
+        turn: {
+          set: sinon.stub(),
+          get: turnGet,
+        },
+        services: {
+          analyticsClient: {
+            track: sinon.stub().returns(true),
+          },
+        },
+        getVersionID: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns(versionID),
+      };
+
+      const res = {
+        fulfillmentText: '',
+        fulfillmentMessages: [],
+        endInteraction: true,
+        followupEventInput: { name: `${goToIntent}_event` },
+      };
+
+      expect(await responseManager.build(runtime as any)).to.eql(res);
+      const { timestamp } = runtime.services.analyticsClient.track.args[0][0];
+
+      expect(runtime.stack.isEmpty.callCount).to.eql(1);
+      expect(runtime.turn.set.args[0]).to.eql([T.END, true]);
+      expect(runtime.storage.get.args).to.eql([[S.OUTPUT], [S.USER]]);
+      expect(responseHandler1.args).to.eql([[runtime, res]]);
+      expect(responseHandler2.args).to.eql([[runtime, res]]);
+      expect(services.state.saveToDb.args[0]).to.eql([userId, finalState]);
+      expect(runtime.services.analyticsClient.track.args).to.eql([
+        [
+          {
+            id: versionID,
+            event: Ingest.Event.INTERACT,
+            request: Ingest.RequestType.RESPONSE,
+            payload: res,
+            sessionid: userId,
+            metadata: runtime.getFinalState(),
+            timestamp,
+            turnIDP: undefined,
           },
         ],
       ]);

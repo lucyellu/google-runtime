@@ -28,11 +28,13 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       output = `<speak>${output}</speak>`;
     }
 
-    const res: WebhookResponse = {
-      fulfillmentText: output,
-      fulfillmentMessages: [{ text: { text: [output] } }],
-      endInteraction: false,
-    };
+    const res: WebhookResponse = turn.get(T.GOTO)
+      ? { followupEventInput: { name: `${turn.get(T.GOTO)}_event` }, fulfillmentMessages: [], fulfillmentText: '', endInteraction: false }
+      : {
+          fulfillmentText: output,
+          fulfillmentMessages: [{ text: { text: [output] } }],
+          endInteraction: false,
+        };
 
     if (turn.get(T.END)) {
       res.endInteraction = true;
