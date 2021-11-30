@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
 
     /* Strictness Checks */
+    "skipLibCheck": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,

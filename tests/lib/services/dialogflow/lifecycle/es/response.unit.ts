@@ -42,11 +42,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .onFirstCall()
-            .returns(false)
-            .returns(null),
+          get: sinon.stub().onFirstCall().returns(false).returns(null),
         },
         services: {
           analyticsClient: {
@@ -109,13 +105,7 @@ describe('responseManager unit tests', async () => {
       storageGet.withArgs(S.OUTPUT).returns(output);
       storageGet.withArgs(S.USER).returns(userId);
       const turnGet = sinon.stub();
-      turnGet
-        .withArgs(T.GOTO)
-        .returns(false)
-        .withArgs(T.DF_ES_TEXT_ENABLED)
-        .returns(true)
-        .withArgs(T.END)
-        .returns(true);
+      turnGet.withArgs(T.GOTO).returns(false).withArgs(T.DF_ES_TEXT_ENABLED).returns(true).withArgs(T.END).returns(true);
 
       const runtime = {
         getFinalState: sinon.stub().returns(finalState),
@@ -192,13 +182,7 @@ describe('responseManager unit tests', async () => {
       storageGet.withArgs(S.USER).returns(userId);
       const goToIntent = 'go-to-intent';
       const turnGet = sinon.stub();
-      turnGet
-        .withArgs(T.GOTO)
-        .returns(goToIntent)
-        .withArgs(T.DF_ES_TEXT_ENABLED)
-        .returns(true)
-        .withArgs(T.END)
-        .returns(true);
+      turnGet.withArgs(T.GOTO).returns(goToIntent).withArgs(T.DF_ES_TEXT_ENABLED).returns(true).withArgs(T.END).returns(true);
 
       const runtime = {
         getFinalState: sinon.stub().returns(finalState),
@@ -285,10 +269,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .withArgs(T.DF_ES_TEXT_ENABLED)
-            .returns(null),
+          get: sinon.stub().withArgs(T.DF_ES_TEXT_ENABLED).returns(null),
         },
         services: {
           analyticsClient: {

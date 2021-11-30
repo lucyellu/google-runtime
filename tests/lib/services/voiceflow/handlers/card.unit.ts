@@ -36,12 +36,7 @@ describe('card handler unit tests', async () => {
   describe('handle', () => {
     it('no card type', async () => {
       const utils = {
-        addVariables: sinon
-          .stub()
-          .onFirstCall()
-          .returns('TEXT')
-          .onSecondCall()
-          .returns('TITLE'),
+        addVariables: sinon.stub().onFirstCall().returns('TEXT').onSecondCall().returns('TITLE'),
       };
 
       const cardHandler = CardHandler(utils);

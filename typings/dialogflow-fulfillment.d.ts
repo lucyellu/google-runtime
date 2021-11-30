@@ -170,9 +170,7 @@ declare module 'dialogflow-fulfillment' {
      * Get an context from the Dialogflow webhook request
      * @param contextName name of an context present in the Dialogflow webhook request
      */
-    public getContext(
-      contextName: string
-    ): {
+    public getContext(contextName: string): {
       name: string;
       lifespan: number;
       parameters: object;

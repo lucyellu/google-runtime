@@ -1,7 +1,10 @@
 import dice from 'talisman/metrics/distance/dice';
 import jaccard from 'talisman/metrics/distance/jaccard';
 
-export type Choice = { value: string; index: number };
+export interface Choice {
+  value: string;
+  index: number;
+}
 
 const getBestScore = (input: string, choices: Array<Choice>, tolerance = 0.9): number | null => {
   if (!input) return null;

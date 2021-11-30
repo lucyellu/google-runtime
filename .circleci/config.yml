@@ -3,22 +3,22 @@ version: 2.1
 parameters:
   npm-repo:
     type: string
-    default: "@voiceflow/google-runtime"
+    default: '@voiceflow/google-runtime'
   container-image-url:
     type: string
-    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/google"
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/google'
   k8s-asset:
     type: string
-    default: "deployment/google-runtime"
+    default: 'deployment/google-runtime'
   k8s-namespace:
     type: string
-    default: "voiceflow-v1" # This is usually voiceflow-v1
+    default: 'voiceflow-v1' # This is usually voiceflow-v1
   ssh-fingerprint:
     type: string
-    default: "0d:70:64:7b:cf:1e:f2:63:ed:a0:98:3d:a9:e2:35:b9"
+    default: '0d:70:64:7b:cf:1e:f2:63:ed:a0:98:3d:a9:e2:35:b9'
   track-component:
     type: string
-    default: "google-runtime"
+    default: 'google-runtime'
 
 # Reusable YAML chunks
 defaults:
@@ -39,7 +39,7 @@ defaults:
       - vfcommon/notify_slack:
           channel: dev_general
           event: fail
-          mentions: "@eng_integrations"
+          mentions: '@eng_integrations'
           template: basic_fail_1
           branch_pattern: master
 
@@ -48,7 +48,6 @@ orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 jobs:
-
   e2e-check:
     executor: vfcommon/e2e-executor
     steps:
@@ -64,9 +63,9 @@ jobs:
           github_username: GITHUB_USERNAME
           github_token: GITHUB_TOKEN
       - vfcommon/check_service_running:
-          port: "8011"
+          port: '8011'
       - vfcommon/check_e2e:
-          port: "8007"
+          port: '8007'
 
   test:
     executor: vfcommon/code-test-executor
@@ -98,11 +97,11 @@ jobs:
       image_tag:
         description: The container image tag
         type: string
-        default: ""
+        default: ''
       release_pkg:
         description: The npm package name to be released
         type: string
-        default: ""
+        default: ''
       dockerfile:
         description: Name of the Dockerfile to build
         type: string
@@ -188,5 +187,5 @@ workflows:
           name: build-push-image-e2e
           context: dev-test
           image_repo: << pipeline.parameters.container-image-url >>
-          dockerfile: "Dockerfile.e2e"
-          image_tag: "latest-master-e2e"
+          dockerfile: 'Dockerfile.e2e'
+          image_tag: 'latest-master-e2e'

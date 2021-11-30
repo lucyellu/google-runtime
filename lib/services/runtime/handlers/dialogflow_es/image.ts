@@ -8,9 +8,9 @@ import { T } from '@/lib/constants';
 import { ResponseBuilderDialogflowES } from '../../types';
 import { addVariables } from '../../utils';
 
-type TurnImage = {
+interface TurnImage {
   imageUrl: string;
-};
+}
 
 export const ImageResponseBuilderDialogflowES: ResponseBuilderDialogflowES = (runtime, res) => {
   const image = runtime.turn.get<TurnImage>(T.DF_ES_IMAGE);

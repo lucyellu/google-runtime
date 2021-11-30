@@ -2,12 +2,12 @@ import { SlotMapping } from '@voiceflow/api-sdk';
 import { Button } from '@voiceflow/base-types';
 import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
-import { ButtonNode } from '@voiceflow/google-types/build/node/buttons';
+import { Node } from '@voiceflow/google-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
 
-type GoogleDateTimeSlot = {
+interface GoogleDateTimeSlot {
   seconds: number;
   day: number;
   hours: number;
@@ -15,7 +15,7 @@ type GoogleDateTimeSlot = {
   year: number;
   minutes: number;
   month: number;
-};
+}
 
 export const transformDateTimeVariableToString = (date: GoogleDateTimeSlot) => {
   if (!date.year && !date.hours) return ''; // not GoogleDateTime type
@@ -72,7 +72,11 @@ export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, run
 export const replaceIDVariables = (input: string, variables: Record<string, string>) =>
   input.replace(SLOT_REGEXP, (_match, inner) => variables[inner] || inner);
 
-export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: ButtonNode[] }>(node: N, runtime: Runtime, variables: Store): void => {
+export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: Node.Buttons.ButtonNode[] }>(
+  node: N,
+  runtime: Runtime,
+  variables: Store
+): void => {
   if (node.buttons) {
     runtime.turn.set(
       T.CHIPS,
@@ -86,5 +90,7 @@ export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: Bu
   }
 };
 
-export const addVariables = (regex: typeof replaceVariables) => (value: string | undefined | null, variables: Store, defaultValue = '') =>
-  value ? regex(value, variables.getState()) : defaultValue;
+export const addVariables =
+  (regex: typeof replaceVariables) =>
+  (value: string | undefined | null, variables: Store, defaultValue = '') =>
+    value ? regex(value, variables.getState()) : defaultValue;

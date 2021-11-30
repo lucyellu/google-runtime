@@ -9,50 +9,51 @@ import { T } from '@/lib/constants';
 import { ResponseBuilder, ResponseBuilderDialogflowES, ResponseBuilderV2 } from '../types';
 import { addVariables } from '../utils';
 
-export const CardResponseBuilderGenerator = (CardBuilder: typeof BasicCard, ImageBuilder: typeof Image): ResponseBuilder => (runtime, conv) => {
-  const card = runtime.turn.get<Node.Card.Card>(T.CARD);
+export const CardResponseBuilderGenerator =
+  (CardBuilder: typeof BasicCard, ImageBuilder: typeof Image): ResponseBuilder =>
+  (runtime, conv) => {
+    const card = runtime.turn.get<Node.Card.Card>(T.CARD);
 
-  if (!card) {
-    return;
-  }
+    if (!card) {
+      return;
+    }
 
-  if (card.type === Node.Card.CardType.SIMPLE) {
-    conv.add(new CardBuilder({ text: card.text, title: card.title }));
-  } else if (card.type === Node.Card.CardType.STANDARD) {
-    conv.add(
-      new CardBuilder({
-        text: card.text,
-        title: card.title,
-        image: new ImageBuilder({ url: card.image?.largeImageUrl ?? '', alt: 'Image' }),
-      })
-    );
-  }
-};
+    if (card.type === Node.Card.CardType.SIMPLE) {
+      conv.add(new CardBuilder({ text: card.text, title: card.title }));
+    } else if (card.type === Node.Card.CardType.STANDARD) {
+      conv.add(
+        new CardBuilder({
+          text: card.text,
+          title: card.title,
+          image: new ImageBuilder({ url: card.image?.largeImageUrl ?? '', alt: 'Image' }),
+        })
+      );
+    }
+  };
 
 export const CardResponseBuilder = CardResponseBuilderGenerator(BasicCard, Image);
 
-export const CardResponseBuilderGeneratorV2 = (CardBuilder: typeof GoogleCard, ImageBuilder: typeof GoogleImage): ResponseBuilderV2 => (
-  runtime,
-  conv
-) => {
-  const card = runtime.turn.get<Node.Card.Card>(T.CARD);
+export const CardResponseBuilderGeneratorV2 =
+  (CardBuilder: typeof GoogleCard, ImageBuilder: typeof GoogleImage): ResponseBuilderV2 =>
+  (runtime, conv) => {
+    const card = runtime.turn.get<Node.Card.Card>(T.CARD);
 
-  if (!card) {
-    return;
-  }
+    if (!card) {
+      return;
+    }
 
-  if (card.type === Node.Card.CardType.SIMPLE) {
-    conv.add(new CardBuilder({ text: card.text, title: card.title }));
-  } else if (card.type === Node.Card.CardType.STANDARD) {
-    conv.add(
-      new CardBuilder({
-        text: card.text,
-        title: card.title,
-        image: new ImageBuilder({ url: card.image?.largeImageUrl, alt: 'Image' }),
-      })
-    );
-  }
-};
+    if (card.type === Node.Card.CardType.SIMPLE) {
+      conv.add(new CardBuilder({ text: card.text, title: card.title }));
+    } else if (card.type === Node.Card.CardType.STANDARD) {
+      conv.add(
+        new CardBuilder({
+          text: card.text,
+          title: card.title,
+          image: new ImageBuilder({ url: card.image?.largeImageUrl, alt: 'Image' }),
+        })
+      );
+    }
+  };
 
 export const CardResponseBuilderV2 = CardResponseBuilderGeneratorV2(GoogleCard, GoogleImage);
 

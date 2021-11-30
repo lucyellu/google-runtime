@@ -12,12 +12,12 @@ export enum ResumeVariables {
   FOLLOW_VOICE = '__voice1__',
 }
 
-export type ResumePrompt = {
+export interface ResumePrompt {
   content: string;
   voice: string;
   follow_content: string;
   follow_voice: string;
-};
+}
 
 export const promptToSSML = (content = '', voice: string | undefined) => {
   if (voice === 'audio') {

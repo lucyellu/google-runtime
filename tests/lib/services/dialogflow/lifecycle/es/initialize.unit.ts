@@ -94,12 +94,7 @@ describe('initializeManager unit tests', async () => {
       const { services, metaObj, runtime, req } = generateFakes();
 
       const storageGet = sinon.stub();
-      storageGet
-        .withArgs(S.SESSIONS)
-        .onFirstCall()
-        .returns(null)
-        .onSecondCall()
-        .returns(1);
+      storageGet.withArgs(S.SESSIONS).onFirstCall().returns(null).onSecondCall().returns(1);
       const locale = 'en';
       storageGet.withArgs(S.LOCALE).returns(locale);
       const userId = 'user-id';

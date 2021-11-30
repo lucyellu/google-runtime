@@ -2,7 +2,7 @@
 name: Draft on Open
 on:
   pull_request:
-    types: [ opened ]
+    types: [opened]
 
 jobs:
   mark-as-draft:

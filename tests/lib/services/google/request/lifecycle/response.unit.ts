@@ -44,10 +44,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .onFirstCall()
-            .returns(false),
+          get: sinon.stub().onFirstCall().returns(false),
         },
       };
 
@@ -118,10 +115,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .onFirstCall()
-            .returns(false),
+          get: sinon.stub().onFirstCall().returns(false),
         },
       };
 

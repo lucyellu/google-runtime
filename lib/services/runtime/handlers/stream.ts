@@ -9,110 +9,106 @@ import { F, S, T } from '@/lib/constants';
 
 import { ResponseBuilder, ResponseBuilderV2 } from '../types';
 
-type StreamPlay = {
+interface StreamPlay {
   url: string;
   title: string;
   description: string;
   icon_img: string;
   background_img: string;
-};
+}
 
-export const StreamResponseBuilderGenerator = (
-  ImageBuilder: typeof Image,
-  MediaObjectBuilder: typeof MediaObject,
-  SuggestionsBuilder: typeof Suggestions
-): ResponseBuilder => (runtime, conv) => {
-  const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
+export const StreamResponseBuilderGenerator =
+  (ImageBuilder: typeof Image, MediaObjectBuilder: typeof MediaObject, SuggestionsBuilder: typeof Suggestions): ResponseBuilder =>
+  (runtime, conv) => {
+    const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
 
-  if (!streamPlay) {
-    return;
-  }
-
-  const { title, description, icon_img, background_img, url } = streamPlay;
-
-  if (conv.surface.capabilities.has('actions.capability.MEDIA_RESPONSE_AUDIO')) {
-    const media: MediaObjectOptions = {
-      name: title,
-      url,
-      description,
-    };
-
-    if (background_img) {
-      media.image = new ImageBuilder({
-        url: background_img,
-        alt: 'Media Background Image',
-      });
-    } else if (icon_img) {
-      media.icon = new ImageBuilder({
-        url: icon_img,
-        alt: 'Media Icon Image',
-      });
+    if (!streamPlay) {
+      return;
     }
 
-    conv.add(new MediaObjectBuilder(media));
+    const { title, description, icon_img, background_img, url } = streamPlay;
 
-    if (!runtime.turn.get(T.END) && !runtime.turn.get(T.CHIPS)) {
-      conv.add(new SuggestionsBuilder(['continue', 'exit']));
+    if (conv.surface.capabilities.has('actions.capability.MEDIA_RESPONSE_AUDIO')) {
+      const media: MediaObjectOptions = {
+        name: title,
+        url,
+        description,
+      };
+
+      if (background_img) {
+        media.image = new ImageBuilder({
+          url: background_img,
+          alt: 'Media Background Image',
+        });
+      } else if (icon_img) {
+        media.icon = new ImageBuilder({
+          url: icon_img,
+          alt: 'Media Icon Image',
+        });
+      }
+
+      conv.add(new MediaObjectBuilder(media));
+
+      if (!runtime.turn.get(T.END) && !runtime.turn.get(T.CHIPS)) {
+        conv.add(new SuggestionsBuilder(['continue', 'exit']));
+      }
+    } else {
+      conv.add('Sorry, this device does not support audio playback.');
     }
-  } else {
-    conv.add('Sorry, this device does not support audio playback.');
-  }
-};
+  };
 
 export const StreamResponseBuilder = StreamResponseBuilderGenerator(Image, MediaObject, Suggestions);
 
-export const StreamResponseBuilderGeneratorV2 = (
-  ImageBuilder: typeof GoogleImage,
-  MediaObjectBuilder: typeof GoogleMedia,
-  SuggestionsBuilder: typeof GoogleSuggestion
-): ResponseBuilderV2 => (runtime, conv) => {
-  const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
+export const StreamResponseBuilderGeneratorV2 =
+  (ImageBuilder: typeof GoogleImage, MediaObjectBuilder: typeof GoogleMedia, SuggestionsBuilder: typeof GoogleSuggestion): ResponseBuilderV2 =>
+  (runtime, conv) => {
+    const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
 
-  if (!streamPlay) {
-    return;
-  }
-
-  const { title, description, icon_img, background_img, url } = streamPlay;
-
-  if (conv.device.capabilities!.includes(Capability.LongFormAudio)) {
-    const media = {
-      name: title,
-      description,
-      url,
-      image: {
-        icon: undefined,
-        large: undefined,
-      },
-    } as GoogleMediaObject;
-
-    if (background_img) {
-      media.image!.large = new ImageBuilder({
-        url: background_img,
-        alt: 'Media Background Image',
-      });
-    } else if (icon_img) {
-      media.image!.icon = new ImageBuilder({
-        url: icon_img,
-        alt: 'Media Icon Image',
-      });
+    if (!streamPlay) {
+      return;
     }
 
-    conv.add(
-      new MediaObjectBuilder({
-        mediaObjects: [media],
-        mediaType: MediaType.Audio,
-        optionalMediaControls: [OptionalMediaControl.Paused, OptionalMediaControl.Stopped],
-      })
-    );
+    const { title, description, icon_img, background_img, url } = streamPlay;
 
-    if (!runtime.turn.get(T.END) && !runtime.turn.get(T.CHIPS)) {
-      conv.add(new SuggestionsBuilder({ title: 'continue' }));
-      conv.add(new SuggestionsBuilder({ title: 'exit' }));
+    if (conv.device.capabilities!.includes(Capability.LongFormAudio)) {
+      const media = {
+        name: title,
+        description,
+        url,
+        image: {
+          icon: undefined,
+          large: undefined,
+        },
+      } as GoogleMediaObject;
+
+      if (background_img) {
+        media.image!.large = new ImageBuilder({
+          url: background_img,
+          alt: 'Media Background Image',
+        });
+      } else if (icon_img) {
+        media.image!.icon = new ImageBuilder({
+          url: icon_img,
+          alt: 'Media Icon Image',
+        });
+      }
+
+      conv.add(
+        new MediaObjectBuilder({
+          mediaObjects: [media],
+          mediaType: MediaType.Audio,
+          optionalMediaControls: [OptionalMediaControl.Paused, OptionalMediaControl.Stopped],
+        })
+      );
+
+      if (!runtime.turn.get(T.END) && !runtime.turn.get(T.CHIPS)) {
+        conv.add(new SuggestionsBuilder({ title: 'continue' }));
+        conv.add(new SuggestionsBuilder({ title: 'exit' }));
+      }
+    } else {
+      conv.add('Sorry, this device does not support audio playback.');
     }
-  } else {
-    conv.add('Sorry, this device does not support audio playback.');
-  }
-};
+  };
 
 export const StreamResponseBuilderV2 = StreamResponseBuilderGeneratorV2(GoogleImage, GoogleMedia, GoogleSuggestion);
 

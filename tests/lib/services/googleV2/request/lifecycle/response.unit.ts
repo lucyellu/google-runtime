@@ -44,11 +44,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .onFirstCall()
-            .returns(false)
-            .returns(null),
+          get: sinon.stub().onFirstCall().returns(false).returns(null),
         },
         services: {
           analyticsClient: {
@@ -133,10 +129,7 @@ describe('responseManager unit tests', async () => {
         },
         turn: {
           set: sinon.stub(),
-          get: sinon
-            .stub()
-            .withArgs(T.END)
-            .returns(true),
+          get: sinon.stub().withArgs(T.END).returns(true),
         },
         services: {
           analyticsClient: {

@@ -30,10 +30,7 @@ describe('card handler unit tests', async () => {
     it('works', async () => {
       const directive = { content: { card: null } };
       const utils = {
-        replaceVariables: sinon
-          .stub()
-          .onFirstCall()
-          .returns(JSON.stringify(directive)),
+        replaceVariables: sinon.stub().onFirstCall().returns(JSON.stringify(directive)),
       };
 
       const directiveHandler = DirectiveHandler(utils);
@@ -65,10 +62,7 @@ describe('card handler unit tests', async () => {
       const existingDirectives = [{ foo: 'bar' }];
       const directive = { content: { card: null } };
       const utils = {
-        replaceVariables: sinon
-          .stub()
-          .onFirstCall()
-          .returns(JSON.stringify(directive)),
+        replaceVariables: sinon.stub().onFirstCall().returns(JSON.stringify(directive)),
       };
 
       const directiveHandler = DirectiveHandler(utils);
@@ -98,10 +92,7 @@ describe('card handler unit tests', async () => {
 
     it('invalid JSON', async () => {
       const utils = {
-        replaceVariables: sinon
-          .stub()
-          .onFirstCall()
-          .returns('not { valid } JSON'),
+        replaceVariables: sinon.stub().onFirstCall().returns('not { valid } JSON'),
       };
 
       const directiveHandler = DirectiveHandler(utils);

@@ -247,12 +247,7 @@ describe('choice handler unit tests', async () => {
     });
 
     it('with chips', () => {
-      const SuggestionsBuilder = sinon
-        .stub()
-        .onFirstCall()
-        .returns('yes')
-        .onSecondCall()
-        .returns('no');
+      const SuggestionsBuilder = sinon.stub().onFirstCall().returns('yes').onSecondCall().returns('no');
 
       const ChipsResponseBuilderV2 = ChipsResponseBuilderGeneratorV2(SuggestionsBuilder as any);
 

@@ -7,9 +7,9 @@ import { T } from '@/lib/constants';
 import { ResponseBuilderDialogflowES } from '../../types';
 import { addVariables } from '../../utils';
 
-type TurnPayload = {
+interface TurnPayload {
   data: Record<string, any>;
-};
+}
 
 export const PayloadResponseBuilderDialogflowES: ResponseBuilderDialogflowES = (runtime, res) => {
   const payload = runtime.turn.get<TurnPayload>(T.DF_ES_PAYLOAD);

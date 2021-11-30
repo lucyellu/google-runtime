@@ -19,23 +19,27 @@ interface Choice extends BaseNode {
   reprompt?: string;
 }
 
-export const ChipsResponseBuilderGenerator = (SuggestionsBuilder: typeof Suggestions): ResponseBuilder => (runtime, conv) => {
-  const chips = runtime.turn.get<string[]>(T.CHIPS);
+export const ChipsResponseBuilderGenerator =
+  (SuggestionsBuilder: typeof Suggestions): ResponseBuilder =>
+  (runtime, conv) => {
+    const chips = runtime.turn.get<string[]>(T.CHIPS);
 
-  if (chips) {
-    conv.add(new SuggestionsBuilder(chips));
-  }
-};
+    if (chips) {
+      conv.add(new SuggestionsBuilder(chips));
+    }
+  };
 
 export const ChipsResponseBuilder = ChipsResponseBuilderGenerator(Suggestions);
 
-export const ChipsResponseBuilderGeneratorV2 = (SuggestionsBuilder: typeof GoogleSuggestion): ResponseBuilderV2 => (runtime, conv) => {
-  const chips = runtime.turn.get<string[]>(T.CHIPS);
+export const ChipsResponseBuilderGeneratorV2 =
+  (SuggestionsBuilder: typeof GoogleSuggestion): ResponseBuilderV2 =>
+  (runtime, conv) => {
+    const chips = runtime.turn.get<string[]>(T.CHIPS);
 
-  if (chips) {
-    chips.forEach((chip) => conv.add(new SuggestionsBuilder({ title: chip })));
-  }
-};
+    if (chips) {
+      chips.forEach((chip) => conv.add(new SuggestionsBuilder({ title: chip })));
+    }
+  };
 
 export const ChipsResponseBuilderV2 = ChipsResponseBuilderGeneratorV2(GoogleSuggestion);
 

@@ -55,12 +55,7 @@ describe('noInput handler unit tests', () => {
       const runtime = {
         storage: {
           produce: sinon.stub(),
-          get: sinon
-            .stub()
-            .withArgs(S.REPROMPT)
-            .returns(null)
-            .withArgs(S.OUTPUT)
-            .returns(output),
+          get: sinon.stub().withArgs(S.REPROMPT).returns(null).withArgs(S.OUTPUT).returns(output),
         },
       };
 

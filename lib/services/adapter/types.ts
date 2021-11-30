@@ -1,13 +1,13 @@
-export type OldCommands = {
+export interface OldCommands {
   [key: string]: {
     mappings: Array<{ variable: string; slot: string }>;
     diagram_id: string; // when command
     end: boolean; // when command
     next: string; // when intent
   };
-};
+}
 
-export type OldStateRaw = {
+export interface OldStateRaw {
   line_id: string;
   output: string;
   last_speak?: string;
@@ -30,18 +30,18 @@ export type OldStateRaw = {
     commands: OldCommands;
     speak: string;
   }>;
-};
+}
 
-export type Command = {
+export interface Command {
   diagram_id?: string; // when command
   next?: string; // when intent
   mappings: Array<{ variable: string; slot: string }>;
   end?: boolean; // when command
   intent: string;
-};
+}
 export type Commands = Array<Command>;
 
-export type Frame = {
+export interface Frame {
   nodeID: string | null;
   programID: string;
   variables: Record<string, any>;
@@ -52,32 +52,32 @@ export type Frame = {
     calledCommand?: boolean;
   };
   commands: Commands;
-};
+}
 
 export type NewStateStack = Array<Frame>;
 
-export type NewStateStorage = {
+export interface NewStateStorage {
   output: string;
   sessions: number;
   repeat: number;
   locale: string;
   user: string;
   randoms?: Record<string, string[]>;
-};
+}
 
-export type NewVoiceflowVars = {
+export interface NewVoiceflowVars {
   [key: string]: any;
   events: any[];
   capabilities?: string;
-};
+}
 
-export type NewStateVariables = {
+export interface NewStateVariables {
   [key: string]: any;
   voiceflow: NewVoiceflowVars;
-};
+}
 
-export type NewStateRaw = {
+export interface NewStateRaw {
   stack: NewStateStack;
   storage: NewStateStorage;
   variables: NewStateVariables;
-};
+}
