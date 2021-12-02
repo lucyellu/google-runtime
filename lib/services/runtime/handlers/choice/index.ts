@@ -1,5 +1,5 @@
 import { Suggestion as GoogleSuggestion } from '@assistant/conversation';
-import { BaseNode } from '@voiceflow/api-sdk';
+import { Models } from '@voiceflow/base-types';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import { Suggestions } from 'actions-on-google';
 
@@ -10,7 +10,7 @@ import { addChipsIfExistsV1, addRepromptIfExists } from '../../utils';
 import CommandHandler from '../command';
 import getBestScore from './score';
 
-interface Choice extends BaseNode {
+interface Choice extends Models.BaseNode {
   chips?: string[];
   inputs: Array<string[]>;
   elseId?: string;
@@ -64,8 +64,8 @@ export const ChoiceHandler: HandlerFactory<Choice, typeof utilsObj> = (utils) =>
     const request = runtime.turn.get(T.REQUEST) as IntentRequest;
 
     if (request?.type !== RequestType.INTENT) {
-      utils.addRepromptIfExists(node, runtime, variables);
       utils.addChipsIfExists(node, runtime, variables);
+      utils.addRepromptIfExists(node, runtime, variables);
       // quit cycleStack without ending session by stopping on itself
       return node.id;
     }

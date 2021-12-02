@@ -7,12 +7,15 @@ import { T } from '@/lib/constants';
 import { IntentRequest, RequestType } from '../types';
 import { addChipsIfExists, addRepromptIfExists } from '../utils';
 import CommandHandler from './command';
+import NoInputHandler from './noInput';
 
 const utilsObj = {
+  v: '',
+  commandHandler: CommandHandler(),
+  noInputHandler: NoInputHandler(),
   wordsToNumbers,
   addChipsIfExists,
   addRepromptIfExists,
-  commandHandler: CommandHandler(),
 };
 
 export const CaptureHandler: HandlerFactory<Node.Capture.Node, typeof utilsObj> = (utils) => ({
@@ -33,6 +36,11 @@ export const CaptureHandler: HandlerFactory<Node.Capture.Node, typeof utilsObj> 
     // check if there is a command in the stack that fulfills intent
     if (utils.commandHandler.canHandle(runtime)) {
       return utils.commandHandler.handle(runtime, variables);
+    }
+
+    // check for no input in v2
+    if (utils.v === 'v2' && utils.noInputHandler.canHandle(runtime)) {
+      return utils.noInputHandler.handle(node, runtime, variables);
     }
 
     const { input } = request.payload;
@@ -56,4 +64,4 @@ export const CaptureHandler: HandlerFactory<Node.Capture.Node, typeof utilsObj> 
   },
 });
 
-export default () => CaptureHandler(utilsObj);
+export default (v = 'v1') => CaptureHandler({ ...utilsObj, v });

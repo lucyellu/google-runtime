@@ -1,6 +1,6 @@
 import '@/envSetup';
 
-import { getRequiredProcessEnv } from '@voiceflow/common';
+import { getRequiredProcessEnv } from '@voiceflow/backend-utils';
 import AWS from 'aws-sdk';
 import { expect } from 'chai';
 import sinon from 'sinon';

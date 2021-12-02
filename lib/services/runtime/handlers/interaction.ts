@@ -1,4 +1,4 @@
-import { SlotMapping } from '@voiceflow/api-sdk';
+import { Models } from '@voiceflow/base-types';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import { Node } from '@voiceflow/google-types';
 
@@ -31,18 +31,19 @@ export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof ut
       // clean up reprompt on new interaction
       runtime.storage.delete(S.REPROMPT);
 
-      utils.addRepromptIfExists(node, runtime, variables);
       utils.addChipsIfExists(node, runtime, variables);
+      utils.addRepromptIfExists(node, runtime, variables);
 
-      // clean up no matches counter on new interaction
+      // clean up no matches and no replies counters on new interaction
       runtime.storage.delete(S.NO_MATCHES_COUNTER);
+      runtime.storage.delete(S.NO_INPUTS_COUNTER);
 
       // quit cycleStack without ending session by stopping on itself
       return node.id;
     }
 
     let nextId: string | null | undefined;
-    let variableMap: SlotMapping[] | null = null;
+    let variableMap: Models.SlotMapping[] | null = null;
 
     const { slots, input, intent } = request.payload;
 
@@ -51,6 +52,7 @@ export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof ut
         if (button.type === 'PATH' || button.type === 'INTENT_PATH') {
           nextId = button.nextID;
         }
+
         if (button.type === 'INTENT') {
           // INTENT button type is never a local choice intent
           runtime.turn.set(T.REQUEST, { ...request, payload: { ...request.payload, intent: button.intentName } });
@@ -78,28 +80,26 @@ export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof ut
       variables.merge(utils.mapSlots(variableMap, slots));
     }
 
+    if (nextId !== undefined) {
+      runtime.turn.delete(T.REQUEST);
+
+      return nextId;
+    }
+
     // check if there is a command in the stack that fulfills intent
-    if (nextId === undefined && utils.commandHandler.canHandle(runtime)) {
+    if (utils.commandHandler.canHandle(runtime)) {
       return utils.commandHandler.handle(runtime, variables);
     }
 
     // check for no input in v2
     if (utils.v === 'v2' && utils.noInputHandler.canHandle(runtime)) {
-      return utils.noInputHandler.handle(node, runtime);
+      return utils.noInputHandler.handle(node, runtime, variables);
     }
 
     // request for this turn has been processed, delete request
     runtime.turn.delete(T.REQUEST);
 
-    // check for noMatches to handle
-    if (nextId === undefined && utils.noMatchHandler.canHandle(node, runtime)) {
-      return utils.noMatchHandler.handle(node, runtime, variables);
-    }
-
-    // clean up no matches counter
-    runtime.storage.delete(S.NO_MATCHES_COUNTER);
-
-    return (nextId !== undefined ? nextId : node.elseId) || null;
+    return utils.noMatchHandler.handle(node, runtime, variables);
   },
 });
 

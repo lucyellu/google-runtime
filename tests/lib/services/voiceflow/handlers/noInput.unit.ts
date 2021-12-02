@@ -9,7 +9,7 @@ describe('noInput handler unit tests', () => {
     it('false', () => {
       expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns(null) } } as any)).to.eql(false);
       expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({}) } } as any)).to.eql(false);
-      expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'other intet' } }) } } as any)).to.eql(false);
+      expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'other intent' } }) } } as any)).to.eql(false);
     });
     it('true', () => {
       expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'actions.intent.NO_INPUT_1' } }) } } as any)).to.eql(
@@ -22,54 +22,167 @@ describe('noInput handler unit tests', () => {
   });
 
   describe('handle', () => {
-    it('with reprompt', () => {
-      const reprompt = 'this is the reprompt msg';
-      const block = {
-        id: 'block-id',
+    it('next id', () => {
+      const node = {
+        id: 'node-id',
+        noReply: {
+          nodeID: 'next-id',
+          prompts: ['a', 'b'],
+        },
       };
       const runtime = {
         storage: {
-          produce: sinon.stub(),
-          get: sinon.stub().returns(reprompt),
+          delete: sinon.stub(),
+          get: sinon.stub().returns(2),
+        },
+        turn: {
+          delete: sinon.stub(),
         },
       };
 
       const noInputHandler = NoInputHandler();
-      expect(noInputHandler.handle(block as any, runtime as any)).to.eql(block.id);
-
-      // assert produce
-      const cb1 = runtime.storage.produce.args[0][0];
-      // sets counter
-      const draft = {
-        [S.OUTPUT]: '',
-      };
-      cb1(draft);
-      expect(draft).to.eql({ [S.OUTPUT]: reprompt });
+      expect(noInputHandler.handle(node as any, runtime as any, {} as any)).to.eql(node.noReply.nodeID);
     });
 
-    it('without reprompt', () => {
-      const output = 'this is the reprompt msg';
-      const block = {
-        id: 'block-id',
+    it('with old reprompt format', () => {
+      const node = {
+        id: 'node-id',
+        reprompt: 'the counter is {counter}',
       };
       const runtime = {
         storage: {
           produce: sinon.stub(),
-          get: sinon.stub().withArgs(S.REPROMPT).returns(null).withArgs(S.OUTPUT).returns(output),
+          set: sinon.stub(),
+          get: sinon.stub().onFirstCall().returns(0).onSecondCall().returns(''),
         },
+        turn: {
+          delete: sinon.stub(),
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({ counter: 5.2345 }),
       };
 
       const noInputHandler = NoInputHandler();
-      expect(noInputHandler.handle(block as any, runtime as any)).to.eql(block.id);
+      expect(noInputHandler.handle(node as any, runtime as any, variables as any)).to.eql(node.id);
+      expect(runtime.storage.set.args).to.eql([[S.NO_INPUTS_COUNTER, 1]]);
 
-      // assert produce
-      const cb1 = runtime.storage.produce.args[0][0];
-      // sets counter
-      const draft = {
-        [S.OUTPUT]: '',
+      // adds output
+      const cb2 = runtime.storage.produce.args[0][0];
+      const draft3 = { [S.OUTPUT]: 'msg: ' };
+      cb2(draft3);
+      expect(draft3).to.eql({ [S.OUTPUT]: 'msg: the counter is 5.23' });
+    });
+
+    it('with new noReply format', () => {
+      const node = {
+        id: 'node-id',
+        noReply: {
+          prompts: ['the counter is {counter}'],
+        },
       };
-      cb1(draft);
-      expect(draft).to.eql({ [S.OUTPUT]: output });
+      const runtime = {
+        storage: {
+          set: sinon.stub(),
+          produce: sinon.stub(),
+          get: sinon.stub().returns(null),
+        },
+        turn: {
+          delete: sinon.stub(),
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({ counter: 5.2345 }),
+      };
+
+      const noInputHandler = NoInputHandler();
+      expect(noInputHandler.handle(node as any, runtime as any, variables as any)).to.eql(node.id);
+
+      expect(runtime.storage.set.args).to.eql([[S.NO_INPUTS_COUNTER, 1]]);
+
+      // adds output
+      const cb2 = runtime.storage.produce.args[0][0];
+      const draft3 = { [S.OUTPUT]: 'msg: ' };
+      cb2(draft3);
+      expect(draft3).to.eql({ [S.OUTPUT]: 'msg: the counter is 5.23' });
+    });
+
+    it('without noReply', () => {
+      const node = {
+        id: 'node-id',
+      };
+      const runtime = {
+        storage: {
+          set: sinon.stub(),
+          delete: sinon.stub(),
+          get: sinon.stub(),
+        },
+        turn: {
+          delete: sinon.stub(),
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({}),
+      };
+
+      const noInputHandler = NoInputHandler();
+      expect(noInputHandler.handle(node as any, runtime as any, variables as any)).to.eql(null);
+    });
+
+    it('with choices', () => {
+      const node = {
+        id: 'node-id',
+        interactions: [{ intent: 'address_intent' }, { intent: 'phone_number_intent' }],
+      };
+      const runtime = {
+        storage: {
+          set: sinon.stub(),
+          delete: sinon.stub(),
+          get: sinon.stub().returns(0),
+        },
+        turn: {
+          delete: sinon.stub(),
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({}),
+      };
+
+      const noInputHandler = NoInputHandler();
+      expect(noInputHandler.handle(node as any, runtime as any, variables as any)).to.eql(null);
+    });
+
+    it('with noReply randomized', () => {
+      const node = {
+        id: 'node-id',
+        noReply: {
+          prompts: ['A', 'B', 'C'],
+          randomize: true,
+        },
+      };
+      const runtime = {
+        storage: {
+          set: sinon.stub(),
+          produce: sinon.stub(),
+          get: sinon.stub().returns(0),
+        },
+        turn: {
+          delete: sinon.stub(),
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({}),
+      };
+
+      const noInputHandler = NoInputHandler();
+      expect(noInputHandler.handle(node as any, runtime as any, variables as any)).to.eql(node.id);
+
+      // adds output
+      const cb2 = runtime.storage.produce.args[0][0];
+      const draft3 = { [S.OUTPUT]: '' };
+      cb2(draft3);
+
+      expect(node.noReply.prompts.includes(draft3[S.OUTPUT])).to.eql(true);
     });
   });
 });

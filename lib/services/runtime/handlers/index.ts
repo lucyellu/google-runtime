@@ -43,7 +43,7 @@ const _v1Handler = _V1Handler();
 export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
-  CaptureHandler(),
+  CaptureHandler('v2'),
   InteractionHandler('v2'),
   ResetHandler(),
   CardHandler(),
@@ -70,7 +70,7 @@ export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLE
 export const HandlersV2 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
-  CaptureHandler(),
+  CaptureHandler('v2'),
   InteractionHandler('v2'),
   ResetHandler(),
   CardHandler(),

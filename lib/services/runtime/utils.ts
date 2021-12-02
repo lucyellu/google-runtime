@@ -1,8 +1,8 @@
-import { SlotMapping } from '@voiceflow/api-sdk';
-import { Button } from '@voiceflow/base-types';
+import { Button, Models } from '@voiceflow/base-types';
 import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { Node } from '@voiceflow/google-types';
+import { Node as VoiceNode } from '@voiceflow/voice-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
@@ -30,11 +30,11 @@ export const transformDateTimeVariableToString = (date: GoogleDateTimeSlot) => {
   return `${date.day}/${date.month}/${date.year} ${date.hours}:${date.minutes ?? '00'}`;
 };
 
-export const mapSlots = (mappings: SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
+export const mapSlots = (mappings: Models.SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
   const variables: Record<string, any> = {};
 
   if (mappings && slots) {
-    mappings.forEach((map: SlotMapping) => {
+    mappings.forEach((map: Models.SlotMapping) => {
       if (!map.slot) return;
 
       const toVariable = map.variable;
@@ -52,12 +52,6 @@ export const mapSlots = (mappings: SlotMapping[], slots: { [key: string]: string
   }
 
   return variables;
-};
-
-export const addRepromptIfExists = <B extends { reprompt?: string }>(block: B, runtime: Runtime, variables: Store): void => {
-  if (block.reprompt) {
-    runtime.storage.set(S.REPROMPT, replaceVariables(block.reprompt, variables.getState()));
-  }
 };
 
 export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, runtime: Runtime, variables: Store): void => {
@@ -94,3 +88,16 @@ export const addVariables =
   (regex: typeof replaceVariables) =>
   (value: string | undefined | null, variables: Store, defaultValue = '') =>
     value ? regex(value, variables.getState()) : defaultValue;
+
+export const EMPTY_AUDIO_STRING = '<audio src=""/>';
+
+export const removeEmptyPrompts = (prompts?: string[] | null): string[] =>
+  prompts?.filter((prompt) => prompt != null && prompt !== EMPTY_AUDIO_STRING) ?? [];
+
+export const addRepromptIfExists = <B extends VoiceNode.Utils.NoReplyNode>(node: B, runtime: Runtime, variables: Store): void => {
+  const prompt = _.sample(node.noReply?.prompts || node.reprompt ? [node.reprompt] : []);
+
+  if (prompt) {
+    runtime.storage.set(S.REPROMPT, replaceVariables(prompt, variables.getState()));
+  }
+};

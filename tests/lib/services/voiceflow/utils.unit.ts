@@ -9,10 +9,10 @@ describe('runtime manager utils unit tests', async () => {
 
   describe('addRepromptIfExists', () => {
     it('does not have repropmt', () => {
-      const runtime = { turn: { set: sinon.stub() } };
+      const runtime = { storage: { set: sinon.stub() } };
       addRepromptIfExists({ foo: 'bar' } as any, runtime as any, null as any);
 
-      expect(runtime.turn.set.callCount).to.eql(0);
+      expect(runtime.storage.set.callCount).to.eql(0);
     });
 
     it('has reprompt', () => {
