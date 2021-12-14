@@ -10,6 +10,7 @@ const CLOUD_ENV = getOptionalProcessEnv('CLOUD_ENV', 'public');
 const CONFIG: Config = {
   NODE_ENV,
   PORT: getRequiredProcessEnv('PORT'),
+  PORT_METRICS: getOptionalProcessEnv('PORT_METRICS'),
   CLOUD_ENV,
   ERROR_RESPONSE_MS: Number(getOptionalProcessEnv('ERROR_RESPONSE_MS', (10 * 1000).toString())),
 
@@ -22,7 +23,6 @@ const CONFIG: Config = {
 
   // Application secrets
   ADMIN_SERVER_DATA_API_TOKEN: getRequiredProcessEnv('ADMIN_SERVER_DATA_API_TOKEN'),
-  DATADOG_API_KEY: getRequiredProcessEnv('DATADOG_API_KEY'),
 
   CODE_HANDLER_ENDPOINT: getOptionalProcessEnv('CODE_HANDLER_ENDPOINT'),
   INTEGRATIONS_HANDLER_ENDPOINT: getRequiredProcessEnv('INTEGRATIONS_HANDLER_ENDPOINT'),

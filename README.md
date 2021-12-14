@@ -42,7 +42,6 @@ Also add the following file to the local repository:
 > MIDDLEWARE_VERBOSITY="debug"
 >
 > ADMIN_SERVER_DATA_API_TOKEN="none"
-> DATADOG_API_KEY="none"
 >
 > PG_USERNAME='PG_USERNAME'
 > PG_HOST='PG_HOST'

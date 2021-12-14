@@ -4,6 +4,7 @@ import * as ExpressValidator from 'express-validator';
 export interface Config {
   NODE_ENV: string;
   PORT: string;
+  PORT_METRICS: string | null;
   CLOUD_ENV: string | null;
   IS_PRIVATE_CLOUD: boolean;
   ERROR_RESPONSE_MS: number;
@@ -14,7 +15,6 @@ export interface Config {
   AWS_ENDPOINT: string | null;
 
   // Secrets configuration
-  DATADOG_API_KEY: string;
   ADMIN_SERVER_DATA_API_TOKEN: string;
 
   CODE_HANDLER_ENDPOINT: string | null;

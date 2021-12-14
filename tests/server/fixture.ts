@@ -1,4 +1,5 @@
 import { FixtureGenerator } from '@voiceflow/backend-utils';
+import getPort from 'get-port';
 
 import { ServiceManager } from '@/backend';
 import config from '@/config';
@@ -6,6 +7,8 @@ import config from '@/config';
 const createFixture = async () => {
   const serviceManager = new ServiceManager({
     ...config,
+    // Use random port for the metrics route to avoid EADDRINUSE errors
+    PORT_METRICS: (await getPort()).toString(),
   });
 
   return FixtureGenerator.createFixture(serviceManager);

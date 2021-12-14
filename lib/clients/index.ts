@@ -58,6 +58,7 @@ export const initClients = async (_config: Config, clients: ClientMap) => {
 
 export const stopClients = async (_config: Config, clients: ClientMap) => {
   await clients.mongo?.stop();
+  await clients.metrics?.stop();
 };
 
 export default buildClients;
