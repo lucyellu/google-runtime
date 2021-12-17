@@ -1,11 +1,11 @@
 import { ConversationV3, Simple } from '@assistant/conversation';
 import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
 
-import { S, T } from '@/lib/constants';
+import { MAIN_MODEL_VERSION, S, T } from '@/lib/constants';
 import { responseHandlersV2 } from '@/lib/services/runtime/handlers';
 import { DirectiveResponseBuilder } from '@/lib/services/runtime/handlers/directive';
 import { GoogleRuntime } from '@/lib/services/runtime/types';
-import { generateResponseText } from '@/lib/services/utils';
+import { checkModelVersion, generateResponseText } from '@/lib/services/utils';
 import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../../../types';
@@ -36,6 +36,10 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
 
     if (turn.get(T.GOTO)) {
       conv.scene.next!.name = `${GoogleManager.SLOT_FILLING_PREFIX}${turn.get(T.GOTO)}`;
+    }
+
+    if (checkModelVersion(storage, MAIN_MODEL_VERSION) && conv.request.scene?.name?.startsWith(GoogleManager.SLOT_FILLING_PREFIX)) {
+      conv.scene.next!.name = 'main';
     }
 
     if (turn.get(T.END)) {

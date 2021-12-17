@@ -29,7 +29,7 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
 
     // fetch the metadata for this version (project)
     const {
-      platformData: { settings, slots },
+      platformData: { settings, slots, modelVersion },
       variables: versionVariables,
       rootDiagramID,
     } = await runtime.api.getVersion(runtime.getVersionID());
@@ -49,6 +49,8 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
     storage.set(S.LOCALE, conv.user.locale);
     if (!conv.user.params.userId) conv.user.params.userId = this.services.uuid4();
     storage.set(S.USER, conv.user.params.userId);
+
+    storage.set(S.MODEL_VERSION, modelVersion ?? 0);
 
     // default global variables
     variables.merge({

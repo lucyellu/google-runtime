@@ -5,3 +5,5 @@ export enum Source {
   DYNAMO = 'dynamo',
   LOCAL = 'local',
 }
+
+export const MAIN_MODEL_VERSION = 1;

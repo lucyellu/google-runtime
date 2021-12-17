@@ -7,6 +7,7 @@ export enum Storage {
   NO_INPUTS_COUNTER = 'noInputsCounter',
   NO_MATCHES_COUNTER = 'noMatchesCounter',
   REPROMPT = 'reprompt',
+  MODEL_VERSION = 'modelVersion',
 }
 
 export enum Turn {

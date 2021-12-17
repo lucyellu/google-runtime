@@ -41,6 +41,7 @@ describe('initializeManager unit tests', async () => {
           settings: {
             session,
           },
+          modelVersion: 1,
         },
         rootDiagramID: 'diagram-id',
       };
@@ -126,6 +127,7 @@ describe('initializeManager unit tests', async () => {
       expect(runtime.storage.set.args[1]).to.eql([S.LOCALE, conv.user.locale]);
       expect(services.uuid4.callCount).to.eql(1);
       expect(runtime.storage.set.args[2]).to.eql([S.USER, randomUserId]);
+      expect(runtime.storage.set.args[3]).to.eql([S.MODEL_VERSION, metaObj.platformData.modelVersion]);
       expect(runtime.variables.merge.args[0]).to.eql([
         {
           timestamp: 0,
@@ -284,7 +286,7 @@ describe('initializeManager unit tests', async () => {
 
           expect(topStorage.delete.args[0]).to.eql([F.CALLED_COMMAND]);
           expect(topStorage.get.args[0]).to.eql([F.SPEAK]);
-          expect(runtime.storage.set.args[2]).to.eql([S.OUTPUT, '']);
+          expect(runtime.storage.set.args[3]).to.eql([S.OUTPUT, '']);
         });
 
         it('with last speak', async () => {
@@ -301,7 +303,7 @@ describe('initializeManager unit tests', async () => {
 
           expect(topStorage.delete.args[0]).to.eql([F.CALLED_COMMAND]);
           expect(topStorage.get.args[0]).to.eql([F.SPEAK]);
-          expect(runtime.storage.set.args[2]).to.eql([S.OUTPUT, lastSpeak]);
+          expect(runtime.storage.set.args[3]).to.eql([S.OUTPUT, lastSpeak]);
         });
       });
     });
