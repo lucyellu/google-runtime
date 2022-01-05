@@ -18,6 +18,7 @@ import { Config } from '@/types';
 
 import _V1Handler from './_v1';
 import CaptureHandler from './capture';
+import CaptureV2Handler from './captureV2';
 import CardHandler, { CardResponseBuilder, CardResponseBuilderDialogflowES, CardResponseBuilderV2 } from './card';
 import ChoiceHandler, { ChipsResponseBuilder, ChipsResponseBuilderDialogflowES, ChipsResponseBuilderV2 } from './choice';
 import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow_es/image';
@@ -43,6 +44,7 @@ const _v1Handler = _V1Handler();
 export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
+  CaptureV2Handler(),
   CaptureHandler('v2'),
   InteractionHandler('v2'),
   ResetHandler(),
@@ -70,6 +72,7 @@ export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLE
 export const HandlersV2 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
+  CaptureV2Handler(),
   CaptureHandler('v2'),
   InteractionHandler('v2'),
   ResetHandler(),

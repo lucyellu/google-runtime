@@ -8,12 +8,18 @@ import { AbstractManager, injectServices } from '../types';
 import InitializeES from './lifecycle/es/initialize';
 import ResponseES from './lifecycle/es/response';
 import RuntimeBuildES from './lifecycle/es/runtime';
+import SlotFillingES from './lifecycle/es/slotFilling';
 import { WebhookRequest } from './types';
 
-@injectServices({ initializeES: InitializeES, runtimeBuildES: RuntimeBuildES, responseES: ResponseES })
-class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; runtimeBuildES: RuntimeBuildES; responseES: ResponseES }> {
+@injectServices({ initializeES: InitializeES, runtimeBuildES: RuntimeBuildES, responseES: ResponseES, slotFillingES: SlotFillingES })
+class DialogflowManager extends AbstractManager<{
+  initializeES: InitializeES;
+  runtimeBuildES: RuntimeBuildES;
+  responseES: ResponseES;
+  slotFillingES: SlotFillingES;
+}> {
   async es(req: WebhookRequest, versionID: string) {
-    const { metrics, initializeES, runtimeBuildES, responseES } = this.services;
+    const { metrics, initializeES, runtimeBuildES, responseES, slotFillingES } = this.services;
 
     metrics.invocation();
 
@@ -22,6 +28,11 @@ class DialogflowManager extends AbstractManager<{ initializeES: InitializeES; ru
     const slots = req.queryResult.parameters;
 
     const userId = req.session;
+
+    // slot filling
+    if (slotFillingES.canHandle(req)) {
+      return slotFillingES.response(req, userId);
+    }
 
     const runtime = await runtimeBuildES.build(versionID, userId);
     const request = {

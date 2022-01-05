@@ -19,6 +19,25 @@ describe('DialogflowManager unit tests', async () => {
   });
 
   describe('dialogflow', () => {
+    it('slot filling', async () => {
+      const services = {
+        metrics: {
+          invocation: sinon.stub(),
+        },
+        slotFillingES: {
+          canHandle: sinon.stub().returns(true),
+          response: sinon.stub().returns('response'),
+        },
+      };
+      const dialogflow = new DialogflowManager(services as any, null as any);
+      const req = {
+        queryResult: { intent: { displayName: 'actions.intent.MAIN' }, queryText: 'main intent' },
+        session: 'user-id',
+      };
+      expect(await dialogflow.es(req as any, '')).to.eql('response');
+      expect(services.slotFillingES.canHandle.args).to.eql([[req]]);
+      expect(services.slotFillingES.response.args).to.eql([[req, req.session]]);
+    });
     it('main intent', async () => {
       const versionID = 'version-id';
       const stateObj = {
@@ -57,7 +76,7 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { intent: { displayName: 'actions.intent.MAIN' }, queryText: 'main intent' },
+        queryResult: { allRequiredParamsPresent: true, intent: { displayName: 'actions.intent.MAIN' }, queryText: 'main intent' },
         session: 'user-id',
       };
 
@@ -141,7 +160,7 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { intent: { displayName: 'Default Welcome Intent' }, queryText: 'default welcome intent' },
+        queryResult: { allRequiredParamsPresent: true, intent: { displayName: 'Default Welcome Intent' }, queryText: 'default welcome intent' },
         session: 'user-id',
       };
 
@@ -223,7 +242,12 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { intent: { displayName: 'random intent' }, parameters: { s1: 'v1', s2: 'v2' }, queryText: 'random' },
+        queryResult: {
+          allRequiredParamsPresent: true,
+          intent: { displayName: 'random intent' },
+          parameters: { s1: 'v1', s2: 'v2' },
+          queryText: 'random',
+        },
         session: 'user-id',
       };
 
@@ -288,7 +312,12 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { intent: { displayName: 'random intent' }, queryText: 'random', parameters: { s1: 'v1', s2: 'v2' } },
+        queryResult: {
+          allRequiredParamsPresent: true,
+          intent: { displayName: 'random intent' },
+          queryText: 'random',
+          parameters: { s1: 'v1', s2: 'v2' },
+        },
         session: 'user-id',
       };
 

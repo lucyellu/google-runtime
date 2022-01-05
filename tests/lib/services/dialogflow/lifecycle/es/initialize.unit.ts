@@ -67,6 +67,7 @@ describe('initializeManager unit tests', async () => {
           get: sinon.stub().returns(true),
           set: sinon.stub(),
           produce: sinon.stub(),
+          delete: sinon.stub(),
         },
         variables: {
           get: sinon.stub(),

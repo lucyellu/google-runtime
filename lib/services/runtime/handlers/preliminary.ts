@@ -5,10 +5,11 @@ import { T } from '@/lib/constants';
 
 import { RequestType } from '../types';
 import CaptureHandler from './capture';
+import CaptureV2Handler from './captureV2';
 import CommandHandler from './command';
 import InteractionHandler from './interaction';
 
-export const eventHandlers = [CaptureHandler(), InteractionHandler()] as Handler[];
+export const eventHandlers = [CaptureHandler(), CaptureV2Handler(), InteractionHandler()] as Handler[];
 
 const utilsObj = {
   commandHandler: CommandHandler(),

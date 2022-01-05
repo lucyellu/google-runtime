@@ -34,12 +34,12 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       text: generateResponseText(output),
     });
 
-    if (turn.get(T.GOTO)) {
-      conv.scene.next!.name = `${GoogleManager.SLOT_FILLING_PREFIX}${turn.get(T.GOTO)}`;
-    }
-
     if (checkModelVersion(storage, MAIN_MODEL_VERSION) && conv.request.scene?.name?.startsWith(GoogleManager.SLOT_FILLING_PREFIX)) {
       conv.scene.next!.name = 'main';
+    }
+
+    if (turn.get(T.GOTO)) {
+      conv.scene.next!.name = `${GoogleManager.SLOT_FILLING_PREFIX}${turn.get(T.GOTO)}`;
     }
 
     if (turn.get(T.END)) {

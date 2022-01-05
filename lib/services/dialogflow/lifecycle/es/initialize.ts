@@ -48,6 +48,7 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
     // set based on input
     storage.set(S.LOCALE, req.queryResult.languageCode);
     storage.set(S.USER, req.session);
+    storage.delete(S.PRIOR_OUTPUT);
 
     // default global variables
     variables.merge({

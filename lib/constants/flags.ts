@@ -1,5 +1,6 @@
 export enum Storage {
   OUTPUT = 'output',
+  PRIOR_OUTPUT = 'priorOutput',
   SESSIONS = 'sessions',
   REPEAT = 'repeat',
   LOCALE = 'locale',
