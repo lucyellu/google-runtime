@@ -41,7 +41,7 @@ export const responseHandlersDialogflowES = [
 const _v1Handler = _V1Handler();
 
 // handlers for dialogflow es agent
-export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersDialogflowES = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
@@ -58,7 +58,7 @@ export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLE
   FlowHandler(),
   IfHandler(),
   IfV2Handler({ _v1: _v1Handler }),
-  APIHandler({ customAPIEndpoint: API_HANDLER_ENDPOINT }),
+  APIHandler(),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
@@ -69,7 +69,7 @@ export const HandlersDialogflowES = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLE
 ];
 
 // google handlers for V2 (conversational actions)
-export const HandlersV2 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersV2 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
@@ -85,7 +85,7 @@ export const HandlersV2 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT
   FlowHandler(),
   IfHandler(),
   IfV2Handler({ _v1: _v1Handler }),
-  APIHandler({ customAPIEndpoint: API_HANDLER_ENDPOINT }),
+  APIHandler(),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
@@ -96,7 +96,7 @@ export const HandlersV2 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT
 ];
 
 // google handlers for actions V1 (with dialogflow)
-export const HandlersV1 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersV1 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
   SpeakHandler(),
   CaptureHandler(),
   InteractionHandler(),
@@ -108,7 +108,7 @@ export const HandlersV1 = ({ API_HANDLER_ENDPOINT, INTEGRATIONS_HANDLER_ENDPOINT
   EndHandler(),
   FlowHandler(),
   IfHandler(),
-  APIHandler({ customAPIEndpoint: API_HANDLER_ENDPOINT }),
+  APIHandler(),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
