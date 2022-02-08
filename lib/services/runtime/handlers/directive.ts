@@ -1,6 +1,6 @@
 import { Prompt } from '@assistant/conversation';
 import * as Schema from '@assistant/conversation/dist/api/schema';
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { replaceVariables } from '@voiceflow/common';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 
@@ -41,7 +41,7 @@ const utilsObj = {
   replaceVariables,
 };
 
-export const DirectiveHandler: HandlerFactory<Node.Directive.Node, typeof utilsObj> = (utils) => ({
+export const DirectiveHandler: HandlerFactory<BaseNode.Directive.Node, typeof utilsObj> = (utils) => ({
   canHandle: (node) => !!node.directive,
   handle: (node, runtime, variables) => {
     const { directive: unparsedDirective } = node;

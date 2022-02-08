@@ -1,6 +1,6 @@
 import { replaceVariables } from '@voiceflow/common';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-dfes-types';
+import { DFESNode } from '@voiceflow/google-dfes-types';
 
 import { T } from '@/lib/constants';
 
@@ -25,8 +25,8 @@ const utilsObj = {
   addVariables: addVariables(replaceVariables),
 };
 
-export const PayloadHandler: HandlerFactory<Node.Payload.Node, typeof utilsObj> = (utils) => ({
-  canHandle: (node) => node.type === Node.NodeType.PAYLOAD,
+export const PayloadHandler: HandlerFactory<DFESNode.Payload.Node, typeof utilsObj> = (utils) => ({
+  canHandle: (node) => node.type === DFESNode.NodeType.PAYLOAD,
   handle: (node, runtime, variables) => {
     const unparsedData = utils.addVariables(node.data, variables);
     try {

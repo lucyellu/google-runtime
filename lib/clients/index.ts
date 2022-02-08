@@ -1,7 +1,7 @@
 import { conversation as GoogleConversation } from '@assistant/conversation';
 import { DataAPI, LocalDataApi, ServerDataApi } from '@voiceflow/general-runtime/build/runtime';
-import { Constants } from '@voiceflow/general-types';
-import { Program, Version } from '@voiceflow/google-types';
+import { GoogleProgram, GoogleVersion } from '@voiceflow/google-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import AWS from 'aws-sdk';
 import { AxiosStatic } from 'axios';
 import { WebhookClientConstructor } from 'dialogflow-fulfillment';
@@ -25,7 +25,7 @@ export interface ClientMap extends StaticType {
   uuid4: typeof uuid4;
   randomstring: typeof randomstring;
   metrics: MetricsType;
-  dataAPI: DataAPI<Program.GoogleProgram, Version.GoogleVersion>;
+  dataAPI: DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>;
   mongo: MongoDB | null;
   analyticsClient: AnalyticsSystem;
 }
@@ -39,7 +39,7 @@ const buildClients = (config: Config) => {
   clients.dataAPI = config.PROJECT_SOURCE
     ? new LocalDataApi({ projectSource: config.PROJECT_SOURCE }, { fs: Static.fs, path: Static.path })
     : new ServerDataApi(
-        { platform: Constants.PlatformType.GOOGLE, adminToken: config.ADMIN_SERVER_DATA_API_TOKEN, dataEndpoint: config.VF_DATA_ENDPOINT },
+        { platform: VoiceflowConstants.PlatformType.GOOGLE, adminToken: config.ADMIN_SERVER_DATA_API_TOKEN, dataEndpoint: config.VF_DATA_ENDPOINT },
         { axios: Static.axios }
       );
   clients.mongo = MongoState.enabled(config) ? new MongoDB(config) : null;

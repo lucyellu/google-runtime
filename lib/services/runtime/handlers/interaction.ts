@@ -1,6 +1,6 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types';
+import { GoogleNode } from '@voiceflow/google-types';
 
 import { S, T } from '@/lib/constants';
 
@@ -21,7 +21,7 @@ const utilsObj = {
   v: '',
 };
 
-export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof utilsObj> = (utils: typeof utilsObj) => ({
+export const InteractionHandler: HandlerFactory<GoogleNode.Interaction.VoiceNode, typeof utilsObj> = (utils: typeof utilsObj) => ({
   canHandle: (node) => !!node.interactions,
   // eslint-disable-next-line sonarjs/cognitive-complexity
   handle: (node, runtime, variables) => {
@@ -43,7 +43,7 @@ export const InteractionHandler: HandlerFactory<Node.Interaction.Node, typeof ut
     }
 
     let nextId: string | null | undefined;
-    let variableMap: Models.SlotMapping[] | null = null;
+    let variableMap: BaseModels.SlotMapping[] | null = null;
 
     const { slots, input, intent } = request.payload;
 

@@ -1,7 +1,7 @@
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { NodeType } from '@voiceflow/base-types/build/common/node';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types';
+import { GoogleNode } from '@voiceflow/google-types';
 
 import { T } from '@/lib/constants';
 
@@ -18,7 +18,7 @@ const utilsObj = {
   addRepromptIfExists,
 };
 
-export const CaptureV2Handler: HandlerFactory<Node.CaptureV2.Node, typeof utilsObj> = (utils) => ({
+export const CaptureV2Handler: HandlerFactory<GoogleNode.CaptureV2.VoiceNode, typeof utilsObj> = (utils) => ({
   canHandle: (node) => node.type === NodeType.CAPTURE_V2,
   handle: (node, runtime, variables) => {
     const request = runtime.turn.get<IntentRequest>(T.REQUEST);
@@ -47,7 +47,7 @@ export const CaptureV2Handler: HandlerFactory<Node.CaptureV2.Node, typeof utilsO
     const { slots, input, intent } = request.payload;
 
     if (intent === node.intent?.name && node.intent.entities && slots) {
-      const entities: Models.SlotMapping[] = node.intent.entities.map((slot) => ({ slot, variable: slot }));
+      const entities: BaseModels.SlotMapping[] = node.intent.entities.map((slot) => ({ slot, variable: slot }));
       variables.merge(mapSlots(entities, slots));
 
       runtime.turn.delete(T.REQUEST);

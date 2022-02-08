@@ -1,6 +1,6 @@
-import { Version as BaseVersion } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Frame, Store } from '@voiceflow/general-runtime/build/runtime';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { DialogflowConversation } from 'actions-on-google';
 
 import { F, S, V } from '@/lib/constants';
@@ -59,7 +59,7 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
       locale: storage.get(S.LOCALE),
       user_id: storage.get(S.USER),
       sessions: storage.get(S.SESSIONS),
-      platform: Constants.PlatformType.GOOGLE,
+      platform: VoiceflowConstants.PlatformType.GOOGLE,
 
       // hidden system variables (code block only)
       [InitializeManager.VAR_VF]: {

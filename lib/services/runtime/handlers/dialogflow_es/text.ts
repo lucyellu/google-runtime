@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { sanitizeVariables } from '@voiceflow/common';
 import { slateInjectVariables, slateToPlaintext } from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
@@ -16,8 +16,8 @@ const handlerUtils = {
   slateInjectVariables,
 };
 
-export const TextHandler: HandlerFactory<Node.Text.Node, typeof handlerUtils> = (utils) => ({
-  canHandle: (node) => node.type === Node.NodeType.TEXT,
+export const TextHandler: HandlerFactory<BaseNode.Text.Node, typeof handlerUtils> = (utils) => ({
+  canHandle: (node) => node.type === BaseNode.NodeType.TEXT,
   handle: (node, runtime, variables) => {
     const slate = utils._sample(node.texts);
 

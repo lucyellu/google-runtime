@@ -1,8 +1,8 @@
-import { Button, Models } from '@voiceflow/base-types';
+import { BaseButton, BaseModels } from '@voiceflow/base-types';
 import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types';
-import { Node as VoiceNode } from '@voiceflow/voice-types';
+import { GoogleNode } from '@voiceflow/google-types';
+import { VoiceNode } from '@voiceflow/voice-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
@@ -30,11 +30,11 @@ export const transformDateTimeVariableToString = (date: GoogleDateTimeSlot) => {
   return `${date.day}/${date.month}/${date.year} ${date.hours}:${date.minutes ?? '00'}`;
 };
 
-export const mapSlots = (mappings: Models.SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
+export const mapSlots = (mappings: BaseModels.SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
   const variables: Record<string, any> = {};
 
   if (mappings && slots) {
-    mappings.forEach((map: Models.SlotMapping) => {
+    mappings.forEach((map: BaseModels.SlotMapping) => {
       if (!map.slot) return;
 
       const toVariable = map.variable;
@@ -66,7 +66,7 @@ export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, run
 export const replaceIDVariables = (input: string, variables: Record<string, string>) =>
   input.replace(SLOT_REGEXP, (_match, inner) => variables[inner] || inner);
 
-export const addChipsIfExists = <N extends { chips?: Button.Chip[]; buttons?: Node.Buttons.ButtonNode[] }>(
+export const addChipsIfExists = <N extends { chips?: BaseButton.Chip[]; buttons?: GoogleNode.Buttons.ButtonNode[] }>(
   node: N,
   runtime: Runtime,
   variables: Store

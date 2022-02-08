@@ -1,5 +1,5 @@
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types';
+import { GoogleNode } from '@voiceflow/google-types';
 import wordsToNumbers from 'words-to-numbers';
 
 import { T } from '@/lib/constants';
@@ -18,7 +18,7 @@ const utilsObj = {
   addRepromptIfExists,
 };
 
-export const CaptureHandler: HandlerFactory<Node.Capture.Node, typeof utilsObj> = (utils) => ({
+export const CaptureHandler: HandlerFactory<GoogleNode.Capture.VoiceNode, typeof utilsObj> = (utils) => ({
   canHandle: (node) => !!node.variable,
   handle: (node, runtime, variables) => {
     const request = runtime.turn.get<IntentRequest>(T.REQUEST);

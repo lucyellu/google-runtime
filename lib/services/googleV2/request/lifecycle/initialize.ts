@@ -1,7 +1,7 @@
 import { ConversationV3 } from '@assistant/conversation';
-import { Version as BaseVersion } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Frame, Store } from '@voiceflow/general-runtime/build/runtime';
-import { Constants } from '@voiceflow/general-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { F, S, V } from '@/lib/constants';
 import { createResumeFrame, RESUME_DIAGRAM_ID } from '@/lib/services/runtime/programs/resume';
@@ -58,7 +58,7 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
       locale: storage.get(S.LOCALE),
       user_id: storage.get(S.USER),
       sessions: storage.get(S.SESSIONS),
-      platform: Constants.PlatformType.GOOGLE,
+      platform: VoiceflowConstants.PlatformType.GOOGLE,
 
       // hidden system variables (code block only)
       [InitializeManager.VAR_VF]: {

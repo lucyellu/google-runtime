@@ -1,7 +1,7 @@
-import { Node as BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Frame, Program } from '@voiceflow/general-runtime/build/runtime';
-import { Constants } from '@voiceflow/google-types';
-import { Types as VoiceTypes } from '@voiceflow/voice-types';
+import { GoogleConstants } from '@voiceflow/google-types';
+import { VoiceModels } from '@voiceflow/voice-types';
 
 export const RESUME_DIAGRAM_ID = '__RESUME_FLOW__';
 
@@ -27,7 +27,7 @@ export const promptToSSML = (content = '', voice: string | undefined) => {
   return content;
 };
 
-export const createResumeFrame = (resume: VoiceTypes.Prompt<Constants.Voice>, follow: VoiceTypes.Prompt<Constants.Voice> | null) => {
+export const createResumeFrame = (resume: VoiceModels.Prompt<GoogleConstants.Voice>, follow: VoiceModels.Prompt<GoogleConstants.Voice> | null) => {
   return new Frame({
     programID: RESUME_DIAGRAM_ID,
     variables: {

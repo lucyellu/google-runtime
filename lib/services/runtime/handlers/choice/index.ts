@@ -1,5 +1,5 @@
 import { Suggestion as GoogleSuggestion } from '@assistant/conversation';
-import { Models } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import { Suggestions } from 'actions-on-google';
 
@@ -10,7 +10,7 @@ import { addChipsIfExistsV1, addRepromptIfExists } from '../../utils';
 import CommandHandler from '../command';
 import getBestScore from './score';
 
-interface Choice extends Models.BaseNode {
+interface Choice extends BaseModels.BaseNode {
   chips?: string[];
   inputs: Array<string[]>;
   elseId?: string;

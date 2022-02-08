@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/google-dfes-types';
+import { DFESNode } from '@voiceflow/google-dfes-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ describe('df es payload handler unit tests', async () => {
     });
 
     it('true', async () => {
-      expect(DefaultPayloadHandler().canHandle({ type: Node.NodeType.PAYLOAD } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(DefaultPayloadHandler().canHandle({ type: DFESNode.NodeType.PAYLOAD } as any, null as any, null as any, null as any)).to.eql(true);
     });
   });
 

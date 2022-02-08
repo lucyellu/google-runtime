@@ -1,6 +1,6 @@
 import { ConversationV3 } from '@assistant/conversation';
 import Client, { DataAPI, Runtime } from '@voiceflow/general-runtime/build/runtime';
-import { Program, Version } from '@voiceflow/google-types';
+import { GoogleProgram, GoogleVersion } from '@voiceflow/google-types';
 import { DialogflowConversation } from 'actions-on-google';
 
 import { WebhookResponse } from '../dialogflow/types';
@@ -25,9 +25,9 @@ export interface IntentRequest {
   payload: IntentRequestPayload;
 }
 
-export type GoogleRuntimeClient = Client<unknown, DataAPI<Program.GoogleProgram, Version.GoogleVersion>>;
+export type GoogleRuntimeClient = Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>>;
 
-export type GoogleRuntime = Runtime<unknown, DataAPI<Program.GoogleProgram, Version.GoogleVersion>>;
+export type GoogleRuntime = Runtime<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>>;
 
 export type ResponseBuilder = (runtime: GoogleRuntime, conv: DialogflowConversation<any>) => void | boolean;
 

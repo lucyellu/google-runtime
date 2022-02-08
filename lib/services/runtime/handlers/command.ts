@@ -1,8 +1,8 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 
-import { Models, Node as BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { extractFrameCommand, Frame, Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
-import { Node } from '@voiceflow/google-types';
+import { GoogleNode } from '@voiceflow/google-types';
 
 import { F, S, T } from '@/lib/constants';
 
@@ -29,9 +29,9 @@ export const getCommand = (runtime: Runtime, extractFrame: typeof extractFrameCo
   // don't act on a catchall intent
   if (intent === IntentName.VOICEFLOW) return null;
 
-  const matcher = (command: Node.AnyGoogleCommand | null) => command?.intent === intent;
+  const matcher = (command: GoogleNode.AnyCommand | null) => command?.intent === intent;
 
-  const res = extractFrame<Node.AnyGoogleCommand>(runtime.stack, matcher);
+  const res = extractFrame<GoogleNode.AnyCommand>(runtime.stack, matcher);
 
   if (!res) {
     return null;
@@ -59,7 +59,7 @@ export const CommandHandler = (utils: typeof utilsObj) => ({
     const res = utils.getCommand(runtime);
     if (!res) return null;
 
-    let variableMap: Models.CommandMapping[] | undefined;
+    let variableMap: BaseModels.CommandMapping[] | undefined;
 
     if (res.command) {
       const { index, command } = res;

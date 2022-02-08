@@ -1,4 +1,4 @@
-import { Node } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -61,7 +61,7 @@ describe('card handler unit tests', async () => {
       expect(runtime.turn.set.args[0]).to.eql([
         T.CARD,
         {
-          type: Node.Card.CardType.SIMPLE,
+          type: BaseNode.Card.CardType.SIMPLE,
           title: 'TITLE',
           text: 'TEXT',
           image: {
@@ -102,7 +102,7 @@ describe('card handler unit tests', async () => {
 
       const block = {
         card: {
-          type: Node.Card.CardType.STANDARD,
+          type: BaseNode.Card.CardType.STANDARD,
         },
       };
       const runtime = {
@@ -124,7 +124,7 @@ describe('card handler unit tests', async () => {
 
       const block = {
         card: {
-          type: Node.Card.CardType.STANDARD,
+          type: BaseNode.Card.CardType.STANDARD,
           image: {
             largeImageUrl: 'random-url',
           },
@@ -169,7 +169,7 @@ describe('card handler unit tests', async () => {
 
     it('simple card', async () => {
       const card = {
-        type: Node.Card.CardType.SIMPLE,
+        type: BaseNode.Card.CardType.SIMPLE,
         text: 'CONTENT',
         title: 'TITLE',
       };
@@ -196,7 +196,7 @@ describe('card handler unit tests', async () => {
 
     it('standard card', async () => {
       const card = {
-        type: Node.Card.CardType.STANDARD,
+        type: BaseNode.Card.CardType.STANDARD,
         title: 'TITLE',
         text: 'TEXT',
         image: {
@@ -260,7 +260,7 @@ describe('card handler unit tests', async () => {
 
     it('simple card', async () => {
       const card = {
-        type: Node.Card.CardType.SIMPLE,
+        type: BaseNode.Card.CardType.SIMPLE,
         title: 'TITLE',
         text: 'CONTENT',
       };
@@ -287,7 +287,7 @@ describe('card handler unit tests', async () => {
 
     it('standard card', async () => {
       const card = {
-        type: Node.Card.CardType.STANDARD,
+        type: BaseNode.Card.CardType.STANDARD,
         title: 'TITLE',
         text: 'TEXT',
         image: {
@@ -351,7 +351,7 @@ describe('card handler unit tests', async () => {
 
     it('simple card', async () => {
       const card = {
-        type: Node.Card.CardType.SIMPLE,
+        type: BaseNode.Card.CardType.SIMPLE,
         title: 'TITLE',
         text: 'CONTENT',
       };
@@ -377,7 +377,7 @@ describe('card handler unit tests', async () => {
 
     it('standard card', async () => {
       const card = {
-        type: Node.Card.CardType.STANDARD,
+        type: BaseNode.Card.CardType.STANDARD,
         title: 'TITLE',
         text: 'TEXT',
         image: {
