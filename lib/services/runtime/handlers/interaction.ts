@@ -64,8 +64,9 @@ export const InteractionHandler: HandlerFactory<GoogleNode.Interaction.VoiceNode
       // check if there is a choice in the node that fulfills intent
       node.interactions.forEach((choice, i: number) => {
         if (choice.intent && choice.intent === intent) {
-          if (choice.goTo) {
-            runtime.turn.set(T.GOTO, choice.goTo.intentName);
+          /** @deprecated this section should be removed in favor of the goto handler */
+          if ((choice as any).goTo) {
+            runtime.turn.set(T.GOTO, (choice as any).goTo.intentName);
             nextId = node.id;
           } else {
             variableMap = choice.mappings ?? null;

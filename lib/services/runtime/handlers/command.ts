@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { extractFrameCommand, Frame, Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
+import { Frame, Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { GoogleNode } from '@voiceflow/google-types';
 
 import { F, S, T } from '@/lib/constants';
@@ -17,7 +17,11 @@ const isIntentCommand = (command: BaseNode.AnyCommonCommand): command is BaseNod
   return !isPushCommand(command) && !!(command as BaseNode.Intent.Command).next;
 };
 
-export const getCommand = (runtime: Runtime, extractFrame: typeof extractFrameCommand) => {
+export interface CommandOptions {
+  diagramID?: string;
+}
+
+export const getCommand = (runtime: Runtime, options: CommandOptions = {}) => {
   const request = runtime.turn.get<IntentRequest>(T.REQUEST);
 
   if (request?.type !== RequestType.INTENT) {
@@ -31,32 +35,39 @@ export const getCommand = (runtime: Runtime, extractFrame: typeof extractFrameCo
 
   const matcher = (command: GoogleNode.AnyCommand | null) => command?.intent === intent;
 
-  const res = extractFrame<GoogleNode.AnyCommand>(runtime.stack, matcher);
+  const frames = runtime.stack.getFrames();
+  for (let index = frames.length - 1; index >= 0; index--) {
+    const commands = frames[index]?.getCommands<BaseNode.AnyCommonCommand>() ?? [];
 
-  if (!res) {
-    return null;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const command of commands) {
+      const commandDiagramID = (isPushCommand(command) && command.diagram_id) || (isIntentCommand(command) && command.diagramID);
+      if (options.diagramID && commandDiagramID && options.diagramID !== commandDiagramID) {
+        continue;
+      }
+
+      if (matcher(command)) {
+        return { index, command, intent, slots };
+      }
+    }
   }
 
-  return {
-    ...res,
-    intent,
-    slots,
-  };
+  return null;
 };
 
 const utilsObj = {
   Frame,
   mapSlots,
-  getCommand: (runtime: Runtime) => getCommand(runtime, extractFrameCommand),
+  getCommand,
 };
 
 /**
  * The Command Handler is meant to be used inside other handlers, and should never handle blocks directly
  */
 export const CommandHandler = (utils: typeof utilsObj) => ({
-  canHandle: (runtime: Runtime): boolean => !!utils.getCommand(runtime),
-  handle: (runtime: Runtime, variables: Store): null => {
-    const res = utils.getCommand(runtime);
+  canHandle: (runtime: Runtime, options?: CommandOptions): boolean => !!utils.getCommand(runtime, options),
+  handle: (runtime: Runtime, variables: Store, options?: CommandOptions): null => {
+    const res = utils.getCommand(runtime, options);
     if (!res) return null;
 
     let variableMap: BaseModels.CommandMapping[] | undefined;
