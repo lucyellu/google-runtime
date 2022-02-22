@@ -12,7 +12,6 @@ export enum Storage {
 }
 
 export enum Turn {
-  TURNID = 'turnid',
   END = 'end',
   PREVIOUS_OUTPUT = 'lastOutput',
   REQUEST = 'request',
@@ -24,6 +23,7 @@ export enum Turn {
   DF_ES_PAYLOAD = 'df-es-payload',
   DF_ES_TEXT_ENABLED = 'df-es-text-enabled',
   GOTO = 'goto',
+  TURN_ID_PROMISE = 'turnid',
 }
 
 export enum Frame {

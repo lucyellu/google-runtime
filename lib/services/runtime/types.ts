@@ -3,6 +3,7 @@ import Client, { DataAPI, Runtime } from '@voiceflow/general-runtime/build/runti
 import { GoogleProgram, GoogleVersion } from '@voiceflow/google-types';
 import { DialogflowConversation } from 'actions-on-google';
 
+import type { FullServiceMap } from '..';
 import { WebhookResponse } from '../dialogflow/types';
 
 export enum RequestType {
@@ -25,9 +26,9 @@ export interface IntentRequest {
   payload: IntentRequestPayload;
 }
 
-export type GoogleRuntimeClient = Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>>;
+export type GoogleRuntimeClient = Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>, FullServiceMap>;
 
-export type GoogleRuntime = Runtime<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>>;
+export type GoogleRuntime = Runtime<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>, FullServiceMap>;
 
 export type ResponseBuilder = (runtime: GoogleRuntime, conv: DialogflowConversation<any>) => void | boolean;
 

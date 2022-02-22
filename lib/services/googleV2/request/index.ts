@@ -4,9 +4,8 @@ import _ from 'lodash';
 
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
-import logger from '@/logger';
 
-import { AbstractManager, injectServices } from '../../types';
+import { AbstractManager, GoogleRequest, injectServices } from '../../types';
 import GoogleManager from '../index';
 import Initialize from './lifecycle/initialize';
 import Response from './lifecycle/response';
@@ -38,17 +37,17 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
     const { initialize, runtimeBuild, response } = this.services;
 
     const { intent } = conv;
-    const input = intent.query;
+    const input = intent.query ?? '';
 
     const slots = this._extractSlots(conv);
 
     const { userId } = conv.user.params;
 
     const runtime = await runtimeBuild.build(_.get(conv.request, 'versionID'), userId);
-    const request = {
+    const request: GoogleRequest = {
       type: RequestType.INTENT,
       payload: {
-        intent: intent.name,
+        intent: intent.name ?? '',
         input,
         slots,
       },
@@ -56,39 +55,36 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
     if (intent.name === 'actions.intent.MAIN' || intent.name === 'Default Welcome Intent' || runtime.stack.isEmpty()) {
       await initialize.build(runtime, conv);
 
-      try {
-        const turnID = runtime.services.analyticsClient.track({
+      runtime.turn.set(
+        T.TURN_ID_PROMISE,
+        runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
           event: Ingest.Event.TURN,
           request: Ingest.RequestType.LAUNCH,
           payload: request,
           sessionid: conv.session.id,
-          metadata: runtime.getRawState(),
+          metadata: { ...runtime.getRawState(), platform: 'google' },
           timestamp: new Date(),
-        });
-        runtime.turn.set(T.TURNID, turnID);
-      } catch (error) {
-        logger.error(error);
-      }
+        })
+      );
     } else {
       request.type = intent.name?.startsWith('actions.intent.MEDIA_STATUS') ? RequestType.MEDIA_STATUS : RequestType.INTENT;
-      request.payload.intent = intent.name;
+      request.payload.intent = intent.name ?? '';
 
       runtime.turn.set(T.REQUEST, request);
-      try {
-        const turnID = runtime.services.analyticsClient.track({
+
+      runtime.turn.set(
+        T.TURN_ID_PROMISE,
+        runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
           event: Ingest.Event.TURN,
           request: Ingest.RequestType.REQUEST,
           payload: request,
           sessionid: conv.session.id,
-          metadata: runtime.getRawState(),
+          metadata: { ...runtime.getRawState(), platform: 'google' },
           timestamp: new Date(),
-        });
-        runtime.turn.set(T.TURNID, turnID);
-      } catch (error) {
-        logger.error(error);
-      }
+        })
+      );
     }
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));

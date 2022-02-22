@@ -56,24 +56,28 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       // eslint-disable-next-line no-await-in-loop
       await handler(runtime, res);
     }
+
     await state.saveToDb(storage.get<string>(S.USER)!, runtime.getFinalState());
 
-    try {
-      const turnID = await turn.get<string>(T.TURNID);
-      // Track response on analytics system
-      runtime.services.analyticsClient.track({
-        id: runtime.getVersionID(),
-        event: Ingest.Event.INTERACT,
-        request: Ingest.RequestType.RESPONSE,
-        payload: res,
-        sessionid: runtime.getFinalState().storage.user,
-        metadata: runtime.getFinalState(),
-        timestamp: new Date(),
-        turnIDP: turnID,
-      });
-    } catch (error) {
-      logger.error(error);
-    }
+    const versionID = runtime.getVersionID();
+
+    // not using async await, since analytics is not blocking operation
+    // Promise.resolve to fix the cases when T.TURN_ID_PROMISE is not a promise
+    Promise.resolve(turn.get<Promise<string>>(T.TURN_ID_PROMISE))
+      .then((turnID) =>
+        runtime.services.analyticsClient.track({
+          id: versionID,
+          event: Ingest.Event.INTERACT,
+          request: Ingest.RequestType.RESPONSE,
+          payload: res,
+          sessionid: runtime.getFinalState().storage.user,
+          metadata: { ...runtime.getFinalState(), platform: 'dialogflow-es' },
+          timestamp: new Date(),
+          turnIDP: turnID,
+        })
+      )
+      .catch((error: unknown) => logger.error(`[analytics] failed to identify ${logger.vars({ versionID, error })}`));
+
     return res;
   }
 }

@@ -2,7 +2,6 @@ import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-cli
 
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
-import logger from '@/logger';
 
 import { AbstractManager, injectServices } from '../types';
 import InitializeES from './lifecycle/es/initialize';
@@ -10,6 +9,9 @@ import ResponseES from './lifecycle/es/response';
 import RuntimeBuildES from './lifecycle/es/runtime';
 import SlotFillingES from './lifecycle/es/slotFilling';
 import { WebhookRequest } from './types';
+
+const mainIntent1 = 'actions.intent.MAIN';
+const mainIntent2 = 'Default Welcome Intent';
 
 @injectServices({ initializeES: InitializeES, runtimeBuildES: RuntimeBuildES, responseES: ResponseES, slotFillingES: SlotFillingES })
 class DialogflowManager extends AbstractManager<{
@@ -43,49 +45,46 @@ class DialogflowManager extends AbstractManager<{
         slots,
       },
     };
-    const mainIntent1 = 'actions.intent.MAIN';
-    const mainIntent2 = 'Default Welcome Intent';
+
     if (intentName === mainIntent1 || intentName === mainIntent2 || runtime.stack.isEmpty()) {
       await initializeES.build(runtime, req);
+
       if (intentName === mainIntent1 || intentName === mainIntent2) {
-        try {
-          const turnID = runtime.services.analyticsClient.track({
+        runtime.turn.set(
+          T.TURN_ID_PROMISE,
+          runtime.services.analyticsClient.track({
             id: runtime.getVersionID(),
             event: Ingest.Event.TURN,
             request: Ingest.RequestType.LAUNCH,
             payload: request,
             sessionid: req.session,
-            metadata: runtime.getRawState(),
+            metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },
             timestamp: new Date(),
-          });
-          runtime.turn.set(T.TURNID, turnID);
-        } catch (error) {
-          logger.error(error);
-        }
+          })
+        );
       }
     }
 
     if (!['actions.intent.MAIN', 'Default Welcome Intent'].includes(intentName)) {
       runtime.turn.set(T.REQUEST, request);
 
-      try {
-        const turnID = runtime.services.analyticsClient.track({
+      runtime.turn.set(
+        T.TURN_ID_PROMISE,
+        runtime.services.analyticsClient.track({
           id: runtime.getVersionID(),
           event: Ingest.Event.TURN,
           request: Ingest.RequestType.REQUEST,
           payload: request,
           sessionid: req.session,
-          metadata: runtime.getRawState(),
+          metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },
           timestamp: new Date(),
-        });
-        runtime.turn.set(T.TURNID, turnID);
-      } catch (error) {
-        logger.error(error);
-      }
+        })
+      );
     }
 
     runtime.variables.set(V.TIMESTAMP, Math.floor(Date.now() / 1000));
     runtime.variables.set(V.DF_ES_CHANNEL, this._getChannel(req));
+
     await runtime.update();
 
     return responseES.build(runtime);

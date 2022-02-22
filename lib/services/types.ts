@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { BaseRequest } from '@voiceflow/base-types';
 
+import { RequestType } from '@/lib/services/runtime/types';
 import { isConstructor } from '@/lib/utils';
 import { Config } from '@/types';
 
@@ -56,7 +56,7 @@ export interface Audio {
 }
 
 export interface GoogleRequest {
-  type: BaseRequest.RequestType;
+  type: RequestType;
   payload: {
     intent: string;
     input: string;

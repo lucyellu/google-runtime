@@ -18,7 +18,7 @@
     "@voiceflow/base-types": "2.11.3",
     "@voiceflow/body-parser": "1.21.1",
     "@voiceflow/common": "7.20.2",
-    "@voiceflow/general-runtime": "1.89.1",
+    "@voiceflow/general-runtime": "1.90.0",
     "@voiceflow/google-dfes-types": "2.6.7",
     "@voiceflow/google-types": "2.6.3",
     "@voiceflow/logger": "1.6.1",

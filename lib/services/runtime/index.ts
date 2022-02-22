@@ -23,7 +23,7 @@ type Version = keyof typeof HandlersMap;
 const RuntimeClientManager = (services: Services, config: Config, v: Version = 'v1', utils = utilsObj): GoogleRuntimeClient => {
   const handlers = utils.HandlersMap[v](config);
 
-  const client = new utils.Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>>({
+  const client = new utils.Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>, Services>({
     api: services.dataAPI,
     services,
     handlers,
