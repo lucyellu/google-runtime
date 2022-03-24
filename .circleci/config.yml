@@ -177,7 +177,6 @@ workflows:
             - vfcommon/update_track
 
       - vfcommon/build_push_image:
-          <<: *prod_deploy_filters
           name: build-push-image-e2e
           context: dev-test
           image_repo: << pipeline.parameters.container-image-url >>
@@ -185,6 +184,9 @@ workflows:
           image_tag: "latest-master-e2e"
           requires:
             - vfcommon/update_track
+          filters:
+            branches:
+              only: master
 
   # Cron Production update
   update-production-branch:
