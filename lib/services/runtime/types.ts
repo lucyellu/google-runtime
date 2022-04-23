@@ -18,6 +18,7 @@ export enum IntentName {
 export interface IntentRequestPayload {
   intent: string;
   input: string;
+  action?: string;
   slots: { [key: string]: string };
 }
 

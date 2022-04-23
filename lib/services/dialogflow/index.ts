@@ -26,8 +26,7 @@ class DialogflowManager extends AbstractManager<{
     metrics.invocation();
 
     const intentName = req.queryResult.intent.displayName;
-    const input = req.queryResult.queryText;
-    const slots = req.queryResult.parameters;
+    const { queryText: input, parameters: slots, action } = req.queryResult;
 
     const userId = req.session;
 
@@ -42,6 +41,7 @@ class DialogflowManager extends AbstractManager<{
       payload: {
         intent: intentName,
         input,
+        action,
         slots,
       },
     };

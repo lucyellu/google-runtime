@@ -34,6 +34,7 @@ export interface WebhookRequest {
   responseId: string;
   queryResult: {
     queryText: string;
+    action: string;
     parameters: Record<string, any>;
     allRequiredParamsPresent: boolean;
     outputContexts: Array<{ name: string; parameters: Record<string, any> }>;

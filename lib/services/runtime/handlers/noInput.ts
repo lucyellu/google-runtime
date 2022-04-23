@@ -14,7 +14,8 @@ export type NoReplyCounterStorage = number;
 
 export const NoInputHandler = () => ({
   canHandle: (runtime: Runtime) => {
-    return !!runtime.turn.get<IntentRequest>(T.REQUEST)?.payload?.intent.startsWith(NO_INPUT_PREFIX);
+    const { payload } = runtime.turn.get<IntentRequest>(T.REQUEST) ?? {};
+    return payload?.action?.startsWith(NO_INPUT_PREFIX) || payload?.intent?.startsWith(NO_INPUT_PREFIX) || false;
   },
 
   handle: (node: VoiceNode.Utils.NoReplyNode, runtime: Runtime, variables: Store) => {
