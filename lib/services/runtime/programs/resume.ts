@@ -19,12 +19,13 @@ export interface ResumePrompt {
   follow_voice: string;
 }
 
-export const promptToSSML = (content = '', voice: string | undefined) => {
+export const promptToSSML = (content: string | undefined, voice: string | undefined) => {
+  const parsedContent = content ?? '';
   if (voice === 'audio') {
-    return `<audio src="${content}"/>`;
+    return `<audio src="${parsedContent}"/>`;
   }
 
-  return content;
+  return parsedContent;
 };
 
 export const createResumeFrame = (resume: VoiceModels.Prompt<GoogleConstants.Voice>, follow: VoiceModels.Prompt<GoogleConstants.Voice> | null) => {

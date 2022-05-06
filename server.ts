@@ -10,8 +10,7 @@ import log from './logger';
 import pjson from './package.json';
 import { Config } from './types';
 
-// eslint-disable-next-line optimize-regex/optimize-regex
-const name = pjson.name.replace(/^@[a-zA-Z0-9-]+\//g, '');
+const name = pjson.name.replace(/^@[\dA-Za-z-]+\//g, '');
 
 /**
  * @class

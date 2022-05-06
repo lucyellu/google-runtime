@@ -16,6 +16,7 @@
     "@voiceflow/git-branch-check",
     "fixpack",
     "husky",
-    "lint-staged"
+    "lint-staged",
+    "eslint-import-resolver-typescript"
   ]
 }
