@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "ES2021",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": false,
@@ -8,7 +8,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-
     /* Strictness Checks */
     "skipLibCheck": true,
     "alwaysStrict": true,
@@ -22,22 +21,32 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": true,
-
     /* Debugging Options */
     "traceResolution": false,
     "listEmittedFiles": false,
     "listFiles": false,
     "pretty": true,
-    "lib": ["es2017"],
-
+    "lib": [
+      "ES2021"
+    ],
     "outDir": "./build",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ]
   },
   "compileOnSave": false,
-  "include": ["**/*.ts", "typings/**/*.d.ts"],
-  "exclude": ["node_modules/**"]
+  "include": [
+    "**/*.ts",
+    "typings/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules/**"
+  ]
 }

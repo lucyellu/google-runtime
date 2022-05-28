@@ -3,9 +3,12 @@
   "compilerOptions": {
     "plugins": [
       {
-        "transform": "@zerollup/ts-transform-paths"
+        "transform": "typescript-transform-paths"
       }
     ]
   },
-  "exclude": ["node_modules/**", "tests/**"]
+  "exclude": [
+    "node_modules/**",
+    "tests/**"
+  ]
 }
