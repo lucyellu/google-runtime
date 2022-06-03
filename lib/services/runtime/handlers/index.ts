@@ -20,7 +20,11 @@ import _V1Handler from './_v1';
 import CaptureHandler from './capture';
 import CaptureV2Handler from './captureV2';
 import CardHandler, { CardResponseBuilder, CardResponseBuilderDialogflowES, CardResponseBuilderV2 } from './card';
-import ChoiceHandler, { ChipsResponseBuilder, ChipsResponseBuilderDialogflowES, ChipsResponseBuilderV2 } from './choice';
+import ChoiceHandler, {
+  ChipsResponseBuilder,
+  ChipsResponseBuilderDialogflowES,
+  ChipsResponseBuilderV2,
+} from './choice';
 import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow_es/image';
 import DFESPayloadHandler, { PayloadResponseBuilderDialogflowES } from './dialogflow_es/payload';
 import DFESTextHandler from './dialogflow_es/text';
@@ -31,7 +35,12 @@ import SpeakHandler from './speak';
 import StreamHandler, { StreamResponseBuilder, StreamResponseBuilderV2 } from './stream';
 
 export const responseHandlers = [CardResponseBuilder, StreamResponseBuilder, ChipsResponseBuilder];
-export const responseHandlersV2 = [ChipsResponseBuilderV2, CardResponseBuilderV2, StreamResponseBuilderV2, DirectiveResponseBuilder];
+export const responseHandlersV2 = [
+  ChipsResponseBuilderV2,
+  CardResponseBuilderV2,
+  StreamResponseBuilderV2,
+  DirectiveResponseBuilder,
+];
 export const responseHandlersDialogflowES = [
   ChipsResponseBuilderDialogflowES,
   CardResponseBuilderDialogflowES,

@@ -13,7 +13,12 @@ import { WebhookRequest } from './types';
 const mainIntent1 = 'actions.intent.MAIN';
 const mainIntent2 = 'Default Welcome Intent';
 
-@injectServices({ initializeES: InitializeES, runtimeBuildES: RuntimeBuildES, responseES: ResponseES, slotFillingES: SlotFillingES })
+@injectServices({
+  initializeES: InitializeES,
+  runtimeBuildES: RuntimeBuildES,
+  responseES: ResponseES,
+  slotFillingES: SlotFillingES,
+})
 class DialogflowManager extends AbstractManager<{
   initializeES: InitializeES;
   runtimeBuildES: RuntimeBuildES;

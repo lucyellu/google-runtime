@@ -111,12 +111,24 @@ export class AnalyticsSystem extends AbstractClient {
           throw new TypeError('sessionid is required');
         }
 
-        const turnIngestBody = this.createTurnBody({ versionID, eventID: event, sessionID: sessionid, metadata, timestamp });
+        const turnIngestBody = this.createTurnBody({
+          versionID,
+          eventID: event,
+          sessionID: sessionid,
+          metadata,
+          timestamp,
+        });
 
         const turnResponse = await this.ingestClient?.doIngest(turnIngestBody);
         const turnID = turnResponse?.data.turn_id!;
 
-        const interactIngestBody = this.createInteractBody({ eventID: Ingest.Event.INTERACT, request, payload, turnID, timestamp });
+        const interactIngestBody = this.createInteractBody({
+          eventID: Ingest.Event.INTERACT,
+          request,
+          payload,
+          turnID,
+          timestamp,
+        });
 
         await this.ingestClient?.doIngest(interactIngestBody);
 
@@ -127,7 +139,13 @@ export class AnalyticsSystem extends AbstractClient {
           throw new TypeError('turnIDP is required');
         }
 
-        const interactIngestBody = this.createInteractBody({ eventID: event, request, payload, turnID: turnIDP, timestamp });
+        const interactIngestBody = this.createInteractBody({
+          eventID: event,
+          request,
+          payload,
+          turnID: turnIDP,
+          timestamp,
+        });
 
         await this.ingestClient?.doIngest(interactIngestBody);
 
@@ -139,6 +157,7 @@ export class AnalyticsSystem extends AbstractClient {
   }
 }
 
-const AnalyticsClient = ({ config, dataAPI }: { config: Config; dataAPI: DataAPI }) => new AnalyticsSystem(config, dataAPI);
+const AnalyticsClient = ({ config, dataAPI }: { config: Config; dataAPI: DataAPI }) =>
+  new AnalyticsSystem(config, dataAPI);
 
 export default AnalyticsClient;

@@ -299,7 +299,11 @@ describe('stream handler unit tests', async () => {
       it('no background or icon', () => {
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGenerator(null as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGenerator(
+          null as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: null, background_img: null, url: 'url' };
 
@@ -322,9 +326,19 @@ describe('stream handler unit tests', async () => {
         const ImageBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGenerator(ImageBuilder as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGenerator(
+          ImageBuilder as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
-        const play = { title: 'title', description: 'description', icon_img: null, background_img: 'background', url: 'url' };
+        const play = {
+          title: 'title',
+          description: 'description',
+          icon_img: null,
+          background_img: 'background',
+          url: 'url',
+        };
 
         const turnGet = sinon.stub().returns(true);
         turnGet.onCall(0).returns(play);
@@ -338,14 +352,20 @@ describe('stream handler unit tests', async () => {
         streamResponseBuilder(runtime as any, conv as any);
 
         expect(ImageBuilder.args).to.eql([[{ url: play.background_img, alt: 'Media Background Image' }]]);
-        expect(MediaObjectBuilder.args).to.eql([[{ name: play.title, url: play.url, description: play.description, image: {} }]]);
+        expect(MediaObjectBuilder.args).to.eql([
+          [{ name: play.title, url: play.url, description: play.description, image: {} }],
+        ]);
       });
 
       it('icon but no background', () => {
         const ImageBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGenerator(ImageBuilder as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGenerator(
+          ImageBuilder as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: 'icon', background_img: null, url: 'url' };
 
@@ -362,14 +382,20 @@ describe('stream handler unit tests', async () => {
         streamResponseBuilder(runtime as any, conv as any);
 
         expect(ImageBuilder.args).to.eql([[{ url: play.icon_img, alt: 'Media Icon Image' }]]);
-        expect(MediaObjectBuilder.args).to.eql([[{ name: play.title, url: play.url, description: play.description, icon: {} }]]);
+        expect(MediaObjectBuilder.args).to.eql([
+          [{ name: play.title, url: play.url, description: play.description, icon: {} }],
+        ]);
       });
 
       it('with suggestions', () => {
         const SuggestionsBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGenerator(null as any, MediaObjectBuilder as any, SuggestionsBuilder as any);
+        const streamResponseBuilder = StreamResponseBuilderGenerator(
+          null as any,
+          MediaObjectBuilder as any,
+          SuggestionsBuilder as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: null, background_img: null, url: 'url' };
 
@@ -419,7 +445,11 @@ describe('stream handler unit tests', async () => {
       it('no background or icon', () => {
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(null as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(
+          null as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: null, background_img: null, url: 'url' };
 
@@ -434,8 +464,15 @@ describe('stream handler unit tests', async () => {
 
         streamResponseBuilder(runtime as any, conv as any);
 
-        const mediaObject = { name: play.title, description: play.description, url: play.url, image: { icon: undefined, large: undefined } };
-        expect(MediaObjectBuilder.args).to.eql([[{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }]]);
+        const mediaObject = {
+          name: play.title,
+          description: play.description,
+          url: play.url,
+          image: { icon: undefined, large: undefined },
+        };
+        expect(MediaObjectBuilder.args).to.eql([
+          [{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }],
+        ]);
         expect(conv.add.args).to.eql([[{}]]);
       });
 
@@ -443,9 +480,19 @@ describe('stream handler unit tests', async () => {
         const ImageBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(ImageBuilder as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(
+          ImageBuilder as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
-        const play = { title: 'title', description: 'description', icon_img: null, background_img: 'background', url: 'url' };
+        const play = {
+          title: 'title',
+          description: 'description',
+          icon_img: null,
+          background_img: 'background',
+          url: 'url',
+        };
 
         const turnGet = sinon.stub().returns(true);
         turnGet.onCall(0).returns(play);
@@ -459,15 +506,26 @@ describe('stream handler unit tests', async () => {
         streamResponseBuilder(runtime as any, conv as any);
 
         expect(ImageBuilder.args).to.eql([[{ url: play.background_img, alt: 'Media Background Image' }]]);
-        const mediaObject = { name: play.title, description: play.description, url: play.url, image: { icon: undefined, large: {} } };
-        expect(MediaObjectBuilder.args).to.eql([[{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }]]);
+        const mediaObject = {
+          name: play.title,
+          description: play.description,
+          url: play.url,
+          image: { icon: undefined, large: {} },
+        };
+        expect(MediaObjectBuilder.args).to.eql([
+          [{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }],
+        ]);
       });
 
       it('icon but no background', () => {
         const ImageBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(ImageBuilder as any, MediaObjectBuilder as any, null as any);
+        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(
+          ImageBuilder as any,
+          MediaObjectBuilder as any,
+          null as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: 'icon', background_img: null, url: 'url' };
 
@@ -484,15 +542,26 @@ describe('stream handler unit tests', async () => {
         streamResponseBuilder(runtime as any, conv as any);
 
         expect(ImageBuilder.args).to.eql([[{ url: play.icon_img, alt: 'Media Icon Image' }]]);
-        const mediaObject = { name: play.title, description: play.description, url: play.url, image: { icon: {}, large: undefined } };
-        expect(MediaObjectBuilder.args).to.eql([[{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }]]);
+        const mediaObject = {
+          name: play.title,
+          description: play.description,
+          url: play.url,
+          image: { icon: {}, large: undefined },
+        };
+        expect(MediaObjectBuilder.args).to.eql([
+          [{ mediaObjects: [mediaObject], mediaType: 'AUDIO', optionalMediaControls: ['PAUSED', 'STOPPED'] }],
+        ]);
       });
 
       it('with suggestions', () => {
         const SuggestionsBuilder = sinon.stub();
         const MediaObjectBuilder = sinon.stub();
 
-        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(null as any, MediaObjectBuilder as any, SuggestionsBuilder as any);
+        const streamResponseBuilder = StreamResponseBuilderGeneratorV2(
+          null as any,
+          MediaObjectBuilder as any,
+          SuggestionsBuilder as any
+        );
 
         const play = { title: 'title', description: 'description', icon_img: null, background_img: null, url: 'url' };
 

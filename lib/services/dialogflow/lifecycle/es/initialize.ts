@@ -88,7 +88,9 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
       stack.top().storage.set(F.CALLED_COMMAND, true);
 
       // if there is an existing resume flow, remove itself and anything above it
-      const resumeStackIndex = stack.getFrames().findIndex((frame) => frame.getProgramID() === resume.RESUME_DIAGRAM_ID);
+      const resumeStackIndex = stack
+        .getFrames()
+        .findIndex((frame) => frame.getProgramID() === resume.RESUME_DIAGRAM_ID);
       if (resumeStackIndex >= 0) {
         stack.popTo(resumeStackIndex);
       }

@@ -1,5 +1,10 @@
 import { Image as GoogleImage, Media as GoogleMedia, Suggestion as GoogleSuggestion } from '@assistant/conversation';
-import { Capability, MediaObject as GoogleMediaObject, MediaType, OptionalMediaControl } from '@assistant/conversation/dist/api/schema';
+import {
+  Capability,
+  MediaObject as GoogleMediaObject,
+  MediaType,
+  OptionalMediaControl,
+} from '@assistant/conversation/dist/api/schema';
 import { replaceVariables } from '@voiceflow/common';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import { GoogleNode } from '@voiceflow/google-types';
@@ -18,7 +23,11 @@ interface StreamPlay {
 }
 
 export const StreamResponseBuilderGenerator =
-  (ImageBuilder: typeof Image, MediaObjectBuilder: typeof MediaObject, SuggestionsBuilder: typeof Suggestions): ResponseBuilder =>
+  (
+    ImageBuilder: typeof Image,
+    MediaObjectBuilder: typeof MediaObject,
+    SuggestionsBuilder: typeof Suggestions
+  ): ResponseBuilder =>
   (runtime, conv) => {
     const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
 
@@ -60,7 +69,11 @@ export const StreamResponseBuilderGenerator =
 export const StreamResponseBuilder = StreamResponseBuilderGenerator(Image, MediaObject, Suggestions);
 
 export const StreamResponseBuilderGeneratorV2 =
-  (ImageBuilder: typeof GoogleImage, MediaObjectBuilder: typeof GoogleMedia, SuggestionsBuilder: typeof GoogleSuggestion): ResponseBuilderV2 =>
+  (
+    ImageBuilder: typeof GoogleImage,
+    MediaObjectBuilder: typeof GoogleMedia,
+    SuggestionsBuilder: typeof GoogleSuggestion
+  ): ResponseBuilderV2 =>
   (runtime, conv) => {
     const streamPlay = runtime.turn.get<StreamPlay>(T.STREAM_PLAY);
 

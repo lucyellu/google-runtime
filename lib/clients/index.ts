@@ -39,7 +39,11 @@ const buildClients = (config: Config) => {
   clients.dataAPI = config.PROJECT_SOURCE
     ? new LocalDataApi({ projectSource: config.PROJECT_SOURCE }, { fs: Static.fs, path: Static.path })
     : new ServerDataApi(
-        { platform: VoiceflowConstants.PlatformType.GOOGLE, adminToken: config.ADMIN_SERVER_DATA_API_TOKEN, dataEndpoint: config.VF_DATA_ENDPOINT },
+        {
+          platform: VoiceflowConstants.PlatformType.GOOGLE,
+          adminToken: config.ADMIN_SERVER_DATA_API_TOKEN,
+          dataEndpoint: config.VF_DATA_ENDPOINT,
+        },
         { axios: Static.axios }
       );
   clients.mongo = MongoState.enabled(config) ? new MongoDB(config) : null;

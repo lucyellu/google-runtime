@@ -9,14 +9,22 @@ describe('noInput handler unit tests', () => {
     it('false', () => {
       expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns(null) } } as any)).to.eql(false);
       expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({}) } } as any)).to.eql(false);
-      expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'other intent' } }) } } as any)).to.eql(false);
+      expect(
+        NoInputHandler().canHandle({
+          turn: { get: sinon.stub().returns({ payload: { intent: 'other intent' } }) },
+        } as any)
+      ).to.eql(false);
     });
     it('true', () => {
-      expect(NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'actions.intent.NO_INPUT_1' } }) } } as any)).to.eql(
-        true
-      );
       expect(
-        NoInputHandler().canHandle({ turn: { get: sinon.stub().returns({ payload: { intent: 'actions.intent.NO_INPUT_FINAL' } }) } } as any)
+        NoInputHandler().canHandle({
+          turn: { get: sinon.stub().returns({ payload: { intent: 'actions.intent.NO_INPUT_1' } }) },
+        } as any)
+      ).to.eql(true);
+      expect(
+        NoInputHandler().canHandle({
+          turn: { get: sinon.stub().returns({ payload: { intent: 'actions.intent.NO_INPUT_FINAL' } }) },
+        } as any)
       ).to.eql(true);
     });
   });

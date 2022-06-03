@@ -76,7 +76,11 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { allRequiredParamsPresent: true, intent: { displayName: 'actions.intent.MAIN' }, queryText: 'main intent' },
+        queryResult: {
+          allRequiredParamsPresent: true,
+          intent: { displayName: 'actions.intent.MAIN' },
+          queryText: 'main intent',
+        },
         session: 'user-id',
       };
 
@@ -160,7 +164,11 @@ describe('DialogflowManager unit tests', async () => {
       };
 
       const req = {
-        queryResult: { allRequiredParamsPresent: true, intent: { displayName: 'Default Welcome Intent' }, queryText: 'default welcome intent' },
+        queryResult: {
+          allRequiredParamsPresent: true,
+          intent: { displayName: 'Default Welcome Intent' },
+          queryText: 'default welcome intent',
+        },
         session: 'user-id',
       };
 

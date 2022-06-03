@@ -67,7 +67,9 @@ export const CardResponseBuilderDialogflowES: ResponseBuilderDialogflowES = (run
   if (card.type === BaseNode.Card.CardType.SIMPLE) {
     res.fulfillmentMessages.push({ card: { title: card.title, subtitle: card.text } });
   } else if (card.type === BaseNode.Card.CardType.STANDARD) {
-    res.fulfillmentMessages.push({ card: { title: card.title, text: card.text, imageUri: card.image?.largeImageUrl ?? '' } });
+    res.fulfillmentMessages.push({
+      card: { title: card.title, text: card.text, imageUri: card.image?.largeImageUrl ?? '' },
+    });
   }
 };
 

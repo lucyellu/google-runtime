@@ -14,7 +14,9 @@ describe('capture handler unit tests', async () => {
     });
 
     it('true', async () => {
-      expect(DefaultCaptureHandler().canHandle({ variable: 'var1' } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(
+        DefaultCaptureHandler().canHandle({ variable: 'var1' } as any, null as any, null as any, null as any)
+      ).to.eql(true);
     });
   });
 
@@ -90,7 +92,9 @@ describe('capture handler unit tests', async () => {
           const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
           const variables = { foo: 'bar' };
 
-          expect(captureHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.nextId);
+          expect(captureHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(
+            block.nextId
+          );
           expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);
         });
 
@@ -111,7 +115,9 @@ describe('capture handler unit tests', async () => {
           const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
           const variables = { set: sinon.stub() };
 
-          expect(captureHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.nextId);
+          expect(captureHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(
+            block.nextId
+          );
           expect(utils.wordsToNumbers.args).to.eql([[request.payload.input]]);
           expect(variables.set.args).to.eql([[block.variable, request.payload.input]]);
           expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);

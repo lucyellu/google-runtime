@@ -14,14 +14,22 @@ describe('mongo stateManager unit tests', async () => {
   describe('saveToDb', () => {
     it('throws', async () => {
       const updateOne = sinon.stub().resolves({ result: { ok: false } });
-      const state = new StateManager({ mongo: { db: { collection: sinon.stub().returns({ updateOne }) } } } as any, {} as any);
+      const state = new StateManager(
+        { mongo: { db: { collection: sinon.stub().returns({ updateOne }) } } } as any,
+        {} as any
+      );
 
-      await expect(state.saveToDb('user-id', { foo: 'bar' } as any)).to.eventually.rejectedWith('store runtime session error');
+      await expect(state.saveToDb('user-id', { foo: 'bar' } as any)).to.eventually.rejectedWith(
+        'store runtime session error'
+      );
     });
 
     it('works', async () => {
       const updateOne = sinon.stub().resolves({ result: { ok: true } });
-      const state = new StateManager({ mongo: { db: { collection: sinon.stub().returns({ updateOne }) } } } as any, {} as any);
+      const state = new StateManager(
+        { mongo: { db: { collection: sinon.stub().returns({ updateOne }) } } } as any,
+        {} as any
+      );
 
       const userID = 'user-id';
       const stateObj = { foo: 'bar' };
@@ -41,7 +49,10 @@ describe('mongo stateManager unit tests', async () => {
 
     it('not found', async () => {
       const findOne = sinon.stub().resolves(null);
-      const state = new StateManager({ mongo: { db: { collection: sinon.stub().returns({ findOne }) } } } as any, {} as any);
+      const state = new StateManager(
+        { mongo: { db: { collection: sinon.stub().returns({ findOne }) } } } as any,
+        {} as any
+      );
 
       expect(await state.getFromDb('user-id')).to.eql({});
     });
@@ -49,7 +60,10 @@ describe('mongo stateManager unit tests', async () => {
     it('works', async () => {
       const attributes = { foo: 'bar' };
       const findOne = sinon.stub().resolves({ attributes });
-      const state = new StateManager({ mongo: { db: { collection: sinon.stub().returns({ findOne }) } } } as any, {} as any);
+      const state = new StateManager(
+        { mongo: { db: { collection: sinon.stub().returns({ findOne }) } } } as any,
+        {} as any
+      );
 
       expect(await state.getFromDb('user-id')).to.eql(attributes);
     });

@@ -1,6 +1,11 @@
 import { expect } from 'chai';
 
-import { createResumeFrame, promptToSSML, RESUME_DIAGRAM_ID, ResumeVariables } from '@/lib/services/runtime/programs/resume';
+import {
+  createResumeFrame,
+  promptToSSML,
+  RESUME_DIAGRAM_ID,
+  ResumeVariables,
+} from '@/lib/services/runtime/programs/resume';
 
 describe('resume diagram', () => {
   describe('promptToSSML', () => {

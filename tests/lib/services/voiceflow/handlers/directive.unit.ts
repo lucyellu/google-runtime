@@ -3,7 +3,10 @@ import _ from 'lodash';
 import sinon from 'sinon';
 
 import { T } from '@/lib/constants';
-import DefaultCardHandler, { DirectiveHandler, DirectiveResponseBuilder } from '@/lib/services/runtime/handlers/directive';
+import DefaultCardHandler, {
+  DirectiveHandler,
+  DirectiveResponseBuilder,
+} from '@/lib/services/runtime/handlers/directive';
 
 describe('card handler unit tests', async () => {
   afterEach(() => sinon.restore());

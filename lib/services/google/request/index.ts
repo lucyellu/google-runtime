@@ -10,7 +10,11 @@ import Response from './lifecycle/response';
 import RuntimeBuild from './lifecycle/runtime';
 
 @injectServices({ initialize: Initialize, runtimeBuild: RuntimeBuild, response: Response })
-class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBuild: RuntimeBuild; response: Response }> {
+class HandlerManager extends AbstractManager<{
+  initialize: Initialize;
+  runtimeBuild: RuntimeBuild;
+  response: Response;
+}> {
   async dialogflow(agent: WebhookClient) {
     const { initialize, runtimeBuild, response } = this.services;
     const conv = agent.conv();

@@ -12,7 +12,11 @@ import Response from './lifecycle/response';
 import RuntimeBuild from './lifecycle/runtime';
 
 @injectServices({ initialize: Initialize, runtimeBuild: RuntimeBuild, response: Response })
-class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBuild: RuntimeBuild; response: Response }> {
+class HandlerManager extends AbstractManager<{
+  initialize: Initialize;
+  runtimeBuild: RuntimeBuild;
+  response: Response;
+}> {
   _extractSlots(conv: ConversationV3) {
     const handler = conv.request.handler as { originalName: string };
 
@@ -68,7 +72,9 @@ class HandlerManager extends AbstractManager<{ initialize: Initialize; runtimeBu
         })
       );
     } else {
-      request.type = intent.name?.startsWith('actions.intent.MEDIA_STATUS') ? RequestType.MEDIA_STATUS : RequestType.INTENT;
+      request.type = intent.name?.startsWith('actions.intent.MEDIA_STATUS')
+        ? RequestType.MEDIA_STATUS
+        : RequestType.INTENT;
       request.payload.intent = intent.name ?? '';
 
       runtime.turn.set(T.REQUEST, request);

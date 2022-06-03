@@ -28,7 +28,10 @@ export const promptToSSML = (content: string | undefined, voice: string | undefi
   return parsedContent;
 };
 
-export const createResumeFrame = (resume: VoiceModels.Prompt<GoogleConstants.Voice>, follow: VoiceModels.Prompt<GoogleConstants.Voice> | null) => {
+export const createResumeFrame = (
+  resume: VoiceModels.Prompt<GoogleConstants.Voice>,
+  follow: VoiceModels.Prompt<GoogleConstants.Voice> | null
+) => {
   return new Frame({
     programID: RESUME_DIAGRAM_ID,
     variables: {

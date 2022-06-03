@@ -394,7 +394,9 @@ describe('card handler unit tests', async () => {
       CardResponseBuilderDialogflowES(runtime as any, res as any);
 
       expect(runtime.turn.get.args).to.eql([[T.CARD]]);
-      expect(res.fulfillmentMessages).to.eql([{ card: { title: card.title, text: card.text, imageUri: card.image.largeImageUrl } }]);
+      expect(res.fulfillmentMessages).to.eql([
+        { card: { title: card.title, text: card.text, imageUri: card.image.largeImageUrl } },
+      ]);
     });
   });
 });

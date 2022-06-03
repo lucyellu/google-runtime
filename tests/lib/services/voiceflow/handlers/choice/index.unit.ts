@@ -87,7 +87,9 @@ describe('choice handler unit tests', async () => {
         const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
         const variables = { var: '1' };
 
-        expect(choiceHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.nextIds[1]);
+        expect(choiceHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(
+          block.nextIds[1]
+        );
         expect(utils.getBestScore.args).to.eql([
           [
             request.payload.input,
@@ -171,7 +173,9 @@ describe('choice handler unit tests', async () => {
             const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
             const variables = { var: '1' };
 
-            expect(choiceHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.elseId);
+            expect(choiceHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(
+              block.elseId
+            );
             expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);
           });
 

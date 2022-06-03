@@ -21,14 +21,18 @@ describe('command handler unit tests', async () => {
 
     describe('request type intent', () => {
       it('VoiceFlowIntent', () => {
-        const runtime = { turn: { get: sinon.stub().returns({ type: RequestType.INTENT, payload: { intent: IntentName.VOICEFLOW } }) } };
+        const runtime = {
+          turn: { get: sinon.stub().returns({ type: RequestType.INTENT, payload: { intent: IntentName.VOICEFLOW } }) },
+        };
         expect(getCommand(runtime as any, null as any)).to.eql(null);
       });
 
       it('no extracted frame', () => {
         const runtime = {
           stack: { getFrames: sinon.stub().returns([]) },
-          turn: { get: sinon.stub().returns({ type: RequestType.INTENT, payload: { intent: { name: 'random_intent' } } }) },
+          turn: {
+            get: sinon.stub().returns({ type: RequestType.INTENT, payload: { intent: { name: 'random_intent' } } }),
+          },
         };
 
         expect(getCommand(runtime as any)).to.eql(null);
@@ -56,7 +60,9 @@ describe('command handler unit tests', async () => {
       expect(CommandHandler({ getCommand: sinon.stub().returns(null) } as any).canHandle(null as any)).to.eql(false);
     });
     it('true', () => {
-      expect(CommandHandler({ getCommand: sinon.stub().returns({ foo: 'bar' }) } as any).canHandle(null as any)).to.eql(true);
+      expect(CommandHandler({ getCommand: sinon.stub().returns({ foo: 'bar' }) } as any).canHandle(null as any)).to.eql(
+        true
+      );
     });
   });
 
@@ -86,7 +92,9 @@ describe('command handler unit tests', async () => {
       });
 
       it('mappings but no slots', () => {
-        const commandHandler = CommandHandler({ getCommand: sinon.stub().returns({ command: { mappings: [] } }) } as any);
+        const commandHandler = CommandHandler({
+          getCommand: sinon.stub().returns({ command: { mappings: [] } }),
+        } as any);
 
         const runtime = { turn: { delete: sinon.stub() } };
 
@@ -126,7 +134,10 @@ describe('command handler unit tests', async () => {
         const commandHandler = CommandHandler(utils as any);
 
         const topFrame = { storage: { set: sinon.stub() } };
-        const runtime = { stack: { push: sinon.stub(), top: sinon.stub().returns(topFrame) }, turn: { delete: sinon.stub() } };
+        const runtime = {
+          stack: { push: sinon.stub(), top: sinon.stub().returns(topFrame) },
+          turn: { delete: sinon.stub() },
+        };
 
         expect(commandHandler.handle(runtime as any, null as any)).to.eql(null);
         expect(topFrame.storage.set.args).to.eql([[F.CALLED_COMMAND, true]]);
@@ -147,7 +158,11 @@ describe('command handler unit tests', async () => {
             storage: { set: sinon.stub() },
             trace: { debug: sinon.stub() },
             turn: { delete: sinon.stub() },
-            stack: { getSize: sinon.stub().returns(stackSize), popTo: sinon.stub(), top: sinon.stub().returns(topFrame) },
+            stack: {
+              getSize: sinon.stub().returns(stackSize),
+              popTo: sinon.stub(),
+              top: sinon.stub().returns(topFrame),
+            },
           };
 
           expect(commandHandler.handle(runtime as any, null as any)).to.eql(null);
@@ -187,7 +202,12 @@ describe('command handler unit tests', async () => {
           const runtime = {
             trace: { debug: sinon.stub() },
             turn: { delete: sinon.stub() },
-            stack: { getSize: sinon.stub().returns(3), top: sinon.stub().returns(topFrame), popTo: sinon.stub(), push: sinon.stub() },
+            stack: {
+              getSize: sinon.stub().returns(3),
+              top: sinon.stub().returns(topFrame),
+              popTo: sinon.stub(),
+              push: sinon.stub(),
+            },
           };
 
           expect(commandHandler.handle(runtime as any, null as any)).to.eql(null);

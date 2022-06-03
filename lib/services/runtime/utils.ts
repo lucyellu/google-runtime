@@ -30,7 +30,11 @@ export const transformDateTimeVariableToString = (date: GoogleDateTimeSlot) => {
   return `${date.day}/${date.month}/${date.year} ${date.hours}:${date.minutes ?? '00'}`;
 };
 
-export const mapSlots = (mappings: BaseModels.SlotMapping[], slots: { [key: string]: string }, overwrite = false): Record<string, any> => {
+export const mapSlots = (
+  mappings: BaseModels.SlotMapping[],
+  slots: { [key: string]: string },
+  overwrite = false
+): Record<string, any> => {
   const variables: Record<string, any> = {};
 
   if (mappings && slots) {
@@ -54,7 +58,11 @@ export const mapSlots = (mappings: BaseModels.SlotMapping[], slots: { [key: stri
   return variables;
 };
 
-export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(block: B, runtime: Runtime, variables: Store): void => {
+export const addChipsIfExistsV1 = <B extends { chips?: string[] }>(
+  block: B,
+  runtime: Runtime,
+  variables: Store
+): void => {
   if (block.chips) {
     runtime.turn.set(
       T.CHIPS,
@@ -94,7 +102,11 @@ export const EMPTY_AUDIO_STRING = '<audio src=""/>';
 export const removeEmptyPrompts = (prompts?: string[] | null): string[] =>
   prompts?.filter((prompt) => prompt != null && prompt !== EMPTY_AUDIO_STRING) ?? [];
 
-export const addRepromptIfExists = <B extends VoiceNode.Utils.NoReplyNode>(node: B, runtime: Runtime, variables: Store): void => {
+export const addRepromptIfExists = <B extends VoiceNode.Utils.NoReplyNode>(
+  node: B,
+  runtime: Runtime,
+  variables: Store
+): void => {
   const prompt = _.sample(node.noReply?.prompts || node.reprompt ? [node.reprompt] : []);
 
   if (prompt) {

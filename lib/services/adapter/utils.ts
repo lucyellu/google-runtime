@@ -50,4 +50,5 @@ export const storageAdapter = (oldState: OldStateRaw): NewStateStorage => ({
   ...(oldState.randoms && { randoms: oldState.randoms }), // conditionally add randoms
 });
 
-export const variablesAdapter = (oldState: OldStateRaw): NewStateVariables => oldState.globals[0] || { voiceflow: { events: [] } };
+export const variablesAdapter = (oldState: OldStateRaw): NewStateVariables =>
+  oldState.globals[0] || { voiceflow: { events: [] } };

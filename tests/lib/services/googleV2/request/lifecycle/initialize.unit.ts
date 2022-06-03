@@ -142,7 +142,11 @@ describe('initializeManager unit tests', async () => {
         },
       ]);
       expect(services.utils.client.Store.initialize.args[0]).to.eql([runtime.variables, metaObj.variables, 0]);
-      expect(services.utils.client.Store.initialize.args[1]).to.eql([runtime.variables, metaObj.platformData.slots.map(({ name }) => name), 0]);
+      expect(services.utils.client.Store.initialize.args[1]).to.eql([
+        runtime.variables,
+        metaObj.platformData.slots.map(({ name }) => name),
+        0,
+      ]);
     });
 
     it('second session', async () => {

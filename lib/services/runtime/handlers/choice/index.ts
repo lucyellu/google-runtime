@@ -5,7 +5,13 @@ import { Suggestions } from 'actions-on-google';
 
 import { T } from '@/lib/constants';
 
-import { IntentRequest, RequestType, ResponseBuilder, ResponseBuilderDialogflowES, ResponseBuilderV2 } from '../../types';
+import {
+  IntentRequest,
+  RequestType,
+  ResponseBuilder,
+  ResponseBuilderDialogflowES,
+  ResponseBuilderV2,
+} from '../../types';
 import { addChipsIfExistsV1, addRepromptIfExists } from '../../utils';
 import CommandHandler from '../command';
 import getBestScore from './score';

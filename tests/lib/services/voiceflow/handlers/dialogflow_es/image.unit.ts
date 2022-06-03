@@ -3,7 +3,10 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { T } from '@/lib/constants';
-import DefaultImageHandler, { ImageHandler, ImageResponseBuilderDialogflowES } from '@/lib/services/runtime/handlers/dialogflow_es/image';
+import DefaultImageHandler, {
+  ImageHandler,
+  ImageResponseBuilderDialogflowES,
+} from '@/lib/services/runtime/handlers/dialogflow_es/image';
 
 describe('df es image handler unit tests', async () => {
   afterEach(() => sinon.restore());
@@ -14,7 +17,14 @@ describe('df es image handler unit tests', async () => {
     });
 
     it('true', async () => {
-      expect(DefaultImageHandler().canHandle({ type: BaseNode.NodeType.VISUAL } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(
+        DefaultImageHandler().canHandle(
+          { type: BaseNode.NodeType.VISUAL } as any,
+          null as any,
+          null as any,
+          null as any
+        )
+      ).to.eql(true);
     });
   });
 

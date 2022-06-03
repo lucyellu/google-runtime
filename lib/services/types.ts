@@ -14,11 +14,17 @@ export abstract class AbstractManager<T = Record<string, never>> {
   }
 }
 
-type InjectedServiceMap<S extends Record<string, any>> = { [K in keyof S]: { new (services: FullServiceMap, config: Config): S[K] } };
+type InjectedServiceMap<S extends Record<string, any>> = {
+  [K in keyof S]: { new (services: FullServiceMap, config: Config): S[K] };
+};
 
 const constructService = (Service: any, services: any, config: any) => {
   // eslint-disable-next-line no-nested-ternary
-  return isConstructor(Service) ? new Service(services, config) : typeof Service === 'function' ? Service(services, config) : Service;
+  return isConstructor(Service)
+    ? new Service(services, config)
+    : typeof Service === 'function'
+    ? Service(services, config)
+    : Service;
 };
 
 export const injectServices =

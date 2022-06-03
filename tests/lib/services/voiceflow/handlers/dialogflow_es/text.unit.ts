@@ -9,12 +9,16 @@ describe('text handler unit tests', async () => {
 
   describe('canHandle', () => {
     it('false', async () => {
-      expect(TextHandler(null as any).canHandle({ type: 'speak' } as any, null as any, null as any, null as any)).to.eql(false);
+      expect(
+        TextHandler(null as any).canHandle({ type: 'speak' } as any, null as any, null as any, null as any)
+      ).to.eql(false);
       expect(TextHandler(null as any).canHandle({} as any, null as any, null as any, null as any)).to.eql(false);
     });
 
     it('true', async () => {
-      expect(TextHandler(null as any).canHandle({ type: 'text' } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(TextHandler(null as any).canHandle({ type: 'text' } as any, null as any, null as any, null as any)).to.eql(
+        true
+      );
     });
   });
 

@@ -9,7 +9,9 @@ import { F, S, T } from '@/lib/constants';
 import { IntentName, IntentRequest, RequestType } from '../types';
 import { mapSlots } from '../utils';
 
-const isPushCommand = (command: BaseNode.AnyCommonCommand): command is BaseNode.Command.Command & { diagram_id: string } => {
+const isPushCommand = (
+  command: BaseNode.AnyCommonCommand
+): command is BaseNode.Command.Command & { diagram_id: string } => {
   return !!(command as BaseNode.Command.Command).diagram_id;
 };
 
@@ -41,7 +43,8 @@ export const getCommand = (runtime: Runtime, options: CommandOptions = {}) => {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const command of commands) {
-      const commandDiagramID = (isPushCommand(command) && command.diagram_id) || (isIntentCommand(command) && command.diagramID);
+      const commandDiagramID =
+        (isPushCommand(command) && command.diagram_id) || (isIntentCommand(command) && command.diagramID);
       if (options.diagramID && commandDiagramID && options.diagramID !== commandDiagramID) {
         continue;
       }

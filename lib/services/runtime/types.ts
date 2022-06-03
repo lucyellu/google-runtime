@@ -27,9 +27,17 @@ export interface IntentRequest {
   payload: IntentRequestPayload;
 }
 
-export type GoogleRuntimeClient = Client<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>, FullServiceMap>;
+export type GoogleRuntimeClient = Client<
+  unknown,
+  DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>,
+  FullServiceMap
+>;
 
-export type GoogleRuntime = Runtime<unknown, DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>, FullServiceMap>;
+export type GoogleRuntime = Runtime<
+  unknown,
+  DataAPI<GoogleProgram.Program, GoogleVersion.VoiceVersion>,
+  FullServiceMap
+>;
 
 export type ResponseBuilder = (runtime: GoogleRuntime, conv: DialogflowConversation<any>) => void | boolean;
 

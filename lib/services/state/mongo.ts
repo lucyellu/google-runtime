@@ -21,7 +21,9 @@ class StateManager extends AbstractManager {
 
     const {
       result: { ok },
-    } = await mongo!.db.collection(this.collectionName).updateOne({ id }, { $set: { id, attributes: state } }, { upsert: true });
+    } = await mongo!.db
+      .collection(this.collectionName)
+      .updateOne({ id }, { $set: { id, attributes: state } }, { upsert: true });
 
     if (!ok) {
       throw Error('store runtime session error');
@@ -37,7 +39,9 @@ class StateManager extends AbstractManager {
 
     const id = `${StateManager.GACTION_SESSIONS_DYNAMO_PREFIX}.${userId}`;
 
-    const session = await mongo!.db.collection(this.collectionName).findOne<{ attributes: Record<string, any> }>({ id });
+    const session = await mongo!.db
+      .collection(this.collectionName)
+      .findOne<{ attributes: Record<string, any> }>({ id });
 
     return (session?.attributes || {}) as T;
   }

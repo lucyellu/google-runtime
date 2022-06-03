@@ -14,7 +14,9 @@ describe('captureV2 handler unit tests', async () => {
     });
 
     it('true', () => {
-      expect(CaptureV2Handler(null as any).canHandle({ type: 'captureV2' } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(
+        CaptureV2Handler(null as any).canHandle({ type: 'captureV2' } as any, null as any, null as any, null as any)
+      ).to.eql(true);
     });
   });
 
@@ -104,7 +106,9 @@ describe('captureV2 handler unit tests', async () => {
           const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
           const variables = { foo: 'bar' };
 
-          expect(captureHandler.handle(node as any, runtime as any, variables as any, null as any)).to.eql('no-match-path');
+          expect(captureHandler.handle(node as any, runtime as any, variables as any, null as any)).to.eql(
+            'no-match-path'
+          );
           expect(utils.noMatchHandler.handle.args).to.eql([[node, runtime, variables]]);
         });
 
@@ -150,7 +154,9 @@ describe('captureV2 handler unit tests', async () => {
             const runtime = { turn: { get: sinon.stub().returns(request), delete: sinon.stub() } };
             const variables = { set: sinon.stub() };
 
-            expect(captureHandler.handle(node as any, runtime as any, variables as any, null as any)).to.eql(node.nextId);
+            expect(captureHandler.handle(node as any, runtime as any, variables as any, null as any)).to.eql(
+              node.nextId
+            );
             expect(runtime.turn.delete.args).to.eql([[T.REQUEST]]);
             expect(variables.set.args).to.eql([['var1', 'query-value']]);
           });

@@ -34,7 +34,10 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
       text: generateResponseText(output),
     });
 
-    if (checkModelVersion(storage, MAIN_MODEL_VERSION) && conv.request.scene?.name?.startsWith(GoogleManager.SLOT_FILLING_PREFIX)) {
+    if (
+      checkModelVersion(storage, MAIN_MODEL_VERSION) &&
+      conv.request.scene?.name?.startsWith(GoogleManager.SLOT_FILLING_PREFIX)
+    ) {
       conv.scene.next!.name = 'main';
     }
 

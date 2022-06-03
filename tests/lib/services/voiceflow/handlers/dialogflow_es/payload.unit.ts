@@ -3,7 +3,10 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { T } from '@/lib/constants';
-import DefaultPayloadHandler, { PayloadHandler, PayloadResponseBuilderDialogflowES } from '@/lib/services/runtime/handlers/dialogflow_es/payload';
+import DefaultPayloadHandler, {
+  PayloadHandler,
+  PayloadResponseBuilderDialogflowES,
+} from '@/lib/services/runtime/handlers/dialogflow_es/payload';
 
 describe('df es payload handler unit tests', async () => {
   afterEach(() => sinon.restore());
@@ -14,7 +17,14 @@ describe('df es payload handler unit tests', async () => {
     });
 
     it('true', async () => {
-      expect(DefaultPayloadHandler().canHandle({ type: DFESNode.NodeType.PAYLOAD } as any, null as any, null as any, null as any)).to.eql(true);
+      expect(
+        DefaultPayloadHandler().canHandle(
+          { type: DFESNode.NodeType.PAYLOAD } as any,
+          null as any,
+          null as any,
+          null as any
+        )
+      ).to.eql(true);
     });
   });
 
@@ -38,7 +48,9 @@ describe('df es payload handler unit tests', async () => {
       expect(payloadHandler.handle(block as any, runtime as any, variables as any, null as any)).to.eql(block.nextID);
 
       expect(utils.addVariables.args).to.eql([[block.data, variables]]);
-      expect(runtime.trace.debug.args).to.eql([['invalid payload JSON:\n``\n`SyntaxError: Unexpected end of JSON input`']]);
+      expect(runtime.trace.debug.args).to.eql([
+        ['invalid payload JSON:\n``\n`SyntaxError: Unexpected end of JSON input`'],
+      ]);
     });
 
     it('works', async () => {

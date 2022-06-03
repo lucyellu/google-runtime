@@ -21,7 +21,9 @@ const utilsObj = {
   v: '',
 };
 
-export const InteractionHandler: HandlerFactory<GoogleNode.Interaction.VoiceNode, typeof utilsObj> = (utils: typeof utilsObj) => ({
+export const InteractionHandler: HandlerFactory<GoogleNode.Interaction.VoiceNode, typeof utilsObj> = (
+  utils: typeof utilsObj
+) => ({
   canHandle: (node) => !!node.interactions,
   // eslint-disable-next-line sonarjs/cognitive-complexity
   handle: (node, runtime, variables) => {
