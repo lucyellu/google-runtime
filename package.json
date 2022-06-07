@@ -21,6 +21,7 @@
     "@voiceflow/general-runtime": "1.92.7",
     "@voiceflow/google-dfes-types": "2.10.15",
     "@voiceflow/google-types": "2.12.8",
+    "@voiceflow/event-ingestion-service": "1.0.4",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.3.1",
     "@voiceflow/verror": "1.1.0",

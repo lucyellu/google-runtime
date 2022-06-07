@@ -1,5 +1,8 @@
 import { ConversationV3 } from '@assistant/conversation';
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import _ from 'lodash';
 
 import { T, V } from '@/lib/constants';
@@ -59,12 +62,16 @@ class HandlerManager extends AbstractManager<{
     if (intent.name === 'actions.intent.MAIN' || intent.name === 'Default Welcome Intent' || runtime.stack.isEmpty()) {
       await initialize.build(runtime, conv);
 
+      const versionID = runtime.getVersionID();
+      const { projectID } = await runtime.api.getVersion(versionID);
+
       runtime.turn.set(
         T.TURN_ID_PROMISE,
         runtime.services.analyticsClient.track({
-          id: runtime.getVersionID(),
-          event: Ingest.Event.TURN,
-          request: Ingest.RequestType.LAUNCH,
+          projectID,
+          versionID,
+          event: IngestEvent.TURN,
+          request: IngestRequestType.LAUNCH,
           payload: request,
           sessionid: conv.session.id,
           metadata: { ...runtime.getRawState(), platform: 'google' },
@@ -79,12 +86,16 @@ class HandlerManager extends AbstractManager<{
 
       runtime.turn.set(T.REQUEST, request);
 
+      const versionID = runtime.getVersionID();
+      const { projectID } = await runtime.api.getVersion(versionID);
+
       runtime.turn.set(
         T.TURN_ID_PROMISE,
         runtime.services.analyticsClient.track({
-          id: runtime.getVersionID(),
-          event: Ingest.Event.TURN,
-          request: Ingest.RequestType.REQUEST,
+          projectID,
+          versionID,
+          event: IngestEvent.TURN,
+          request: IngestRequestType.REQUEST,
           payload: request,
           sessionid: conv.session.id,
           metadata: { ...runtime.getRawState(), platform: 'google' },

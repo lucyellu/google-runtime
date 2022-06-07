@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
@@ -58,9 +61,10 @@ class DialogflowManager extends AbstractManager<{
         runtime.turn.set(
           T.TURN_ID_PROMISE,
           runtime.services.analyticsClient.track({
-            id: runtime.getVersionID(),
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID: (await runtime.api.getVersion(runtime.getVersionID())).projectID,
+            versionID: runtime.getVersionID(),
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload: request,
             sessionid: req.session,
             metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },
@@ -76,9 +80,10 @@ class DialogflowManager extends AbstractManager<{
       runtime.turn.set(
         T.TURN_ID_PROMISE,
         runtime.services.analyticsClient.track({
-          id: runtime.getVersionID(),
-          event: Ingest.Event.TURN,
-          request: Ingest.RequestType.REQUEST,
+          projectID: (await runtime.api.getVersion(runtime.getVersionID())).projectID,
+          versionID: runtime.getVersionID(),
+          event: IngestEvent.TURN,
+          request: IngestRequestType.REQUEST,
           payload: request,
           sessionid: req.session,
           metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },

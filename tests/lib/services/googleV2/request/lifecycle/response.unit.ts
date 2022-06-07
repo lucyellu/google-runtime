@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -27,8 +30,9 @@ describe('responseManager unit tests', async () => {
 
       const responseManager = new ResponseManager(services as any, null as any);
 
-      const finalState = { random: 'runtime' };
+      const finalState = { random: 'runtime', platform: 'google' };
       const output = '';
+      const projectID = 'project-id';
       const userId = 'user-id';
       const storageGet = sinon.stub();
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -52,6 +56,7 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(userId),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const conv = {
@@ -83,9 +88,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: userId,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID: userId,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,
@@ -113,8 +119,9 @@ describe('responseManager unit tests', async () => {
 
       const responseManager = new ResponseManager(services as any, null as any);
 
-      const finalState = { random: 'runtime' };
+      const finalState = { random: 'runtime', platform: 'google' };
       const output = 'random output';
+      const projectID = 'project-id';
       const userId = 'user-id';
       const storageGet = sinon.stub();
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -138,6 +145,7 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(userId),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const conv = {
@@ -175,9 +183,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: userId,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID: userId,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,
@@ -205,8 +214,9 @@ describe('responseManager unit tests', async () => {
 
       const responseManager = new ResponseManager(services as any, null as any);
 
-      const finalState = { random: 'runtime' };
+      const finalState = { random: 'runtime', platform: 'google' };
       const output = 'random output';
+      const projectID = 'projcet-id';
       const userId = 'user-id';
       const storageGet = sinon.stub();
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -233,6 +243,7 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(userId),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const conv = {
@@ -270,9 +281,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: userId,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID: userId,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,
@@ -299,8 +311,9 @@ describe('responseManager unit tests', async () => {
 
       const responseManager = new ResponseManager(services as any, null as any);
 
-      const finalState = { random: 'runtime' };
+      const finalState = { random: 'runtime', platform: 'google' };
       const output = 'random output';
+      const projectID = 'project-id';
       const userId = 'user-id';
       const storageGet = sinon.stub();
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -327,6 +340,7 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(userId),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const conv = {
@@ -366,9 +380,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: userId,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID: userId,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: response,
             sessionid: conv.session.id,
             metadata: finalState,

@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -24,9 +27,10 @@ describe('Analytics client unit tests', () => {
 
       expect(
         client.track({
-          id: 'id',
-          event: 'fake-event' as Ingest.Event,
-          request: Ingest.RequestType.REQUEST,
+          projectID: 'projectID',
+          versionID: 'versionID',
+          event: 'fake-event' as IngestEvent,
+          request: IngestRequestType.REQUEST,
           payload: payload as any,
           sessionid: 'session.id',
           metadata: metadata as any,

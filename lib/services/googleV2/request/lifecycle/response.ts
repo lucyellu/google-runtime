@@ -1,5 +1,8 @@
 import { ConversationV3, Simple } from '@assistant/conversation';
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 
 import { MAIN_MODEL_VERSION, S, T } from '@/lib/constants';
 import { responseHandlersV2 } from '@/lib/services/runtime/handlers';
@@ -62,15 +65,17 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
     conv.user.params.forceUpdateToken = randomstring.generate();
 
     const versionID = runtime.getVersionID();
+    const { projectID } = await runtime.api.getVersion(versionID);
 
     // not using async await, since analytics is not blocking operation
     // Promise.resolve to fix the cases when T.TURN_ID_PROMISE is not a promise
     Promise.resolve(turn.get<Promise<string>>(T.TURN_ID_PROMISE))
       .then((turnID) =>
         runtime.services.analyticsClient.track({
-          id: versionID,
-          event: Ingest.Event.INTERACT,
-          request: Ingest.RequestType.RESPONSE,
+          projectID,
+          versionID,
+          event: IngestEvent.INTERACT,
+          request: IngestRequestType.RESPONSE,
           payload: response,
           sessionid: conv.session.id,
           metadata: { ...runtime.getFinalState(), platform: 'google' },

@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -23,8 +26,9 @@ describe('responseManager unit tests', async () => {
 
       const responseManager = new ResponseManager(services as any, null as any);
       const userId = 'user-id';
+      const projectID = 'project-id';
       const versionID = 'version-id';
-      const finalState = { random: 'runtime', storage: { user: userId } };
+      const finalState = { random: 'runtime', platform: 'dialogflow-es', storage: { user: userId } };
       const output = '';
 
       const storageGet = sinon.stub().returns(null);
@@ -50,7 +54,8 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const res = {
@@ -70,9 +75,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
@@ -97,9 +103,10 @@ describe('responseManager unit tests', async () => {
       const responseManager = new ResponseManager(services as any, null as any);
 
       const userId = 'user-id';
-      const finalState = { random: 'runtime', storage: { user: userId } };
+      const finalState = { random: 'runtime', platform: 'dialogflow-es', storage: { user: userId } };
       const output = 'random output';
 
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const storageGet = sinon.stub().returns(null);
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -131,7 +138,8 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const res = {
@@ -152,9 +160,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
@@ -179,10 +188,11 @@ describe('responseManager unit tests', async () => {
       const responseManager = new ResponseManager(services as any, null as any);
 
       const userId = 'user-id';
-      const finalState = { random: 'runtime', storage: { user: userId } };
+      const finalState = { random: 'runtime', platform: 'dialogflow-es', storage: { user: userId } };
       const output = 'random output';
       const priorOutput = 'prior output';
 
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const storageGet = sinon.stub().returns(null);
       storageGet.withArgs(S.PRIOR_OUTPUT).returns(priorOutput);
@@ -210,7 +220,8 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const res = {
@@ -232,9 +243,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
@@ -259,9 +271,10 @@ describe('responseManager unit tests', async () => {
       const responseManager = new ResponseManager(services as any, null as any);
 
       const userId = 'user-id';
-      const finalState = { random: 'runtime', storage: { user: userId } };
+      const finalState = { random: 'runtime', platform: 'dialogflow-es', storage: { user: userId } };
       const output = 'random output';
 
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const storageGet = sinon.stub().returns(null);
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -295,7 +308,8 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const res = {
@@ -318,9 +332,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),
@@ -345,9 +360,10 @@ describe('responseManager unit tests', async () => {
       const responseManager = new ResponseManager(services as any, null as any);
 
       const userId = 'user-id';
-      const finalState = { random: 'runtime', storage: { user: userId } };
+      const finalState = { random: 'runtime', platform: 'dialogflow-es', storage: { user: userId } };
       const output = 'random output';
 
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const storageGet = sinon.stub().returns(null);
       storageGet.withArgs(S.OUTPUT).returns(output);
@@ -371,7 +387,8 @@ describe('responseManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const res = {
@@ -392,9 +409,10 @@ describe('responseManager unit tests', async () => {
       expect(runtime.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.INTERACT,
-            request: Ingest.RequestType.RESPONSE,
+            projectID,
+            versionID,
+            event: IngestEvent.INTERACT,
+            request: IngestRequestType.RESPONSE,
             payload: res,
             sessionid: userId,
             metadata: runtime.getFinalState(),

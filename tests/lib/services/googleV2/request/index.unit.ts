@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -83,6 +86,7 @@ describe('handlerManager unit tests', async () => {
 
   describe('handle', () => {
     it('main intent', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         stack: {
@@ -101,7 +105,8 @@ describe('handlerManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -154,12 +159,13 @@ describe('handlerManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
-            metadata: versionID,
+            metadata: { versionID, platform: 'google' },
             timestamp,
           },
         ],
@@ -167,6 +173,7 @@ describe('handlerManager unit tests', async () => {
     });
 
     it('default welcome intent', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         stack: {
@@ -185,7 +192,8 @@ describe('handlerManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -238,12 +246,13 @@ describe('handlerManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
-            metadata: versionID,
+            metadata: { versionID, platform: 'google' },
             timestamp,
           },
         ],
@@ -251,6 +260,7 @@ describe('handlerManager unit tests', async () => {
     });
 
     it('stack empty', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         stack: {
@@ -269,7 +279,8 @@ describe('handlerManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -322,12 +333,13 @@ describe('handlerManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload: request,
             sessionid: conv.session.id,
-            metadata: versionID,
+            metadata: { versionID, platform: 'google' },
             timestamp,
           },
         ],
@@ -336,6 +348,7 @@ describe('handlerManager unit tests', async () => {
 
     describe('existing session', () => {
       it('intent', async () => {
+        const projectID = 'project.id';
         const versionID = 'version.id';
         const stateObj = {
           stack: {
@@ -354,7 +367,8 @@ describe('handlerManager unit tests', async () => {
             },
           },
           getVersionID: sinon.stub().returns(versionID),
-          getRawState: sinon.stub().returns(versionID),
+          getRawState: sinon.stub().returns({ versionID }),
+          api: { getVersion: sinon.stub().resolves({ projectID }) },
         };
 
         const services = {
@@ -409,12 +423,13 @@ describe('handlerManager unit tests', async () => {
         expect(stateObj.services.analyticsClient.track.args).to.eql([
           [
             {
-              id: versionID,
-              event: Ingest.Event.TURN,
-              request: Ingest.RequestType.REQUEST,
+              projectID,
+              versionID,
+              event: IngestEvent.TURN,
+              request: IngestRequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
-              metadata: versionID,
+              metadata: { versionID, platform: 'google' },
               timestamp,
             },
           ],
@@ -436,6 +451,7 @@ describe('handlerManager unit tests', async () => {
       });
 
       it('media status', async () => {
+        const projectID = 'project.id';
         const versionID = 'version.id';
         const stateObj = {
           stack: {
@@ -454,7 +470,8 @@ describe('handlerManager unit tests', async () => {
             },
           },
           getVersionID: sinon.stub().returns(versionID),
-          getRawState: sinon.stub().returns(versionID),
+          getRawState: sinon.stub().returns({ versionID }),
+          api: { getVersion: sinon.stub().resolves({ projectID }) },
         };
 
         const services = {
@@ -500,12 +517,13 @@ describe('handlerManager unit tests', async () => {
         expect(stateObj.services.analyticsClient.track.args).to.eql([
           [
             {
-              id: versionID,
-              event: Ingest.Event.TURN,
-              request: Ingest.RequestType.REQUEST,
+              projectID,
+              versionID,
+              event: IngestEvent.TURN,
+              request: IngestRequestType.REQUEST,
               payload: request,
               sessionid: conv.session.id,
-              metadata: versionID,
+              metadata: { versionID, platform: 'google' },
               timestamp,
             },
           ],

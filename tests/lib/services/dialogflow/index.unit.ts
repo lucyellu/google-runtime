@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 import { expect } from 'chai';
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -39,6 +42,7 @@ describe('DialogflowManager unit tests', async () => {
       expect(services.slotFillingES.response.args).to.eql([[req, req.session]]);
     });
     it('main intent', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         stack: {
@@ -57,7 +61,8 @@ describe('DialogflowManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -96,6 +101,7 @@ describe('DialogflowManager unit tests', async () => {
           input: 'main intent',
           intent: 'actions.intent.MAIN',
           slots: undefined,
+          action: undefined,
         },
         type: 'INTENT',
       };
@@ -114,12 +120,13 @@ describe('DialogflowManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload,
             sessionid: req.session,
-            metadata: versionID,
+            metadata: { versionID, platform: 'dialogflow-es' },
             timestamp,
           },
         ],
@@ -127,6 +134,7 @@ describe('DialogflowManager unit tests', async () => {
     });
 
     it('default welcome intent', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         stack: {
@@ -145,7 +153,8 @@ describe('DialogflowManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -182,6 +191,7 @@ describe('DialogflowManager unit tests', async () => {
           input: 'default welcome intent',
           intent: 'Default Welcome Intent',
           slots: undefined,
+          action: undefined,
         },
         type: 'INTENT',
       };
@@ -200,12 +210,13 @@ describe('DialogflowManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.LAUNCH,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.LAUNCH,
             payload,
             sessionid: req.session,
-            metadata: versionID,
+            metadata: { versionID, platform: 'dialogflow-es' },
             timestamp,
           },
         ],
@@ -213,6 +224,7 @@ describe('DialogflowManager unit tests', async () => {
     });
 
     it('stack empty', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         turn: {
@@ -231,7 +243,8 @@ describe('DialogflowManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -276,6 +289,7 @@ describe('DialogflowManager unit tests', async () => {
             intent: req.queryResult.intent.displayName,
             input: req.queryResult.queryText,
             slots: req.queryResult.parameters,
+            action: undefined,
           },
         },
       ]);
@@ -288,6 +302,7 @@ describe('DialogflowManager unit tests', async () => {
     });
 
     it('existing session', async () => {
+      const projectID = 'project-id';
       const versionID = 'version-id';
       const stateObj = {
         turn: { set: sinon.stub() },
@@ -304,7 +319,8 @@ describe('DialogflowManager unit tests', async () => {
           },
         },
         getVersionID: sinon.stub().returns(versionID),
-        getRawState: sinon.stub().returns(versionID),
+        getRawState: sinon.stub().returns({ versionID }),
+        api: { getVersion: sinon.stub().resolves({ projectID }) },
       };
 
       const services = {
@@ -339,6 +355,7 @@ describe('DialogflowManager unit tests', async () => {
           input: 'random',
           intent: 'random intent',
           slots: { s1: 'v1', s2: 'v2' },
+          action: undefined,
         },
         type: 'INTENT',
       };
@@ -355,6 +372,7 @@ describe('DialogflowManager unit tests', async () => {
             intent: req.queryResult.intent.displayName,
             input: req.queryResult.queryText,
             slots: req.queryResult.parameters,
+            action: undefined,
           },
         },
       ]);
@@ -367,12 +385,13 @@ describe('DialogflowManager unit tests', async () => {
       expect(stateObj.services.analyticsClient.track.args).to.eql([
         [
           {
-            id: versionID,
-            event: Ingest.Event.TURN,
-            request: Ingest.RequestType.REQUEST,
+            projectID,
+            versionID,
+            event: IngestEvent.TURN,
+            request: IngestRequestType.REQUEST,
             payload,
             sessionid: req.session,
-            metadata: versionID,
+            metadata: { versionID, platform: 'dialogflow-es' },
             timestamp,
           },
         ],

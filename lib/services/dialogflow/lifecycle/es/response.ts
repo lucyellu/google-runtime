@@ -1,4 +1,7 @@
-import * as Ingest from '@voiceflow/general-runtime/build/lib/clients/ingest-client';
+import {
+  Event as IngestEvent,
+  RequestType as IngestRequestType,
+} from '@voiceflow/event-ingestion-service/build/lib/types';
 
 import { S, T } from '@/lib/constants';
 import { responseHandlersDialogflowES } from '@/lib/services/runtime/handlers';
@@ -60,15 +63,17 @@ class ResponseManager extends AbstractManager<{ utils: typeof utilsObj }> {
     await state.saveToDb(storage.get<string>(S.USER)!, runtime.getFinalState());
 
     const versionID = runtime.getVersionID();
+    const { projectID } = await runtime.api.getVersion(versionID);
 
     // not using async await, since analytics is not blocking operation
     // Promise.resolve to fix the cases when T.TURN_ID_PROMISE is not a promise
     Promise.resolve(turn.get<Promise<string>>(T.TURN_ID_PROMISE))
       .then((turnID) =>
         runtime.services.analyticsClient.track({
-          id: versionID,
-          event: Ingest.Event.INTERACT,
-          request: Ingest.RequestType.RESPONSE,
+          projectID,
+          versionID,
+          event: IngestEvent.INTERACT,
+          request: IngestRequestType.RESPONSE,
           payload: res,
           sessionid: runtime.getFinalState().storage.user,
           metadata: { ...runtime.getFinalState(), platform: 'dialogflow-es' },
