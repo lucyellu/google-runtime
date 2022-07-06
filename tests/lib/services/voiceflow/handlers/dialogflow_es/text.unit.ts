@@ -34,12 +34,10 @@ describe('text handler unit tests', async () => {
     });
 
     it('message not a string', () => {
-      const newSlate = { content: [{ children: { text: 'injectedSlate' } }] };
+      const slateText = { content: [{ children: { text: 'sampledSlate' } }] };
       const utils = {
-        _sample: sinon.stub().returns({ content: [{ children: { text: 'sampledSlate' } }] }),
-        slateToPlaintext: sinon.stub().returns(null),
-        sanitizeVariables: sinon.stub().returns('sanitizedVars'),
-        slateInjectVariables: sinon.stub().returns(newSlate.content),
+        _sample: sinon.stub().returns(slateText),
+        processOutput: sinon.stub().returns('result'),
       };
 
       const node = {
@@ -47,24 +45,19 @@ describe('text handler unit tests', async () => {
         nextId: 'nextId',
       };
 
-      const variables = { getState: sinon.stub().returns('vars') };
+      const variables = 'variable store';
 
       const textHandler = TextHandler(utils as any);
       expect(textHandler.handle(node as any, {} as any, variables as any, null as any)).to.eql(node.nextId);
       expect(utils._sample.args).to.eql([[node.texts]]);
-      expect(variables.getState.args).to.eql([[]]);
-      expect(utils.sanitizeVariables.args).to.eql([['vars']]);
-      expect(utils.slateInjectVariables.args).to.eql([[[{ children: { text: 'sampledSlate' } }], 'sanitizedVars']]);
-      expect(utils.slateToPlaintext.args).to.eql([[newSlate.content]]);
+      expect(utils.processOutput.args).to.eql([[slateText.content, variables]]);
     });
 
     it('works', () => {
-      const newSlate = { content: [{ children: { text: 'injectedSlate' } }] };
+      const slateText = { content: [{ children: { text: 'sampledSlate' } }] };
       const utils = {
-        _sample: sinon.stub().returns({ content: [{ children: { text: 'sampledSlate' } }] }),
-        slateToPlaintext: sinon.stub().returns('plainText'),
-        sanitizeVariables: sinon.stub().returns('sanitizedVars'),
-        slateInjectVariables: sinon.stub().returns(newSlate.content),
+        _sample: sinon.stub().returns(slateText),
+        processOutput: sinon.stub().returns('plainText'),
       };
 
       const node = {
@@ -88,10 +81,7 @@ describe('text handler unit tests', async () => {
       const textHandler = TextHandler(utils as any);
       expect(textHandler.handle(node as any, runtime as any, variables as any, null as any)).to.eql(node.nextId);
       expect(utils._sample.args).to.eql([[node.texts]]);
-      expect(variables.getState.args).to.eql([[]]);
-      expect(utils.sanitizeVariables.args).to.eql([['vars']]);
-      expect(utils.slateInjectVariables.args).to.eql([[[{ children: { text: 'sampledSlate' } }], 'sanitizedVars']]);
-      expect(utils.slateToPlaintext.args).to.eql([[newSlate.content]]);
+      expect(utils.processOutput.args).to.eql([[slateText.content, variables]]);
       expect(runtime.storage.produce.callCount).eql(1);
 
       const fn = runtime.storage.produce.args[0][0];

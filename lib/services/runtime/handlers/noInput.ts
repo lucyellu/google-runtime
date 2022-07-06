@@ -1,12 +1,11 @@
-import { replaceVariables, sanitizeVariables } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { VoiceNode } from '@voiceflow/voice-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
+import { processOutput, removeEmptyPrompts } from '@/lib/services/runtime/utils';
 
 import { IntentRequest } from '../types';
-import { removeEmptyPrompts } from '../utils';
 
 const NO_INPUT_PREFIX = 'actions.intent.NO_INPUT';
 
@@ -30,9 +29,9 @@ export const NoInputHandler = () => ({
 
       return node.noReply?.nodeID ?? null;
     }
-    const sanitizedVars = sanitizeVariables(variables.getState());
+
     const speak = node.noReply?.randomize ? _.sample<string>(noReplyPrompts) : noReplyPrompts[noReplyCounter];
-    const output = replaceVariables(speak, sanitizedVars);
+    const output = processOutput(speak, variables);
 
     runtime.storage.set(S.NO_INPUTS_COUNTER, noReplyCounter + 1);
 

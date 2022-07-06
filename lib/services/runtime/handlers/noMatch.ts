@@ -1,12 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Nullable, replaceVariables, sanitizeVariables } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { VoiceNode } from '@voiceflow/voice-types';
 import _ from 'lodash';
 
 import { S } from '@/lib/constants';
-
-import { removeEmptyPrompts } from '../utils';
+import { processOutput, removeEmptyPrompts } from '@/lib/services/runtime/utils';
 
 export type NoMatchCounterStorage = number;
 
@@ -47,9 +46,8 @@ export const NoMatchHandler = () => ({
 
     runtime.storage.set(S.NO_MATCHES_COUNTER, noMatchCounter + 1);
 
-    const speak = (node.noMatch?.randomize ? _.sample(noMatchPrompts) : noMatchPrompts?.[noMatchCounter]) || '';
-    const sanitizedVars = sanitizeVariables(variables.getState());
-    const output = replaceVariables(speak, sanitizedVars);
+    const speak = node.noMatch?.randomize ? _.sample(noMatchPrompts) : noMatchPrompts?.[noMatchCounter];
+    const output = processOutput(speak, variables);
 
     runtime.storage.produce((draft) => {
       draft[S.OUTPUT] += output;

@@ -1,31 +1,26 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { sanitizeVariables } from '@voiceflow/common';
-import { slateInjectVariables, slateToPlaintext } from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import _isString from 'lodash/isString';
 import _sample from 'lodash/sample';
 
 import { F, S, T } from '@/lib/constants';
+import { processOutput } from '@/lib/services/runtime/utils';
 import log from '@/logger';
 
 const handlerUtils = {
   _isString,
   _sample,
-  slateToPlaintext,
-  sanitizeVariables,
-  slateInjectVariables,
+  processOutput,
 };
 
 export const TextHandler: HandlerFactory<BaseNode.Text.Node, typeof handlerUtils> = (utils) => ({
   canHandle: (node) => node.type === BaseNode.NodeType.TEXT,
   handle: (node, runtime, variables) => {
-    const slate = utils._sample(node.texts);
+    const text = utils._sample(node.texts);
 
-    if (slate) {
+    if (text) {
       try {
-        const sanitizedVars = utils.sanitizeVariables(variables.getState());
-        const content = utils.slateInjectVariables(slate.content, sanitizedVars);
-        const message = utils.slateToPlaintext(content);
+        const message = utils.processOutput(text.content, variables);
 
         if (_isString(message)) {
           runtime.storage.produce<{ [S.OUTPUT]: string }>((draft) => {

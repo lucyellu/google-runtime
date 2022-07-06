@@ -1,5 +1,6 @@
-import { BaseButton, BaseModels } from '@voiceflow/base-types';
-import { replaceVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
+import { BaseButton, BaseModels, Text } from '@voiceflow/base-types';
+import { replaceVariables, sanitizeVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
+import { slateInjectVariables, slateToPlaintext } from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { GoogleNode } from '@voiceflow/google-types';
 import { VoiceNode } from '@voiceflow/voice-types';
@@ -112,4 +113,18 @@ export const addRepromptIfExists = <B extends VoiceNode.Utils.NoReplyNode>(
   if (prompt) {
     runtime.storage.set(S.REPROMPT, replaceVariables(prompt, variables.getState()));
   }
+};
+
+export const processOutput = (output: string | Text.SlateTextValue | undefined, variables: Store): string => {
+  if (!output) return '';
+
+  const sanitizedVars = sanitizeVariables(variables.getState());
+  // handle voice string
+  if (typeof output === 'string') {
+    return replaceVariables(output, sanitizedVars);
+  }
+
+  // handle slate text
+  const content = slateInjectVariables(output, sanitizedVars);
+  return slateToPlaintext(content);
 };
