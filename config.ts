@@ -21,6 +21,10 @@ const CONFIG: Config = {
   AWS_REGION: getOptionalProcessEnv('AWS_REGION'),
   AWS_ENDPOINT: getOptionalProcessEnv('AWS_ENDPOINT'),
 
+  // API block
+  API_MAX_CONTENT_LENGTH_BYTES: Number(getOptionalProcessEnv('API_MAX_CONTENT_LENGTH_BYTES')) || null,
+  API_MAX_BODY_LENGTH_BYTES: Number(getOptionalProcessEnv('API_MAX_BODY_LENGTH_BYTES')) || null,
+
   // Application secrets
   ADMIN_SERVER_DATA_API_TOKEN: getRequiredProcessEnv('ADMIN_SERVER_DATA_API_TOKEN'),
 

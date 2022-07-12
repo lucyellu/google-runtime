@@ -14,6 +14,9 @@ export interface Config {
   AWS_REGION: string | null;
   AWS_ENDPOINT: string | null;
 
+  API_MAX_CONTENT_LENGTH_BYTES: number | null;
+  API_MAX_BODY_LENGTH_BYTES: number | null;
+
   // Secrets configuration
   ADMIN_SERVER_DATA_API_TOKEN: string;
 

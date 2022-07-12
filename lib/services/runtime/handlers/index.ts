@@ -50,7 +50,12 @@ export const responseHandlersDialogflowES = [
 const _v1Handler = _V1Handler();
 
 // handlers for dialogflow es agent
-export const HandlersDialogflowES = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersDialogflowES = ({
+  INTEGRATIONS_HANDLER_ENDPOINT,
+  CODE_HANDLER_ENDPOINT,
+  API_MAX_CONTENT_LENGTH_BYTES,
+  API_MAX_BODY_LENGTH_BYTES,
+}: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
@@ -67,7 +72,10 @@ export const HandlersDialogflowES = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDL
   FlowHandler(),
   IfHandler(),
   IfV2Handler({ _v1: _v1Handler }),
-  APIHandler(),
+  APIHandler({
+    maxResponseBodySizeBytes: API_MAX_CONTENT_LENGTH_BYTES ?? undefined,
+    maxRequestBodySizeBytes: API_MAX_BODY_LENGTH_BYTES ?? undefined,
+  }),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
@@ -78,7 +86,12 @@ export const HandlersDialogflowES = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDL
 ];
 
 // google handlers for V2 (conversational actions)
-export const HandlersV2 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersV2 = ({
+  INTEGRATIONS_HANDLER_ENDPOINT,
+  CODE_HANDLER_ENDPOINT,
+  API_MAX_CONTENT_LENGTH_BYTES,
+  API_MAX_BODY_LENGTH_BYTES,
+}: Config) => [
   PreliminaryHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
@@ -94,7 +107,10 @@ export const HandlersV2 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOIN
   FlowHandler(),
   IfHandler(),
   IfV2Handler({ _v1: _v1Handler }),
-  APIHandler(),
+  APIHandler({
+    maxResponseBodySizeBytes: API_MAX_CONTENT_LENGTH_BYTES ?? undefined,
+    maxRequestBodySizeBytes: API_MAX_BODY_LENGTH_BYTES ?? undefined,
+  }),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
@@ -105,7 +121,12 @@ export const HandlersV2 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOIN
 ];
 
 // google handlers for actions V1 (with dialogflow)
-export const HandlersV1 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOINT }: Config) => [
+export const HandlersV1 = ({
+  INTEGRATIONS_HANDLER_ENDPOINT,
+  CODE_HANDLER_ENDPOINT,
+  API_MAX_CONTENT_LENGTH_BYTES,
+  API_MAX_BODY_LENGTH_BYTES,
+}: Config) => [
   SpeakHandler(),
   CaptureHandler(),
   InteractionHandler(),
@@ -117,7 +138,10 @@ export const HandlersV1 = ({ INTEGRATIONS_HANDLER_ENDPOINT, CODE_HANDLER_ENDPOIN
   EndHandler(),
   FlowHandler(),
   IfHandler(),
-  APIHandler(),
+  APIHandler({
+    maxResponseBodySizeBytes: API_MAX_CONTENT_LENGTH_BYTES ?? undefined,
+    maxRequestBodySizeBytes: API_MAX_BODY_LENGTH_BYTES ?? undefined,
+  }),
   IntegrationsHandler({ integrationsEndpoint: INTEGRATIONS_HANDLER_ENDPOINT }),
   RandomHandler(),
   SetHandler(),
