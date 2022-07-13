@@ -29,6 +29,7 @@ import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow
 import DFESPayloadHandler, { PayloadResponseBuilderDialogflowES } from './dialogflow_es/payload';
 import DFESTextHandler from './dialogflow_es/text';
 import DirectiveHandler, { DirectiveResponseBuilder } from './directive';
+import GoToHandler from './goTo';
 import InteractionHandler from './interaction';
 import PreliminaryHandler from './preliminary';
 import SpeakHandler from './speak';
@@ -61,6 +62,7 @@ export const HandlersDialogflowES = ({
   CaptureV2Handler(),
   CaptureHandler('v2'),
   InteractionHandler('v2'),
+  GoToHandler(),
   ResetHandler(),
   CardHandler(),
   DFESImageHandler(),
@@ -97,6 +99,7 @@ export const HandlersV2 = ({
   CaptureV2Handler(),
   CaptureHandler('v2'),
   InteractionHandler('v2'),
+  GoToHandler(),
   ResetHandler(),
   CardHandler(),
   DirectiveHandler(),
@@ -130,6 +133,7 @@ export const HandlersV1 = ({
   SpeakHandler(),
   CaptureHandler(),
   InteractionHandler(),
+  GoToHandler(),
   ResetHandler(),
   CardHandler(),
   ChoiceHandler(),
