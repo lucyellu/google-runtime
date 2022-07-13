@@ -8,4 +8,6 @@ export interface State {
   saveToDb(userId: string, state: StateObj): Promise<void>;
 
   getFromDb<T extends Record<string, any> = Record<string, any>>(userId: string): Promise<T>;
+
+  deleteFromDb(userId: string): Promise<void>;
 }

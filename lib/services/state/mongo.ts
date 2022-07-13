@@ -45,6 +45,14 @@ class StateManager extends AbstractManager {
 
     return (session?.attributes || {}) as T;
   }
+
+  async deleteFromDb(userId: string) {
+    const { mongo } = this.services;
+
+    const id = `${StateManager.GACTION_SESSIONS_DYNAMO_PREFIX}.${userId}`;
+
+    await mongo!.db.collection(this.collectionName).deleteOne({ id });
+  }
 }
 
 export default StateManager;

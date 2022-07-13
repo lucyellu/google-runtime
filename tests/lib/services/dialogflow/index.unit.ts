@@ -21,6 +21,16 @@ describe('DialogflowManager unit tests', async () => {
     sinon.restore();
   });
 
+  describe('extractSessionID', () => {
+    it('should extract session ID from session', () => {
+      const sessionID = 'session-id';
+      expect(DialogflowManager.extractSessionID('projects/project-id/agent/sessions/session-id')).to.equal(sessionID);
+      expect(DialogflowManager.extractSessionID('projects/sessions/session-id/stuff-behind')).to.equal(sessionID);
+      expect(DialogflowManager.extractSessionID('projects/session-id')).to.equal(sessionID);
+      expect(DialogflowManager.extractSessionID('session-id')).to.equal(sessionID);
+    });
+  });
+
   describe('dialogflow', () => {
     it('slot filling', async () => {
       const services = {
@@ -110,7 +120,7 @@ describe('DialogflowManager unit tests', async () => {
 
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
-      expect(services.initializeES.build.args).to.eql([[stateObj, req]]);
+      expect(services.initializeES.build.args).to.eql([[stateObj, req.session, req]]);
       expect(stateObj.variables.set.args).to.eql([
         [V.TIMESTAMP, Math.floor(clock.now / 1000)],
         [V.DF_ES_CHANNEL, CHANNEL_VAR],
@@ -200,7 +210,7 @@ describe('DialogflowManager unit tests', async () => {
 
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
-      expect(services.initializeES.build.args).to.eql([[stateObj, req]]);
+      expect(services.initializeES.build.args).to.eql([[stateObj, req.session, req]]);
       expect(stateObj.variables.set.args).to.eql([
         [V.TIMESTAMP, Math.floor(clock.now / 1000)],
         [V.DF_ES_CHANNEL, ''],
@@ -280,7 +290,7 @@ describe('DialogflowManager unit tests', async () => {
 
       expect(services.metrics.invocation.args).to.eql([[]]);
       expect(services.runtimeBuildES.build.args).to.eql([[versionID, req.session]]);
-      expect(services.initializeES.build.args).to.eql([[stateObj, req]]);
+      expect(services.initializeES.build.args).to.eql([[stateObj, req.session, req]]);
       expect(stateObj.turn.set.args[0]).to.eql([
         T.REQUEST,
         {

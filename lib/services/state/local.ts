@@ -12,6 +12,10 @@ class StateManager extends AbstractManager {
   async getFromDb<T extends Record<string, any> = Record<string, any>>(userId: string) {
     return (this.table[userId] || {}) as T;
   }
+
+  async deleteFromDb(userId: string) {
+    delete this.table[userId];
+  }
 }
 
 export default StateManager;

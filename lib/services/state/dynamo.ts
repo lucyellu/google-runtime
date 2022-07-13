@@ -39,6 +39,20 @@ class StateManager extends AbstractManager {
 
     return (data.Item?.state ?? (data.Item?.attributes ? adapter.state(data.Item.attributes) : {})) as T;
   }
+
+  async deleteFromDb(userId: string) {
+    const { docClient } = this.services;
+    const { SESSIONS_DYNAMO_TABLE } = this.config;
+
+    const params = {
+      TableName: SESSIONS_DYNAMO_TABLE,
+      Key: {
+        id: `${StateManager.GACTION_SESSIONS_DYNAMO_PREFIX}.${userId}`,
+      },
+    };
+
+    await docClient.delete(params).promise();
+  }
 }
 
 export default StateManager;

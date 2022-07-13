@@ -107,7 +107,7 @@ describe('initializeManager unit tests', async () => {
 
       const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-      await runtimeClientManager.build(runtime as any, req as any);
+      await runtimeClientManager.build(runtime as any, req.session, req as any);
 
       expect(runtime.storage.get.args[0]).to.eql([S.SESSIONS]);
       expect(runtime.storage.set.args[0]).to.eql([S.SESSIONS, 1]);
@@ -142,7 +142,7 @@ describe('initializeManager unit tests', async () => {
       const oldUserId = 'old-id';
       req.session = oldUserId;
 
-      await runtimeClientManager.build(runtime as any, req as any);
+      await runtimeClientManager.build(runtime as any, req.session, req as any);
 
       expect(runtime.storage.get.args[0]).to.eql([S.SESSIONS]);
       expect(runtime.storage.produce.callCount).to.eql(1);
@@ -168,7 +168,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(runtime.stack.flush.callCount).to.eql(1);
           expect(services.utils.client.Frame.args[0]).to.eql([{ programID: metaObj.rootDiagramID }]);
@@ -184,7 +184,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(runtime.stack.flush.callCount).to.eql(1);
           expect(services.utils.client.Frame.args[0]).to.eql([{ programID: metaObj.rootDiagramID }]);
@@ -202,7 +202,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(runtime.stack.flush.callCount).to.eql(1);
           expect(services.utils.client.Frame.args[0]).to.eql([{ programID: metaObj.rootDiagramID }]);
@@ -224,7 +224,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(topStorage.set.args[0]).to.eql([F.CALLED_COMMAND, true]);
           expect(services.utils.resume.createResumeFrame.args[0]).to.eql([session.resume, session.follow]);
@@ -251,7 +251,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(topStorage.set.args[0]).to.eql([F.CALLED_COMMAND, true]);
           expect(runtime.stack.popTo.args[0]).to.eql([2]);
@@ -270,7 +270,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(topStorage.delete.args[0]).to.eql([F.CALLED_COMMAND]);
           expect(topStorage.get.args[0]).to.eql([F.SPEAK]);
@@ -287,7 +287,7 @@ describe('initializeManager unit tests', async () => {
 
           const runtimeClientManager = new InitializeManager(services as any, null as any);
 
-          await runtimeClientManager.build(runtime as any, req as any);
+          await runtimeClientManager.build(runtime as any, req.session, req as any);
 
           expect(topStorage.delete.args[0]).to.eql([F.CALLED_COMMAND]);
           expect(topStorage.get.args[0]).to.eql([F.SPEAK]);

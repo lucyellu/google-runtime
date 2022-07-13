@@ -24,7 +24,7 @@ const utils = {
 class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
   static VAR_VF = 'voiceflow';
 
-  async build(runtime: GoogleRuntime, req: WebhookRequest): Promise<void> {
+  async build(runtime: GoogleRuntime, userID: string, req: WebhookRequest): Promise<void> {
     const { resume, client } = this.services.utils;
 
     // fetch the metadata for this version (project)
@@ -47,7 +47,7 @@ class InitializeManager extends AbstractManager<{ utils: typeof utils }> {
 
     // set based on input
     storage.set(S.LOCALE, req.queryResult.languageCode);
-    storage.set(S.USER, req.session);
+    storage.set(S.USER, userID);
     storage.delete(S.PRIOR_OUTPUT);
 
     // default global variables

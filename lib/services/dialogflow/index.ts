@@ -2,6 +2,8 @@ import {
   Event as IngestEvent,
   RequestType as IngestRequestType,
 } from '@voiceflow/event-ingestion-service/build/lib/types';
+import { State } from '@voiceflow/general-runtime/build/runtime';
+import _ from 'lodash';
 
 import { T, V } from '@/lib/constants';
 import { RequestType } from '@/lib/services/runtime/types';
@@ -28,22 +30,38 @@ class DialogflowManager extends AbstractManager<{
   responseES: ResponseES;
   slotFillingES: SlotFillingES;
 }> {
+  static extractSessionID(session: string) {
+    const path = session.split('/');
+    const sessionIndex = path.indexOf('session');
+    return (sessionIndex > -1 && path[sessionIndex + 1]) || session;
+  }
+
   async es(req: WebhookRequest, versionID: string) {
-    const { metrics, initializeES, runtimeBuildES, responseES, slotFillingES } = this.services;
+    const { metrics, initializeES, runtimeBuildES, responseES, slotFillingES, state } = this.services;
 
     metrics.invocation();
 
     const intentName = req.queryResult.intent.displayName;
     const { queryText: input, parameters: slots, action } = req.queryResult;
 
-    const userId = req.session;
+    const userID = DialogflowManager.extractSessionID(req.session);
+
+    /**
+     * migrate session IDs
+     * safely remove after 07/20/2022
+     */
+    const oldSessionState = await state?.getFromDb<State>(req.session);
+    if (oldSessionState?.stack) {
+      await state.saveToDb(userID, oldSessionState);
+      await state.deleteFromDb(req.session);
+    }
 
     // slot filling
     if (slotFillingES.canHandle(req)) {
-      return slotFillingES.response(req, userId);
+      return slotFillingES.response(req, userID);
     }
 
-    const runtime = await runtimeBuildES.build(versionID, userId);
+    const runtime = await runtimeBuildES.build(versionID, userID);
     const request = {
       type: RequestType.INTENT,
       payload: {
@@ -55,7 +73,7 @@ class DialogflowManager extends AbstractManager<{
     };
 
     if (intentName === mainIntent1 || intentName === mainIntent2 || runtime.stack.isEmpty()) {
-      await initializeES.build(runtime, req);
+      await initializeES.build(runtime, userID, req);
 
       if (intentName === mainIntent1 || intentName === mainIntent2) {
         runtime.turn.set(
@@ -66,7 +84,7 @@ class DialogflowManager extends AbstractManager<{
             event: IngestEvent.TURN,
             request: IngestRequestType.LAUNCH,
             payload: request,
-            sessionid: req.session,
+            sessionid: userID,
             metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },
             timestamp: new Date(),
           })
@@ -85,7 +103,7 @@ class DialogflowManager extends AbstractManager<{
           event: IngestEvent.TURN,
           request: IngestRequestType.REQUEST,
           payload: request,
-          sessionid: req.session,
+          sessionid: userID,
           metadata: { ...runtime.getRawState(), platform: 'dialogflow-es' },
           timestamp: new Date(),
         })
