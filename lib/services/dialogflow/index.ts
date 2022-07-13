@@ -32,7 +32,7 @@ class DialogflowManager extends AbstractManager<{
 }> {
   static extractSessionID(session: string) {
     const path = session.split('/');
-    const sessionIndex = path.indexOf('session');
+    const sessionIndex = path.indexOf('sessions');
     return (sessionIndex > -1 && path[sessionIndex + 1]) || session;
   }
 
