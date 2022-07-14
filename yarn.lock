@@ -1384,10 +1384,36 @@
     rxjs "^7.2.0"
     zod "^3.11.6"
 
-"@voiceflow/general-runtime@1.107.0":
-  version "1.107.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.107.0.tgz#0257e014cf567639bcdc13b8debfc38cb05467fb"
-  integrity sha512-5BtzxwdU0fgtmKP7PanecSk68+OZj/AWYP8wTivkzCuCvcbkdkwugdEZD/q7JqEYejVGR7CdIPUcceZjwDAxZw==
+"@voiceflow/event-ingestion-service@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/event-ingestion-service/-/event-ingestion-service-1.2.3.tgz#b7bd538b597f2101e8a56002b912017ebcf90646"
+  integrity sha512-hMCcdIVchkFoi8vIAkCwEc99uUEosmwUieRAiqLbyqM4xadbXzCJKcHcum8HyCFG02yPw4EUc+F/LgRGW2ruFg==
+  dependencies:
+    "@nestjs/common" "^8.4.4"
+    "@nestjs/config" "^2.0.0"
+    "@nestjs/core" "^8.4.4"
+    "@nestjs/platform-express" "^8.4.4"
+    "@nestjs/terminus" "^8.0.6"
+    "@voiceflow/common" "7.27.3"
+    "@voiceflow/logger" "1.6.1"
+    "@voiceflow/nestjs-common" "1.4.0"
+    "@voiceflow/nestjs-mongodb" "1.1.1"
+    "@voiceflow/nestjs-timeout" "1.1.2"
+    axios "0.24.0"
+    class-transformer "^0.5.1"
+    class-validator "^0.13.2"
+    compression "^1.7.4"
+    express "^4.17.2"
+    helmet "5.0.2"
+    mongodb "^4.6.0"
+    reflect-metadata "^0.1.13"
+    rxjs "^7.2.0"
+    zod "^3.11.6"
+
+"@voiceflow/general-runtime@1.108.0":
+  version "1.108.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.108.0.tgz#910fcf5b37aa5f48f2018221c78f03f26e3f472c"
+  integrity sha512-lkq+CVVD/2+7UsjsAQI8idshQPrTM0hf35tsgy4hLJH8uIeP2Sg3scPF2z91A8zhjbHOVndahstaYSKxdDnrMA==
   dependencies:
     "@opentelemetry/api-metrics" "0.26.0"
     "@types/workerpool" "^5.0.1"
