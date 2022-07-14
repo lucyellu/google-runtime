@@ -26,7 +26,7 @@ describe('DialogflowManager unit tests', async () => {
       const sessionID = 'session-id';
       expect(DialogflowManager.extractSessionID('projects/project-id/agent/sessions/session-id')).to.equal(sessionID);
       expect(DialogflowManager.extractSessionID('projects/sessions/session-id/stuff-behind')).to.equal(sessionID);
-      expect(DialogflowManager.extractSessionID('projects/session-id')).to.equal(sessionID);
+      expect(DialogflowManager.extractSessionID('projects/session-id')).to.equal(`projects/${sessionID}`);
       expect(DialogflowManager.extractSessionID('session-id')).to.equal(sessionID);
     });
   });

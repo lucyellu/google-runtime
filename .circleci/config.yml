@@ -83,7 +83,8 @@ jobs:
       - vfcommon/clone_s3_assets:
           from: s3://com.voiceflow.ci.assets/google
           to: ~/project/tests/smoke/recordedSessions
-      - vfcommon/smoke_tests
+      - vfcommon/smoke_tests:
+          wait: true
       - sonarcloud/scan
 
 # When should each job run and what are their dependencies?
