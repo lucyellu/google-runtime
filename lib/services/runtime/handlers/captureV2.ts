@@ -1,5 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { NodeType } from '@voiceflow/base-types/build/common/node';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { HandlerFactory } from '@voiceflow/general-runtime/build/runtime';
 import { GoogleNode } from '@voiceflow/google-types';
 
@@ -19,7 +18,7 @@ const utilsObj = {
 };
 
 export const CaptureV2Handler: HandlerFactory<GoogleNode.CaptureV2.VoiceNode, typeof utilsObj> = (utils) => ({
-  canHandle: (node) => node.type === NodeType.CAPTURE_V2,
+  canHandle: (node) => node.type === BaseNode.NodeType.CAPTURE_V2,
   handle: (node, runtime, variables) => {
     const request = runtime.turn.get<IntentRequest>(T.REQUEST);
 
