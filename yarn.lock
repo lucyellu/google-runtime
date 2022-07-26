@@ -1401,10 +1401,10 @@
     rxjs "^7.2.0"
     zod "^3.11.6"
 
-"@voiceflow/general-runtime@1.109.0":
-  version "1.109.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.109.0.tgz#26bfd3ec806d0572a8f711504028f5e44a97cae9"
-  integrity sha512-sHrDEQLrmJLJbcp2MGCAXbPosYKF2zPqZXh0W+JjXUjmAcyeK+YL3rwb7Vq8z5iUz9m3Ezc/1ryVamnGDUPfog==
+"@voiceflow/general-runtime@1.109.1":
+  version "1.109.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.109.1.tgz#5f9f64aaf3161bae8779f61451dd9efbb33e95af"
+  integrity sha512-kARw9sPZi+4EAGbWLVyzoRzoaTT8rNeIGmQHYNO4HK16/Cxcrw9XMhC+eGh1l944YC91M4bAiVLNin1f3GzOBA==
   dependencies:
     "@opentelemetry/api-metrics" "0.26.0"
     "@types/workerpool" "^5.0.1"
