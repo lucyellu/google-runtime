@@ -19,7 +19,7 @@
     "@voiceflow/body-parser": "1.21.1",
     "@voiceflow/common": "8.1.2",
     "@voiceflow/event-ingestion-service": "1.2.3",
-    "@voiceflow/general-runtime": "1.109.4",
+    "@voiceflow/general-runtime": "1.109.5",
     "@voiceflow/google-dfes-types": "2.12.10",
     "@voiceflow/google-types": "2.15.5",
     "@voiceflow/logger": "1.6.1",
