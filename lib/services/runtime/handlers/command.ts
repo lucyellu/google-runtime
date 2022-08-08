@@ -30,12 +30,13 @@ export const getCommand = (runtime: Runtime, options: CommandOptions = {}) => {
     return null;
   }
 
-  const { action, intent, slots } = request.payload;
+  const { action, intent, slots, input } = request.payload;
 
   // don't act on a catchall intent
   if (intent === IntentName.VOICEFLOW) return null;
 
-  const matcher = (command: GoogleNode.AnyCommand | null) => command?.intent === intent || command?.intent === action;
+  const matcher = (command: GoogleNode.AnyCommand | null) =>
+    command?.intent === intent || command?.intent === action || (input.includes('CMD_') && input === command?.intent);
 
   const frames = runtime.stack.getFrames();
   for (let index = frames.length - 1; index >= 0; index--) {

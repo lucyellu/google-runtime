@@ -7,9 +7,15 @@ import { RequestType } from '../types';
 import CaptureHandler from './capture';
 import CaptureV2Handler from './captureV2';
 import CommandHandler from './command';
+import CarouselHandler from './dialogflow_es/carousel';
 import InteractionHandler from './interaction';
 
-export const eventHandlers = [CaptureHandler(), CaptureV2Handler(), InteractionHandler()] as Handler[];
+export const eventHandlers = [
+  CaptureHandler(),
+  CaptureV2Handler(),
+  InteractionHandler(),
+  CarouselHandler(),
+] as Handler[];
 
 const utilsObj = {
   commandHandler: CommandHandler(),

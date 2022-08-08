@@ -25,10 +25,29 @@ interface Card {
   };
 }
 
+interface CarouselItem {
+  title: string;
+  description: string;
+  image: {
+    accessibilityText?: string;
+    imageUri: string;
+  };
+  info: {
+    key: string;
+    synonyms: string[];
+  };
+}
+
+interface Carousel {
+  carouselSelect: {
+    items: CarouselItem[];
+  };
+}
+
 type Payload = Record<string, any>;
 
 // https://cloud.google.com/dialogflow/es/docs/reference/rpc/google.cloud.dialogflow.v2beta1#message
-export type ResponseMessage = Text | Image | QuickReplies | Card | Payload;
+export type ResponseMessage = Text | Image | QuickReplies | Card | Payload | Carousel;
 
 export interface WebhookRequest {
   responseId: string;

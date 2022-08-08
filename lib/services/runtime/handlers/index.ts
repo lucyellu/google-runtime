@@ -26,6 +26,7 @@ import ChoiceHandler, {
   ChipsResponseBuilderDialogflowES,
   ChipsResponseBuilderV2,
 } from './choice';
+import DFESCarouselHandler, { CarouselResponseBuilderDialogflowES } from './dialogflow_es/carousel';
 import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow_es/image';
 import DFESPayloadHandler, { PayloadResponseBuilderDialogflowES } from './dialogflow_es/payload';
 import DFESTextHandler from './dialogflow_es/text';
@@ -48,6 +49,7 @@ export const responseHandlersDialogflowES = [
   CardResponseBuilderDialogflowES,
   ImageResponseBuilderDialogflowES,
   PayloadResponseBuilderDialogflowES,
+  CarouselResponseBuilderDialogflowES,
 ];
 const _v1Handler = _V1Handler();
 
@@ -67,6 +69,7 @@ export const HandlersDialogflowES = ({
   ResetHandler(),
   CardHandler(),
   DFESImageHandler(),
+  DFESCarouselHandler(),
   DFESPayloadHandler(),
   DFESTextHandler(),
   ChoiceHandler(),
