@@ -34,6 +34,9 @@ interface Metadata extends State {
   platform?: string;
 }
 
+// do not ingest traces for matching session ids
+const BLACKLISTED_SESSION_IDS = new Set(['actions.session.HEALTH_CHECK']);
+
 export class AnalyticsSystem extends AbstractClient {
   private ingestClient?: IngestApi<InteractionBody, TraceBody>;
 
@@ -113,7 +116,9 @@ export class AnalyticsSystem extends AbstractClient {
     metadata: Metadata;
     timestamp: Date;
     turnIDP?: string;
-  }): Promise<string> {
+  }): Promise<string | null> {
+    if (sessionid && BLACKLISTED_SESSION_IDS.has(sessionid)) return null;
+
     versionID = await this.dataAPI.unhashVersionID(versionID);
 
     log.trace(`[analytics] track ${log.vars({ versionID })}`);

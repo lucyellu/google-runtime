@@ -2,7 +2,6 @@ import {
   Event as IngestEvent,
   RequestType as IngestRequestType,
 } from '@voiceflow/event-ingestion-service/build/lib/types';
-import { State } from '@voiceflow/general-runtime/build/runtime';
 import _ from 'lodash';
 
 import { T, V } from '@/lib/constants';
@@ -37,7 +36,7 @@ class DialogflowManager extends AbstractManager<{
   }
 
   async es(req: WebhookRequest, versionID: string) {
-    const { metrics, initializeES, runtimeBuildES, responseES, slotFillingES, state } = this.services;
+    const { metrics, initializeES, runtimeBuildES, responseES, slotFillingES } = this.services;
 
     metrics.invocation();
 
@@ -45,16 +44,6 @@ class DialogflowManager extends AbstractManager<{
     const { queryText: input, parameters: slots, action } = req.queryResult;
 
     const userID = DialogflowManager.extractSessionID(req.session);
-
-    /**
-     * migrate session IDs
-     * safely remove after 07/20/2022
-     */
-    const oldSessionState = await state?.getFromDb<State>(req.session);
-    if (oldSessionState?.stack) {
-      await state.saveToDb(userID, oldSessionState);
-      await state.deleteFromDb(req.session);
-    }
 
     // slot filling
     if (slotFillingES.canHandle(req)) {
