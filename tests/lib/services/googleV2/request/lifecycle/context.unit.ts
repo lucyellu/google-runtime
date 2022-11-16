@@ -25,22 +25,25 @@ describe('runtimeClientManagerV2 unit tests', async () => {
         createRuntime: sinon.stub().returns(stateObj),
       };
 
+      const versionID = 'version-id';
       const services = {
         state: {
           getFromDb: sinon.stub().resolves(rawState),
         },
         runtimeClientV2: client,
+        dataAPI: {
+          getVersion: sinon.stub().resolves({ id: versionID }),
+        },
       };
       const runtimeClientManager = new RuntimeClientManager(services as any, null as any);
 
-      const versionID = 'version-id';
       const userID = 'user-id';
 
       const result = await runtimeClientManager.build(versionID, userID);
 
       expect(result).to.eql(stateObj);
       expect(services.state.getFromDb.args[0]).to.eql([userID]);
-      expect(client.createRuntime.args[0]).to.eql([versionID, rawState]);
+      expect(client.createRuntime.args[0]).to.eql([versionID, rawState, undefined, undefined, { id: versionID }]);
       expect(stateObj.turn.set.args[0]).to.eql([T.PREVIOUS_OUTPUT, outputString]);
       expect(stateObj.storage.get.args[0]).to.eql([S.OUTPUT]);
       expect(stateObj.storage.set.args[0]).to.eql([S.OUTPUT, '']);

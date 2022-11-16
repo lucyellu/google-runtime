@@ -1,12 +1,18 @@
 import { BaseButton, BaseModels, Text } from '@voiceflow/base-types';
 import { replaceVariables, sanitizeVariables, SLOT_REGEXP, transformStringVariableToNumber } from '@voiceflow/common';
-import { slateInjectVariables, slateToPlaintext } from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
+import {
+  isPromptContentEmpty,
+  slateInjectVariables,
+  slateToPlaintext,
+} from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { GoogleNode } from '@voiceflow/google-types';
-import { VoiceNode } from '@voiceflow/voice-types';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 import _ from 'lodash';
 
 import { S, T } from '@/lib/constants';
+
+import { isAnyPrompt } from './types';
 
 interface GoogleDateTimeSlot {
   seconds: number;
@@ -100,18 +106,27 @@ export const addVariables =
 
 export const EMPTY_AUDIO_STRING = '<audio src=""/>';
 
-export const removeEmptyPrompts = (prompts?: string[] | null): string[] =>
-  prompts?.filter((prompt) => prompt != null && prompt !== EMPTY_AUDIO_STRING) ?? [];
+export const removeEmptyPrompts = (prompts: Array<Text.SlateTextValue | string>): Array<Text.SlateTextValue | string> =>
+  prompts.filter(
+    (prompt) =>
+      prompt != null && (typeof prompt === 'string' ? prompt !== EMPTY_AUDIO_STRING : !!slateToPlaintext(prompt))
+  );
 
-export const addRepromptIfExists = <B extends VoiceNode.Utils.NoReplyNode>(
-  node: B,
+export const addRepromptIfExists = <Node extends VoiceflowNode.Utils.NoReplyNode>(
+  node: Node,
   runtime: Runtime,
   variables: Store
 ): void => {
   const prompt = _.sample(node.noReply?.prompts || node.reprompt ? [node.reprompt] : []);
-
   if (prompt) {
-    runtime.storage.set(S.REPROMPT, replaceVariables(prompt, variables.getState()));
+    runtime.storage.set(S.REPROMPT, processOutput(prompt, variables));
+    return;
+  }
+
+  const globalNoReply = getGlobalNoReplyPrompt(runtime)?.content;
+
+  if (globalNoReply && !isPromptContentEmpty(globalNoReply)) {
+    runtime.storage.set(S.REPROMPT, processOutput(globalNoReply, variables));
   }
 };
 
@@ -127,4 +142,19 @@ export const processOutput = (output: string | Text.SlateTextValue | undefined, 
   // handle slate text
   const content = slateInjectVariables(output, sanitizedVars);
   return slateToPlaintext(content);
+};
+
+export const getGlobalNoMatchPrompt = (runtime: Runtime) => {
+  const { version } = runtime;
+
+  return isAnyPrompt(version?.platformData.settings?.globalNoMatch?.prompt)
+    ? version?.platformData.settings?.globalNoMatch?.prompt
+    : null;
+};
+
+export const getGlobalNoReplyPrompt = (runtime: Runtime) => {
+  const { version } = runtime;
+  return isAnyPrompt(version?.platformData?.settings.globalNoReply?.prompt)
+    ? version?.platformData?.settings.globalNoReply?.prompt
+    : null;
 };

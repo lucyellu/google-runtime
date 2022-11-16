@@ -1,6 +1,8 @@
 import { ConversationV3 } from '@assistant/conversation';
+import { ChatModels } from '@voiceflow/chat-types';
 import Client, { DataAPI, Runtime } from '@voiceflow/general-runtime/build/runtime';
-import { GoogleProgram, GoogleVersion } from '@voiceflow/google-types';
+import { GoogleConstants, GoogleProgram, GoogleVersion } from '@voiceflow/google-types';
+import { VoiceModels } from '@voiceflow/voice-types';
 import { DialogflowConversation } from 'actions-on-google';
 
 import type { FullServiceMap } from '..';
@@ -14,6 +16,20 @@ export enum RequestType {
 export enum IntentName {
   VOICEFLOW = 'VoiceFlowIntent',
 }
+
+export type VoicePrompt = VoiceModels.Prompt<GoogleConstants.Voice>;
+export type ChatPrompt = ChatModels.Prompt;
+export type AnyPrompt = VoicePrompt | ChatPrompt;
+
+export const isVoicePrompt = (prompt: unknown): prompt is VoicePrompt => {
+  return !!prompt && typeof prompt === 'object' && 'content' in prompt && 'voice' in prompt;
+};
+
+export const isChatPrompt = (prompt: unknown): prompt is ChatPrompt => {
+  return !!prompt && typeof prompt === 'object' && 'content' in prompt;
+};
+
+export const isAnyPrompt = (prompt: unknown): prompt is AnyPrompt => isVoicePrompt(prompt) || isChatPrompt(prompt);
 
 export interface IntentRequestPayload {
   intent: string;
