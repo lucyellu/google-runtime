@@ -63,11 +63,16 @@ export const NoMatchHandler = () => ({
       return node.noMatch?.nodeID ?? null;
     }
 
-    runtime.storage.set(S.NO_MATCHES_COUNTER, noMatchCounter + 1);
-
     runtime.storage.produce((draft) => {
       draft[S.OUTPUT] += output;
     });
+
+    if (node.noMatch?.nodeID) {
+      runtime.storage.delete(S.NO_MATCHES_COUNTER);
+      return node.noMatch.nodeID;
+    }
+
+    runtime.storage.set(S.NO_MATCHES_COUNTER, noMatchCounter + 1);
 
     return node.id;
   },
