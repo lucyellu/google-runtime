@@ -2376,10 +2376,10 @@
     rxjs "^7.2.0"
     zod "^3.11.6"
 
-"@voiceflow/general-runtime@1.122.0":
-  version "1.122.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.122.0.tgz#34602bf905c95e315bba1708621242b2d75e1c6b"
-  integrity sha512-j1p5BznN6dCh8NWRLqsoYuWPEgtPdHV/18F5E9CgZmtPN401ikG8bFhNwfBK/bfVXM+DfCmzi7i+DKDNb+Ncxg==
+"@voiceflow/general-runtime@1.122.1":
+  version "1.122.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.122.1.tgz#be06642b9ff80f59ae55ef4c16537ffa09292862"
+  integrity sha512-BuHm3EjbyAQeR0jXJ26ML0VXorxuwsvwfXXS84KwPzApq3WIztGhODmo6tZPUgFEN7uShs/Am7XnUWuDVI9iWw==
   dependencies:
     "@aws-sdk/client-s3" "^3.179.0"
     "@opentelemetry/api-metrics" "0.26.0"
