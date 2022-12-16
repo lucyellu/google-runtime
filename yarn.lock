@@ -2376,10 +2376,10 @@
     rxjs "^7.2.0"
     zod "^3.11.6"
 
-"@voiceflow/general-runtime@1.124.3":
-  version "1.124.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.124.3.tgz#1be932f30ddaf1acfead1689053318c25b9818fd"
-  integrity sha512-xV6D3611CkDpr5trsYwZ/RYz3mlzh2Lcxtgc9a5PCG4KWmcjq+WEkAICumOTcOprz0p4xrCwIQ1+EDhoHUmLpg==
+"@voiceflow/general-runtime@1.124.4":
+  version "1.124.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-runtime/-/general-runtime-1.124.4.tgz#4e78b9e11cd23204211e9f7815caafe66d1b1eca"
+  integrity sha512-e3nDyBPgsclVJNcPlcgWphZgd4VXroH/pkh8l53mUiol39LqkbIfM1EN7KAetCtUB2JFBAezSCRhBFiqFhFOiw==
   dependencies:
     "@aws-sdk/client-s3" "^3.179.0"
     "@opentelemetry/api-metrics" "0.26.0"
@@ -2416,7 +2416,7 @@
     immer "^9.0.6"
     ioredis "^4.22.0"
     ip-range-check "^0.2.0"
-    isolated-vm "^4.3.6"
+    isolated-vm "^4.4.2"
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
     mathjs "^10.6.1"
@@ -7031,10 +7031,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-isolated-vm@^4.3.6:
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/isolated-vm/-/isolated-vm-4.3.6.tgz#443672194c96fc077f219d6c115d50b1706d9611"
-  integrity sha512-YvioBOU6wUNSTOWGgX/pDPLF9/WaSLsX8GqL7RlFCKzBXTXzyfG+T4JNIRNEiowtZk5H5ekJSUFqbx2QHSpJDQ==
+isolated-vm@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/isolated-vm/-/isolated-vm-4.4.2.tgz#d5cf66f8751e9824cf0710d1a41022a1a60d29b7"
+  integrity sha512-4ObzqZWZTS3bQtavzgoCMsOxpQt3hMeenkPavx2Razig3wX3fAkXZ3XpmqXKoJu6KMl4egBI1MfSg0BnxZ/rfg==
 
 istanbul-lib-coverage@^3.0.0, istanbul-lib-coverage@^3.0.0-alpha.1:
   version "3.0.0"
