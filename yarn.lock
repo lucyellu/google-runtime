@@ -2204,6 +2204,26 @@
     rate-limiter-flexible "^2.2.2"
     sinon "^10.0.0"
 
+"@voiceflow/backend-utils@4.8.3":
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/backend-utils/-/backend-utils-4.8.3.tgz#3ae979d156a466cbccd685c3a5d9f53a415f271e"
+  integrity sha512-6xAx2PrdCBf3SbLrCt5+9JRlBer2hFb1WnVQiuwnJlggFfU7m9xmGELJJ8mZEjXqa7eDQ06CvU3QZsu50BjEKw==
+  dependencies:
+    "@types/http-errors" "^1.8.2"
+    "@voiceflow/logger" "1.6.1"
+    "@voiceflow/verror" "1.1.3"
+    chai "^4.3.4"
+    dotenv "^10.0.0"
+    gaxios "4.3.2"
+    http-errors "^2.0.0"
+    http-status "^1.4.2"
+    jszip "3.7.1"
+    lodash "^4.17.11"
+    luxon "^1.21.3"
+    minimatch "5.0.1"
+    rate-limiter-flexible "^2.2.2"
+    sinon "^10.0.0"
+
 "@voiceflow/base-types@2.71.3", "@voiceflow/base-types@^2.71.3":
   version "2.71.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.71.3.tgz#76e9e9ba2185f7d587e8a5cdbc7409f49dde75c4"

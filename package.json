@@ -14,7 +14,7 @@
   "dependencies": {
     "@assistant/conversation": "3.2.0",
     "@opentelemetry/api-metrics": "0.26.0",
-    "@voiceflow/backend-utils": "4.8.2",
+    "@voiceflow/backend-utils": "4.8.3",
     "@voiceflow/base-types": "2.76.0",
     "@voiceflow/body-parser": "1.21.1",
     "@voiceflow/chat-types": "2.13.13",
