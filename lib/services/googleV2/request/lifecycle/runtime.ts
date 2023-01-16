@@ -11,7 +11,14 @@ class RuntimeClientManager extends AbstractManager {
 
     const rawState = await state.getFromDb<State>(userID);
     const version = await dataAPI.getVersion(versionID);
-    const runtime = runtimeClientV2.createRuntime(versionID, rawState, undefined, undefined, version);
+    const project = await dataAPI.getProject(version.projectID);
+
+    const runtime = runtimeClientV2.createRuntime({
+      versionID,
+      state: rawState,
+      version,
+      project,
+    });
 
     runtime.turn.set(T.PREVIOUS_OUTPUT, runtime.storage.get(S.OUTPUT));
     runtime.storage.set(S.OUTPUT, '');

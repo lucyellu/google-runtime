@@ -26,6 +26,7 @@ describe('runtimeClientManagerDialogflowES unit tests', async () => {
       };
 
       const versionID = 'version-id';
+      const projectID = 'project-id';
 
       const services = {
         state: {
@@ -33,6 +34,7 @@ describe('runtimeClientManagerDialogflowES unit tests', async () => {
         },
         dataAPI: {
           getVersion: sinon.stub().resolves({ id: versionID }),
+          getProject: sinon.stub().resolves({ id: projectID }),
         },
         runtimeClientDialogflowES: client,
       };
@@ -44,7 +46,14 @@ describe('runtimeClientManagerDialogflowES unit tests', async () => {
 
       expect(result).to.eql(stateObj);
       expect(services.state.getFromDb.args[0]).to.eql([userID]);
-      expect(client.createRuntime.args[0]).to.eql([versionID, rawState, undefined, undefined, { id: versionID }]);
+      expect(client.createRuntime.args[0]).to.eql([
+        {
+          versionID,
+          state: rawState,
+          version: { id: versionID },
+          project: { id: projectID },
+        },
+      ]);
       expect(stateObj.turn.set.args[0]).to.eql([T.PREVIOUS_OUTPUT, outputString]);
       expect(stateObj.storage.get.args[0]).to.eql([S.OUTPUT]);
       expect(stateObj.storage.set.args[0]).to.eql([S.OUTPUT, '']);
