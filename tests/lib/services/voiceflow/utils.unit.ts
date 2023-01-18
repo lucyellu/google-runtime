@@ -31,6 +31,27 @@ describe('runtime manager utils unit tests', async () => {
 
       expect(runtime.storage.set.args[0]).to.eql([S.REPROMPT, 'hello there']);
     });
+
+    it('has global no reply', () => {
+      const runtime = {
+        storage: { set: sinon.stub() },
+        version: {
+          platformData: {
+            settings: {
+              globalNoReply: {
+                prompt: { content: 'hello {var}' },
+              },
+            },
+          },
+        },
+      };
+
+      const variables = { getState: sinon.stub().returns({ var: 'there' }) };
+
+      addRepromptIfExists({} as any, runtime as any, variables as any);
+
+      expect(runtime.storage.set.args[0]).to.eql([S.REPROMPT, 'hello there']);
+    });
   });
 
   describe('addChipsIfExists', () => {

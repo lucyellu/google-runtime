@@ -1,3 +1,4 @@
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -5,6 +6,7 @@ import { S } from '@/lib/constants';
 import { NoMatchHandler } from '@/lib/services/runtime/handlers/noMatch';
 
 const GlobalNoMatch = { prompt: { voice: 'Google', content: 'Sorry, could not understand what you said' } };
+const GlobalEmptyNoMatch = { prompt: { voice: 'Google', content: '' } };
 
 describe('noMatch handler unit tests', () => {
   describe('handle', () => {
@@ -19,6 +21,7 @@ describe('noMatch handler unit tests', () => {
       const runtime = {
         storage: {
           delete: sinon.stub(),
+          produce: sinon.stub(),
           get: sinon.stub().returns(2),
         },
       };
@@ -126,6 +129,14 @@ describe('noMatch handler unit tests', () => {
           set: sinon.stub(),
           delete: sinon.stub(),
           get: sinon.stub(),
+          produce: sinon.stub(),
+        },
+        version: {
+          platformData: {
+            settings: {
+              globalNoMatch: GlobalEmptyNoMatch,
+            },
+          },
         },
       };
       const variables = {
@@ -173,6 +184,43 @@ describe('noMatch handler unit tests', () => {
       expect(draft3).to.eql({ [S.OUTPUT]: 'msg: Sorry, could not understand what you said' });
     });
 
+    it('with global noMatch not edited', () => {
+      const node = {
+        id: 'node-id',
+        noMatch: {
+          prompts: [],
+        },
+      };
+      const runtime = {
+        storage: {
+          set: sinon.stub(),
+          produce: sinon.stub(),
+          get: sinon.stub().returns(null),
+        },
+        version: {
+          platformData: {
+            settings: {
+              globalNoMatch: null,
+            },
+          },
+        },
+      };
+      const variables = {
+        getState: sinon.stub().returns({}),
+      };
+
+      const noMatchHandler = NoMatchHandler();
+      expect(noMatchHandler.handle(node as any, runtime as any, variables as any)).to.eql(node.id);
+
+      expect(runtime.storage.set.args).to.eql([[S.NO_MATCHES_COUNTER, 1]]);
+
+      // adds output
+      const cb2 = runtime.storage.produce.args[0][0];
+      const draft3 = { [S.OUTPUT]: 'msg: ' };
+      cb2(draft3);
+      expect(draft3).to.eql({ [S.OUTPUT]: `msg: ${VoiceflowConstants.defaultMessages.globalNoMatch}` });
+    });
+
     it('with choices', () => {
       const node = {
         id: 'node-id',
@@ -182,7 +230,15 @@ describe('noMatch handler unit tests', () => {
         storage: {
           set: sinon.stub(),
           delete: sinon.stub(),
+          produce: sinon.stub(),
           get: sinon.stub().returns(0),
+        },
+        version: {
+          platformData: {
+            settings: {
+              globalNoMatch: GlobalEmptyNoMatch,
+            },
+          },
         },
       };
       const variables = {

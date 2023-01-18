@@ -1,8 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { isPromptContentEmpty } from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
+import { generateOutput } from '@voiceflow/general-runtime/build/lib/services/runtime/handlers/utils/output';
+import {
+  isPromptContentEmpty,
+  isPromptContentInitialyzed,
+} from '@voiceflow/general-runtime/build/lib/services/runtime/utils';
 import { Runtime, Store } from '@voiceflow/general-runtime/build/runtime';
 import { VoiceNode } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _ from 'lodash';
 
 import { S } from '@/lib/constants';
@@ -43,6 +48,10 @@ const getOutput = (runtime: Runtime, node: NoMatchNode, variables: Store, noMatc
   }
 
   const globalNoMatchPrompt = getGlobalNoMatchPrompt(runtime)?.content;
+
+  if (!isPromptContentInitialyzed(globalNoMatchPrompt)) {
+    return generateOutput(VoiceflowConstants.defaultMessages.globalNoMatch, runtime.project);
+  }
 
   if (!isPromptContentEmpty(globalNoMatchPrompt)) {
     return processOutput(globalNoMatchPrompt, variables);
