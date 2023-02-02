@@ -2367,10 +2367,10 @@
     rxjs "^7.2.0"
     zod "^3.11.6"
 
-"@voiceflow/event-ingestion-service@1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/event-ingestion-service/-/event-ingestion-service-1.4.4.tgz#a30d5b8fb855740f4c0b16f5d554a90786e03171"
-  integrity sha512-MI+IOsVYTJgMdn/iGz40J7C5DjgsNg6YarrJEqfK/0A3rxqeEJFybPeLgE9kna/sXqsM39L0yK7CSk9lIEx1rw==
+"@voiceflow/event-ingestion-service@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/event-ingestion-service/-/event-ingestion-service-1.5.0.tgz#07baad90575f51e7a5fbbc8d90131955ea7d6ccf"
+  integrity sha512-oQVNq5bSxb0rDONJ/M3M9h132vIPBu7G4+YnkBNKYqHZrQnW2zaDxrnIYHvMHEHdDJ46Axf7ByIjZRlCYVuHyQ==
   dependencies:
     "@nestjs/common" "^8.4.4"
     "@nestjs/config" "^2.0.0"
