@@ -31,6 +31,7 @@ import DFESImageHandler, { ImageResponseBuilderDialogflowES } from './dialogflow
 import DFESPayloadHandler, { PayloadResponseBuilderDialogflowES } from './dialogflow_es/payload';
 import DFESTextHandler from './dialogflow_es/text';
 import DirectiveHandler, { DirectiveResponseBuilder } from './directive';
+import GenerativeHandler from './generative';
 import GoToHandler from './goTo';
 import InteractionHandler from './interaction';
 import PreliminaryHandler from './preliminary';
@@ -61,6 +62,7 @@ export const HandlersDialogflowES = ({
   API_MAX_BODY_LENGTH_BYTES,
 }: Config) => [
   PreliminaryHandler(),
+  GenerativeHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
   CaptureHandler('v2'),
@@ -100,6 +102,7 @@ export const HandlersV2 = ({
   API_MAX_BODY_LENGTH_BYTES,
 }: Config) => [
   PreliminaryHandler(),
+  GenerativeHandler(),
   SpeakHandler(),
   CaptureV2Handler(),
   CaptureHandler('v2'),
@@ -137,6 +140,7 @@ export const HandlersV1 = ({
   API_MAX_BODY_LENGTH_BYTES,
 }: Config) => [
   SpeakHandler(),
+  GenerativeHandler(),
   CaptureHandler(),
   InteractionHandler(),
   GoToHandler(),
