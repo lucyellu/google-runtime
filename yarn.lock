@@ -2212,7 +2212,15 @@
     "@voiceflow/common" "^8.2.0"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.80.2", "@voiceflow/base-types@^2.80.1", "@voiceflow/base-types@^2.80.2":
+"@voiceflow/base-types@2.80.3", "@voiceflow/base-types@^2.80.3":
+  version "2.80.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.80.3.tgz#6ed3d0217bc48f64e25dc59d875171c58a3f390a"
+  integrity sha512-CPHGC/2eQLxWP1+ps+sMWuMTGWEbr5WBL+9eG1q3QR4kjf7L3DfTQ1VZtEHkXVkOnOv8iwKg+pJw999FKxiGTg==
+  dependencies:
+    "@voiceflow/common" "^8.2.0"
+    slate "0.73.0"
+
+"@voiceflow/base-types@^2.80.1", "@voiceflow/base-types@^2.80.2":
   version "2.80.2"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.80.2.tgz#0ac4a417f9c1fbdfec960ba01d88970ce7842b06"
   integrity sha512-JTsaRtstuRAtDjKxxRPXCT+ilu8qn0GWWE5JfFPx1OkR6oBPu2N7x5h5s/Y6NX6MLG4zBS3MyInxWh0IcK/alA==
@@ -2245,7 +2253,15 @@
     "@voiceflow/base-types" "^2.80.1"
     "@voiceflow/common" "^8.2.0"
 
-"@voiceflow/chat-types@2.13.23", "@voiceflow/chat-types@^2.13.22", "@voiceflow/chat-types@^2.13.23":
+"@voiceflow/chat-types@2.13.24", "@voiceflow/chat-types@^2.13.24":
+  version "2.13.24"
+  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.24.tgz#85557b3ef81a966b359c4ae0d4a3579a3a73850c"
+  integrity sha512-glQR8EEYgQbXxQwq25jdP/zCFW0wlPi6Go2hGS+eUtxAV5qPdQvOnwWkXzHbLilxpyi8VrJcZGK+PwEnOZJPUg==
+  dependencies:
+    "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/common" "^8.2.0"
+
+"@voiceflow/chat-types@^2.13.22", "@voiceflow/chat-types@^2.13.23":
   version "2.13.23"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.23.tgz#3eb8496795ae3ce1ac7d31553def127742473f05"
   integrity sha512-bIIiLuvwYc+SfPKh9C5JXDS9B2wqjfVcNj57Mlq/O5MMXR84f43SGiUOd8Lolnq61/xvba2syYNSbcRvIYs8JQ==
@@ -2440,17 +2456,17 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-dfes-types@2.14.35":
-  version "2.14.35"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-dfes-types/-/google-dfes-types-2.14.35.tgz#7c2b010b97abf3effe08801de79973bbffa3074f"
-  integrity sha512-ip0S/v7rziCk+FGnJn8+zNW72kIPg2seC1sw6tWGKsD9vI5LVtOGcC7zQUS4yLbmpochQebclUEMKr4v2kldzQ==
+"@voiceflow/google-dfes-types@2.14.36":
+  version "2.14.36"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-dfes-types/-/google-dfes-types-2.14.36.tgz#e5346910b82293a1e528248cccf2300a246f0270"
+  integrity sha512-xF22F7eg9WJLs4b1ckA1og7tUOqFhZWek/XU6+2g4iHd8TPdyYNaNGK0wQbrJF5GIZl4pLLaWwde3lyo9qoCMA==
   dependencies:
-    "@voiceflow/base-types" "^2.80.2"
-    "@voiceflow/chat-types" "^2.13.23"
+    "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/chat-types" "^2.13.24"
     "@voiceflow/common" "^8.2.0"
-    "@voiceflow/google-types" "^2.18.28"
-    "@voiceflow/voice-types" "^2.9.4"
-    "@voiceflow/voiceflow-types" "^3.23.8"
+    "@voiceflow/google-types" "^2.18.29"
+    "@voiceflow/voice-types" "^2.9.5"
+    "@voiceflow/voiceflow-types" "^3.23.9"
 
 "@voiceflow/google-types@2.18.27":
   version "2.18.27"
@@ -2464,16 +2480,16 @@
     "@voiceflow/voiceflow-types" "^3.23.7"
     googleapis "92.0.0"
 
-"@voiceflow/google-types@2.18.28", "@voiceflow/google-types@^2.18.28":
-  version "2.18.28"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-2.18.28.tgz#ac2187eb48b970d5cac2adfc3e27f12e49800e81"
-  integrity sha512-Ed15yJ1AKMFcLazHbL1piYjzwgzXYAlTjiZhFjvyVh2Pku3LUHuco/4YjM1kvkUJR27TSRTurZ0kdrc/tWjH5A==
+"@voiceflow/google-types@2.18.29", "@voiceflow/google-types@^2.18.29":
+  version "2.18.29"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-2.18.29.tgz#c951d17f9222a6bae62894595add5df483dd81a2"
+  integrity sha512-EKwdYXYfIV75MgHSJQ8vhPTEliRyuMe6R5wS57kWvigRkcPNmsAo/Y2qYFe+wVHi1pFNwtfKNfzTpd3BDuq8aA==
   dependencies:
-    "@voiceflow/base-types" "^2.80.2"
-    "@voiceflow/chat-types" "^2.13.23"
+    "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/chat-types" "^2.13.24"
     "@voiceflow/common" "^8.2.0"
-    "@voiceflow/voice-types" "^2.9.4"
-    "@voiceflow/voiceflow-types" "^3.23.8"
+    "@voiceflow/voice-types" "^2.9.5"
+    "@voiceflow/voiceflow-types" "^3.23.9"
     googleapis "92.0.0"
 
 "@voiceflow/logger@1.6.1", "@voiceflow/logger@^1.6.1":
@@ -2596,7 +2612,15 @@
     "@voiceflow/base-types" "^2.80.1"
     "@voiceflow/common" "^8.2.0"
 
-"@voiceflow/voice-types@2.9.4", "@voiceflow/voice-types@^2.9.3", "@voiceflow/voice-types@^2.9.4":
+"@voiceflow/voice-types@2.9.5", "@voiceflow/voice-types@^2.9.5":
+  version "2.9.5"
+  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-2.9.5.tgz#ad0f7fe902f5527eb2887d3dab72a518861dbb71"
+  integrity sha512-fQf+dh/gJplHgVdjKLnSUI86fwt4bzMKrwQV4hYDTJy9UwSPbVdgJeT+anvdiPhl+i0OuUELegNrFfFDjKWBRg==
+  dependencies:
+    "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/common" "^8.2.0"
+
+"@voiceflow/voice-types@^2.9.3", "@voiceflow/voice-types@^2.9.4":
   version "2.9.4"
   resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-2.9.4.tgz#37c7a1ef81afae5ccea20c0ea14239e52a397593"
   integrity sha512-jEBnW1Ta1toi8T56NvciQtVH486ZKkO3um9CvGmjb6jmx5L6kkhSgIn7B6ieblgJ/D8xItYzbZ63Tt1AKwUCcw==
@@ -2613,7 +2637,16 @@
     "@voiceflow/chat-types" "^2.13.22"
     "@voiceflow/voice-types" "^2.9.3"
 
-"@voiceflow/voiceflow-types@3.23.8", "@voiceflow/voiceflow-types@^3.23.7", "@voiceflow/voiceflow-types@^3.23.8":
+"@voiceflow/voiceflow-types@3.23.9", "@voiceflow/voiceflow-types@^3.23.9":
+  version "3.23.9"
+  resolved "https://registry.yarnpkg.com/@voiceflow/voiceflow-types/-/voiceflow-types-3.23.9.tgz#b7ed1d6070eab756f3380caabe6f36c6892c3024"
+  integrity sha512-9HzNzmdS+HPAC7Iu5BgJBBtH6aNZXTgtuzJOUCeIDIJFvMeX+pEhvwXt+XL+em3CdGi3oIty2lPP2E/0q6WxjA==
+  dependencies:
+    "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/chat-types" "^2.13.24"
+    "@voiceflow/voice-types" "^2.9.5"
+
+"@voiceflow/voiceflow-types@^3.23.7":
   version "3.23.8"
   resolved "https://registry.yarnpkg.com/@voiceflow/voiceflow-types/-/voiceflow-types-3.23.8.tgz#ce4806ba7cd3bfdaed45543b2ca479749370399c"
   integrity sha512-pviZnhs0ny1i2KESGz840h79xX8OlVUyOGWdO2T1k3bqr3KZz5qNSo045x6TkwRS6/uwPDVmnhiXsFl43nQvJA==
