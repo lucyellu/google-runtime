@@ -20,7 +20,7 @@
     "@voiceflow/chat-types": "2.13.23",
     "@voiceflow/common": "8.2.0",
     "@voiceflow/event-ingestion-service": "1.5.0",
-    "@voiceflow/general-runtime": "1.131.1",
+    "@voiceflow/general-runtime": "1.131.2",
     "@voiceflow/google-dfes-types": "2.14.35",
     "@voiceflow/google-types": "2.18.28",
     "@voiceflow/logger": "1.6.2",
